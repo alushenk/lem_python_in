@@ -1,6 +1,7 @@
 #!../bin/python3
 
 import sys
+import tkinter_test
 import time
 
 
@@ -10,8 +11,8 @@ class Room(object):
         if not x.isdigit() and not y.isdigit():
             print('Error! coordinates must be integers')
             exit()
-        self.x = x
-        self.y = y
+        self.x = int(x)
+        self.y = int(y)
         self.connections = []
 
     def add_connection(self, vertex):
@@ -34,7 +35,7 @@ def add_line(rooms, lines, line):
     if a in rooms and b in rooms:
         rooms[a].add_connection(b)
         rooms[b].add_connection(a)
-        lines.add((a, b))
+        lines.append((a, b))
 
 
 def display_rooms(rooms):
@@ -42,9 +43,15 @@ def display_rooms(rooms):
         print(name + ': ' + ', '.join(room.connections) + '\n')
 
 
+def display_lines(lines):
+    for elem in lines:
+        a, b = elem
+        print(a + ' ' + b)
+
+
 def main():
     rooms = {}
-    lines = set()
+    lines = []
     startroom = 0
     endroom = 0
 
@@ -77,6 +84,8 @@ def main():
         add_line(rooms, lines, line)
 
     display_rooms(rooms)
+    display_lines(lines)
+    tkinter_test.graphic(rooms, lines)
 
 
 if __name__ == "__main__":

@@ -23,6 +23,10 @@ def dict_example():
     }
 
 
+def suka():
+    print("suka")
+
+
 if __name__ == "__main__":
     draw_dots()
     plt.show()

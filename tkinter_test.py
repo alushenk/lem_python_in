@@ -28,16 +28,32 @@ def close(event):
     sys.exit()
 
 
-def main():
+def graphic(rooms, lines):
     root = Tk()
     root.bind('<Escape>', close)
     size_init(root)
 
     canvas = Canvas(root, bg="#B0E0E6", height=root.winfo_screenheight(), width=root.winfo_screenwidth())
 
-    canvas.create_text(200, 200, text="suka")
+    # canvas.create_text(200, 200, text="suka")
     canvas.bind('<Button-1>', motion)
 
+    for elem in lines:
+        a, b = elem
+        a = rooms[a]
+        b = rooms[b]
+        print(b.x)
+        print(b.y)
+        canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192')
+
+    for room in rooms.values():
+        canvas.create_oval(room.x - 15, room.y - 15, room.x + 20, room.y + 20, fill='red')
+
+    canvas.pack()
+    root.mainloop()
+
+
+def main():
     dots = {
         'a': (10, 20),
         'b': (30, 60),
@@ -47,16 +63,3 @@ def main():
         'a': 'b',
         'b': 'c'
     }
-
-    for a, b in lines.items():
-        canvas.create_line(dots[a][0] + 10, dots[a][1] + 10, dots[b][0] + 10, dots[b][1] + 10, fill='#033192')
-
-    for x, y in dots.values():
-        canvas.create_oval(x, y, x + 20, y + 20, fill='red')
-
-    canvas.pack()
-
-    root.mainloop()
-
-
-main()
