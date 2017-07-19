@@ -44,10 +44,10 @@ def graphic(rooms, lines):
         b = rooms[b]
         print(b.x)
         print(b.y)
-        canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192')
+        canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192', dash=(4, 4), width=4)
 
     for room in rooms.values():
-        canvas.create_oval(room.x - 15, room.y - 15, room.x + 20, room.y + 20, fill='red')
+        canvas.create_oval(room.x - 15, room.y - 15, room.x + 20, room.y + 20, fill='red', width=3)
 
     canvas.pack()
     root.mainloop()

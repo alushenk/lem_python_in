@@ -79,6 +79,8 @@ def main():
         add_room(rooms, line)
 
     for line in sys.stdin:
+        if line.startswith("#"):
+            continue
         line = line.rstrip('\n')
         print(line)
         add_line(rooms, lines, line)
