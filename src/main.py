@@ -1,8 +1,5 @@
-#!../bin/python3
-
 import sys
-
-from src import tkinter_test
+import tkinter_test
 
 
 class Room(object):
@@ -14,6 +11,7 @@ class Room(object):
         self.x = int(x)
         self.y = int(y)
         self.connections = []
+        self.oval = None
 
     def add_connection(self, vertex):
         if vertex not in self.connections:
@@ -21,6 +19,19 @@ class Room(object):
         else:
             print('Error! connection already exists')
             exit()
+
+    def __str__(self):
+        return "%s: %d, %d".format(self.name, self.x, self.y)
+
+
+class Ant(object):
+    def __init__(self, name, x, y):
+        self.name = name
+        self.x = int(x)
+        self.y = int(y)
+
+    def __str__(self):
+        return self.name
 
 
 def add_room(rooms, line):

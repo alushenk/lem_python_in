@@ -29,11 +29,30 @@ def close(event):
 
 
 def graphic(rooms, lines):
+    def press(event):
+        print(event.keycode)
+        if event.keycode == 114:
+            canvas.move(ball, 10, 0)
+        if event.keycode == 113:
+            canvas.move(ball, -10, 0)
+        if event.keycode == 111:
+            canvas.move(ball, 0, -10)
+        if event.keycode == 116:
+            canvas.move(ball, 0, 10)
+        if event.keycode == 65:
+            canvas.move(ball, 10, 10)
+
     root = Tk()
     root.bind('<Escape>', close)
+    root.bind('<Key>', press)
     size_init(root)
 
-    canvas = Canvas(root, bg="#B0E0E6", height=root.winfo_screenheight(), width=root.winfo_screenwidth())
+    canvas = Canvas(
+        root,
+        bg="#B0E0E6",
+        height=root.winfo_screenheight(),
+        width=root.winfo_screenwidth()
+    )
 
     # canvas.create_text(200, 200, text="suka")
     canvas.bind('<Button-1>', motion)
@@ -44,23 +63,24 @@ def graphic(rooms, lines):
         b = rooms[b]
         print(b.x)
         print(b.y)
-        #dash=(4, 4) - to make lines dashed
+        # dash=(4, 4) - to make lines dashed
         canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192', width=4)
 
     for room in rooms.values():
-        canvas.create_oval(room.x - 15, room.y - 15, room.x + 20, room.y + 20, fill='red', width=3)
+        room.oval = canvas.create_oval(
+            room.x - 15, room.y - 15,
+            room.x + 15, room.y + 15,
+            fill='red',
+            outline="blue",
+            width=3
+        )
+        canvas.create_text(
+            room.x,
+            room.y,
+            text=room.name
+        )
+
+    ball = canvas.create_oval(0, 25, 25, 50, fill='yellow', outline="blue", width=3)
 
     canvas.pack()
     root.mainloop()
-
-
-def main():
-    dots = {
-        'a': (10, 20),
-        'b': (30, 60),
-        'c': (60, 90)
-    }
-    lines = {
-        'a': 'b',
-        'b': 'c'
-    }
