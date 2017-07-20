@@ -36,7 +36,7 @@ class App(object):
         self.master.bind('<Button-1>', self.motion)
 
     def press(self, event):
-        print(event.keycode)
+        # print(event.keycode)
         if event.keycode == 114:
             self.canvas.move(self.ball, 10, 0)
         if event.keycode == 113:
@@ -55,3 +55,28 @@ class App(object):
     @staticmethod
     def motion(event):
         print("Mouse position: (%s %s)" % (event.x, event.y))
+
+    def create_lines(self, graph):
+        lines = graph.lines
+        rooms = graph.rooms
+        for elem in lines:
+            a, b = elem
+            a = rooms[a]
+            b = rooms[b]
+            self.canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192', width=4)
+
+    def create_rooms(self, graph):
+        rooms = graph.rooms
+        for room in rooms.values():
+            room.oval = self.canvas.create_oval(
+                room.x - 15, room.y - 15,
+                room.x + 15, room.y + 15,
+                fill='red',
+                outline="blue",
+                width=3
+            )
+            self.canvas.create_text(
+                room.x,
+                room.y,
+                text=room.name
+            )
