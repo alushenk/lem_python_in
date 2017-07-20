@@ -8,6 +8,7 @@ class Graph(object):
         self.lines = []
         self.start_room = 0
         self.end_room = 0
+        self.number_of_ants = 0
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
