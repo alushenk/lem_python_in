@@ -15,6 +15,3 @@ class Room(object):
         else:
             print('Error! connection already exists')
             exit()
-
-    def __str__(self):
-        return "%s: %d, %d".format(self.name, self.x, self.y)

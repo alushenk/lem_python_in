@@ -1,9 +1,11 @@
 from tkinter import *
+import time
 
 
 class App(object):
-    def __init__(self, master, width, height):
+    def __init__(self, master, graph, width, height):
         self.master = master
+        self.graph = graph
         self.width = width
         self.height = height
         self.init_window()
@@ -20,6 +22,19 @@ class App(object):
             outline="#666699",
             width=3
         )
+        self.button = Button(
+            self.master,
+            text="QUIT",
+            fg="red",
+            command=quit
+        )
+        self.button.pack(side=BOTTOM)
+        self.slogan = Button(
+            self.master,
+            text="Hello",
+            command=self.update_graph
+        )
+        self.slogan.pack(side=BOTTOM)
 
     def init_window(self):
         # calculate x and y coordinates for the Tk root window
@@ -80,3 +95,9 @@ class App(object):
                 room.y,
                 text=room.name
             )
+
+    def update_graph(self):
+        for room in self.graph.rooms.values():
+            self.canvas.itemconfig(room.oval, fill="black")
+            self.canvas.update()
+            time.sleep(0.5)
