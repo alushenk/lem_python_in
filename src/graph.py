@@ -6,9 +6,6 @@ class Graph(object):
     def __init__(self):
         self.rooms = {}
         self.lines = []
-        self.start_room = 0
-        self.end_room = 0
-        self.number_of_ants = 0
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)

@@ -1,23 +1,19 @@
-import sys
-
-
-def parse_ants(graph):
-    number_of_ants = sys.stdin.readline().rstrip('\n')
+def parse_ants(graph, number_of_ants):
     if not number_of_ants.isdigit():
         print('Error! parameter not a digit')
         exit()
     graph.number_of_ants = number_of_ants
 
 
-def parse_rooms(graph):
-    for line in sys.stdin:
-        line = line.rstrip('\n')
+def parse_rooms(graph, source):
+    while source:
+        line = source.popleft().rstrip('\n')
         if line == '##start':
-            line = sys.stdin.readline().rstrip('\n')
+            line = source.popleft().rstrip('\n') if source else None
             graph.add_start(*line.split(" ", 3))
             continue
         if line == '##end':
-            line = sys.stdin.readline().rstrip('\n')
+            line = source.popleft().rstrip('\n') if source else None
             graph.add_end(*line.split(" ", 3))
             break
         if line.startswith("#"):
@@ -25,8 +21,9 @@ def parse_rooms(graph):
         graph.add_room(*line.split(" ", 3))
 
 
-def parse_lines(graph):
-    for line in sys.stdin:
+def parse_lines(graph, source):
+    while source:
+        line = source.popleft().rstrip('\n')
         if line.startswith("#"):
             continue
         line = line.rstrip('\n')

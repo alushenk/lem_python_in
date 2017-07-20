@@ -10,14 +10,14 @@ class App(object):
         self.bind_buttons()
         self.canvas = Canvas(
             self.master,
-            bg="#B0E0E6",
+            bg="white",
             height=height,
             width=width
         )
         self.ball = self.canvas.create_oval(
             0, 25, 25, 50,
             fill='yellow',
-            outline="blue",
+            outline="#666699",
             width=3
         )
 
@@ -63,7 +63,7 @@ class App(object):
             a, b = elem
             a = rooms[a]
             b = rooms[b]
-            self.canvas.create_line(a.x, a.y, b.x, b.y, fill='#033192', width=4)
+            self.canvas.create_line(a.x, a.y, b.x, b.y, fill='#666699', width=4)
 
     def create_rooms(self, graph):
         rooms = graph.rooms
@@ -71,8 +71,8 @@ class App(object):
             room.oval = self.canvas.create_oval(
                 room.x - 15, room.y - 15,
                 room.x + 15, room.y + 15,
-                fill='red',
-                outline="blue",
+                fill='#ff6666',
+                outline="#666699",
                 width=3
             )
             self.canvas.create_text(
