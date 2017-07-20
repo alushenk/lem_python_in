@@ -1,8 +1,8 @@
 #!../bin/python3
 
 import sys
-import tkinter_test
-import time
+
+from src import tkinter_test
 
 
 class Room(object):
