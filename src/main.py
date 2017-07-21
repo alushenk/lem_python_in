@@ -28,6 +28,35 @@ def find_shortest_path(root, graph, app):
     return path
 
 
+def find_path(graph, start, end, path=[]):
+    path = path + [start]
+    if start == end:
+        return path
+    if start not in graph or end not in graph:
+        return None
+    for node in graph[start].connections:
+        if node not in path:
+            newpath = find_path(graph, node, end, path)
+            if newpath:
+                return newpath
+    return None
+
+
+def find_all_paths(graph, start, end, path=[]):
+    path = path + [start]
+    if start == end:
+        return [path]
+    if start not in graph or end not in graph:
+        return []
+    paths = []
+    for node in graph[start].connections:
+        if node not in path:
+            newpaths = find_all_paths(graph, node, end, path)
+            for newpath in newpaths:
+                paths.append(newpath)
+    return paths
+
+
 def main():
     root = Tk()
     graph = Graph()
@@ -50,8 +79,14 @@ def main():
 
     # path = find_shortest_path(root, graph, app)
     # print(', '.join(path))
+    path = find_all_paths(graph.rooms, graph.start_room.name, graph.end_room.name)
+    print(path)
 
-    ants = [1, 2, 3]
+    ants = deque([1, 2, 3])
+
+    for room in path:
+        ant = ants.popleft()
+
 
     steps = [
         ['L1-2', 'L2-6', 'L3-3'],
@@ -60,6 +95,7 @@ def main():
     ]
     graph.add_steps(steps)
     graph.add_ants(ants)
+    graph.add_path(path)
 
     root.mainloop()
 

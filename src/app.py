@@ -17,8 +17,7 @@ class App(object):
         self.init_window()
         self.bind_buttons()
         self.frame = Frame(
-            self.master,
-
+            self.master
         )
         self.frame.pack(side=BOTTOM)
         self.canvas = Canvas(
@@ -57,36 +56,13 @@ class App(object):
         # calculate x and y coordinates for the Tk root window
         x = (self.master.winfo_screenwidth() / 2) - (self.width / 2)
         y = (self.master.winfo_screenheight() / 2) - (self.height / 2)
-
         # set the dimensions of the screen
         # and where it is placed
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, x, y))
 
     def bind_buttons(self):
-        self.master.bind('<Escape>', self.close)
+        self.master.bind('<Escape>', sys.exit)
         # self.master.bind('<Key>', self.press)
-        # self.master.bind('<Button-1>', self.motion)
-
-    # def press(self, event):
-    #     # print(event.keycode)
-    #     if event.keycode == ARROWS[3]:
-    #         self.canvas.move(self.ball, 10, 0)
-    #     if event.keycode == ARROWS[1]:
-    #         self.canvas.move(self.ball, -10, 0)
-    #     if event.keycode == ARROWS[0]:
-    #         self.canvas.move(self.ball, 0, -10)
-    #     if event.keycode == ARROWS[2]:
-    #         self.canvas.move(self.ball, 0, 10)
-    #     if event.keycode == 65:
-    #         self.canvas.move(self.ball, 10, 10)
-
-    @staticmethod
-    def close(event):
-        sys.exit()
-
-    @staticmethod
-    def motion(event):
-        print("Mouse position: (%s %s)" % (event.x, event.y))
 
     def create_lines(self, graph):
         lines = graph.lines
@@ -151,7 +127,6 @@ class App(object):
                     self.canvas.move(ant.number, move_x, move_y)
                     self.canvas.update()
                     time.sleep(0.025)
-
 
     def move_ant(self):
         step = self.graph.steps[0][0]

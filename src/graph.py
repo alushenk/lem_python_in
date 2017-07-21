@@ -3,6 +3,7 @@ from room import Room
 from ant import Ant
 from collections import deque
 
+
 class Graph(object):
     def __init__(self):
         self.rooms = {}
@@ -11,6 +12,7 @@ class Graph(object):
         self.steps = None
         self.start_room = None
         self.end_room = None
+        self.path = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -48,3 +50,6 @@ class Graph(object):
         for name in ants:
             ant = Ant(name, self.start_room.x, self.start_room.y)
             self.ants[name] = ant
+
+    def add_path(self, path):
+        self.path = path

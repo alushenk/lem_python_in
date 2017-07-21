@@ -6,9 +6,9 @@ class Room(object):
             exit()
         self.x = int(x)
         self.y = int(y)
-        self.connections = []
         self.oval = None
         self.number = None
+        self.connections = []
 
     def add_connection(self, vertex):
         if vertex not in self.connections:
