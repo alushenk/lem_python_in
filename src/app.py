@@ -1,5 +1,6 @@
 from tkinter import *
 import time
+import main
 
 
 class App(object):
@@ -51,8 +52,8 @@ class App(object):
         self.master.bind('<Button-1>', self.motion)
 
     def press(self, event):
-        # print(event.keycode)
-        if event.keycode == 114:
+        print(event.keycode)
+        if event.keycode == ARROWS[]:
             self.canvas.move(self.ball, 10, 0)
         if event.keycode == 113:
             self.canvas.move(self.ball, -10, 0)

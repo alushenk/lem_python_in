@@ -6,6 +6,11 @@ import sys
 from collections import deque
 import time
 
+# up, left, down, right
+MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
+UBUNTU_ARROWS = (111, 113, 116, 114)
+
+ARROWS = MAC_ARROWS
 
 def find_shortest_path(root, graph, app):
     start = graph.start_room
@@ -32,7 +37,6 @@ def main():
     root = Tk()
     graph = Graph()
     app = App(root, graph, 800, 650)
-
 
     if len(sys.argv) == 3 and sys.argv[1] == '-s':
         with open(sys.argv[2], 'r') as file:
