@@ -51,6 +51,8 @@ def main():
     # path = find_shortest_path(root, graph, app)
     # print(', '.join(path))
 
+    ants = [1, 2, 3]
+
     steps = [
         'L2-5',
         'L1-2',
@@ -58,7 +60,7 @@ def main():
         'L1-4'
     ]
     graph.add_steps(steps)
-
+    graph.add_ants(ants)
 
     root.mainloop()
 

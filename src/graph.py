@@ -1,14 +1,16 @@
 import sys
 from room import Room
-
+from ant import Ant
+from collections import deque
 
 class Graph(object):
     def __init__(self):
         self.rooms = {}
         self.lines = []
-        self.steps = 0
-        self.start_room = 0
-        self.end_room = 0
+        self.ants = []
+        self.steps = None
+        self.start_room = None
+        self.end_room = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -41,3 +43,9 @@ class Graph(object):
 
     def add_steps(self, steps):
         self.steps = steps
+
+    def add_ants(self, ants):
+        for name in ants:
+            ant = Ant(name, self.start_room.x, self.start_room.y)
+            self.ants.append(ant)
+        self.ants = deque(self.ants)

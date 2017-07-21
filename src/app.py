@@ -27,12 +27,6 @@ class App(object):
             height=height,
             width=width
         )
-        self.ball = self.canvas.create_oval(
-            0, 25, 25, 50,
-            fill='yellow',
-            outline="#666699",
-            width=3
-        )
         self.exit_button = Button(
             self.frame,
             text="QUIT",
@@ -46,9 +40,15 @@ class App(object):
             command=self.update_graph
         )
         self.run_button.pack(side=LEFT)
+        self.create_button = Button(
+            self.frame,
+            text="add ants",
+            command=self.create_ants
+        )
+        self.create_button.pack(side=LEFT)
         self.move_button = Button(
             self.frame,
-            text="move ant",
+            text="move ants",
             command=self.move_ant
         )
         self.move_button.pack(side=LEFT)
@@ -64,21 +64,21 @@ class App(object):
 
     def bind_buttons(self):
         self.master.bind('<Escape>', self.close)
-        self.master.bind('<Key>', self.press)
-        self.master.bind('<Button-1>', self.motion)
+        # self.master.bind('<Key>', self.press)
+        # self.master.bind('<Button-1>', self.motion)
 
-    def press(self, event):
-        print(event.keycode)
-        if event.keycode == ARROWS[3]:
-            self.canvas.move(self.ball, 10, 0)
-        if event.keycode == ARROWS[1]:
-            self.canvas.move(self.ball, -10, 0)
-        if event.keycode == ARROWS[0]:
-            self.canvas.move(self.ball, 0, -10)
-        if event.keycode == ARROWS[2]:
-            self.canvas.move(self.ball, 0, 10)
-        if event.keycode == 65:
-            self.canvas.move(self.ball, 10, 10)
+    # def press(self, event):
+    #     # print(event.keycode)
+    #     if event.keycode == ARROWS[3]:
+    #         self.canvas.move(self.ball, 10, 0)
+    #     if event.keycode == ARROWS[1]:
+    #         self.canvas.move(self.ball, -10, 0)
+    #     if event.keycode == ARROWS[0]:
+    #         self.canvas.move(self.ball, 0, -10)
+    #     if event.keycode == ARROWS[2]:
+    #         self.canvas.move(self.ball, 0, 10)
+    #     if event.keycode == 65:
+    #         self.canvas.move(self.ball, 10, 10)
 
     @staticmethod
     def close(event):
@@ -107,7 +107,7 @@ class App(object):
                 outline="#666699",
                 width=3
             )
-            self.canvas.create_text(
+            room.number = self.canvas.create_text(
                 room.x,
                 room.y,
                 text=room.name
@@ -119,15 +119,33 @@ class App(object):
             self.canvas.update()
             time.sleep(0.5)
 
+    def create_ants(self):
+        for ant in self.graph.ants:
+            ant.oval = self.canvas.create_oval(
+                ant.x - 15, ant.y - 15,
+                ant.x + 15, ant.y + 15,
+                fill='yellow',
+                outline="#666699",
+                width=3
+            )
+            ant.number = self.canvas.create_text(
+                ant.x,
+                ant.y,
+                text=ant.name
+            )
+            self.canvas.update()
+
     def move_ant(self):
         step = self.graph.steps[0]
-        start = self.graph.start_room
+        start = self.graph.ants.popleft()
         dest = self.graph.rooms[step[3]]
         delta_x = start.x - dest.x
         delta_y = start.y - dest.y
         move_x = delta_x / 10
         move_y = delta_y / 10
+        # oval = self.canvas.find_withtag(start.name)
         for i in range(10):
             self.canvas.move(start.oval, move_x, move_y)
+            self.canvas.move(start.number, move_x, move_y)
             self.canvas.update()
             time.sleep(0.025)
