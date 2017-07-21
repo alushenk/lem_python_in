@@ -7,7 +7,7 @@ class Graph(object):
     def __init__(self):
         self.rooms = {}
         self.lines = []
-        self.ants = []
+        self.ants = {}
         self.steps = None
         self.start_room = None
         self.end_room = None
@@ -47,5 +47,4 @@ class Graph(object):
     def add_ants(self, ants):
         for name in ants:
             ant = Ant(name, self.start_room.x, self.start_room.y)
-            self.ants.append(ant)
-        self.ants = deque(self.ants)
+            self.ants[name] = ant

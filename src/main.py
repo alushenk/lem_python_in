@@ -54,10 +54,9 @@ def main():
     ants = [1, 2, 3]
 
     steps = [
-        'L2-5',
-        'L1-2',
-        'L1-3',
-        'L1-4'
+        ['L1-2', 'L2-6', 'L3-3'],
+        ['L1-5', 'L2-4'],
+        ['l3-2']
     ]
     graph.add_steps(steps)
     graph.add_ants(ants)

@@ -49,7 +49,7 @@ class App(object):
         self.move_button = Button(
             self.frame,
             text="move ants",
-            command=self.move_ant
+            command=self.move_ants
         )
         self.move_button.pack(side=LEFT)
 
@@ -120,7 +120,7 @@ class App(object):
             time.sleep(0.5)
 
     def create_ants(self):
-        for ant in self.graph.ants:
+        for ant in self.graph.ants.values():
             ant.oval = self.canvas.create_oval(
                 ant.x - 15, ant.y - 15,
                 ant.x + 15, ant.y + 15,
@@ -135,16 +135,33 @@ class App(object):
             )
             self.canvas.update()
 
+    def move_ants(self):
+        for line in self.graph.steps:
+            for step in line:
+                ant = self.graph.ants[int(step[1])]
+                dest = self.graph.rooms[step[3]]
+                delta_x = dest.x - ant.x
+                delta_y = dest.y - ant.y
+                ant.x += delta_x
+                ant.y += delta_y
+                move_x = delta_x / 20
+                move_y = delta_y / 20
+                for i in range(20):
+                    self.canvas.move(ant.oval, move_x, move_y)
+                    self.canvas.move(ant.number, move_x, move_y)
+                    self.canvas.update()
+                    time.sleep(0.025)
+
+
     def move_ant(self):
-        step = self.graph.steps[0]
-        start = self.graph.ants.popleft()
+        step = self.graph.steps[0][0]
+        start = self.graph.ants[1]
         dest = self.graph.rooms[step[3]]
-        delta_x = start.x - dest.x
-        delta_y = start.y - dest.y
-        move_x = delta_x / 10
-        move_y = delta_y / 10
-        # oval = self.canvas.find_withtag(start.name)
-        for i in range(10):
+        delta_x = dest.x - start.x
+        delta_y = dest.y - start.y
+        move_x = delta_x / 20
+        move_y = delta_y / 20
+        for i in range(20):
             self.canvas.move(start.oval, move_x, move_y)
             self.canvas.move(start.number, move_x, move_y)
             self.canvas.update()
