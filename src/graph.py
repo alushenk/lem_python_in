@@ -6,6 +6,9 @@ class Graph(object):
     def __init__(self):
         self.rooms = {}
         self.lines = []
+        self.steps = 0
+        self.start_room = 0
+        self.end_room = 0
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -35,3 +38,6 @@ class Graph(object):
         for elem in self.lines:
             a, b = elem
             print('{0} {1}'.format(a, b))
+
+    def add_steps(self, steps):
+        self.steps = steps

@@ -1,6 +1,11 @@
 from tkinter import *
 import time
-import main
+
+# up, left, down, right
+MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
+UBUNTU_ARROWS = (111, 113, 116, 114)
+
+ARROWS = MAC_ARROWS
 
 
 class App(object):
@@ -11,6 +16,11 @@ class App(object):
         self.height = height
         self.init_window()
         self.bind_buttons()
+        self.frame = Frame(
+            self.master,
+
+        )
+        self.frame.pack(side=BOTTOM)
         self.canvas = Canvas(
             self.master,
             bg="white",
@@ -23,19 +33,25 @@ class App(object):
             outline="#666699",
             width=3
         )
-        self.button = Button(
-            self.master,
+        self.exit_button = Button(
+            self.frame,
             text="QUIT",
             fg="red",
             command=quit
         )
-        self.button.pack(side=BOTTOM)
-        self.slogan = Button(
-            self.master,
-            text="Hello",
+        self.exit_button.pack(side=LEFT)
+        self.run_button = Button(
+            self.frame,
+            text="animate",
             command=self.update_graph
         )
-        self.slogan.pack(side=BOTTOM)
+        self.run_button.pack(side=LEFT)
+        self.move_button = Button(
+            self.frame,
+            text="move ant",
+            command=self.move_ant
+        )
+        self.move_button.pack(side=LEFT)
 
     def init_window(self):
         # calculate x and y coordinates for the Tk root window
@@ -53,13 +69,13 @@ class App(object):
 
     def press(self, event):
         print(event.keycode)
-        if event.keycode == ARROWS[]:
+        if event.keycode == ARROWS[3]:
             self.canvas.move(self.ball, 10, 0)
-        if event.keycode == 113:
+        if event.keycode == ARROWS[1]:
             self.canvas.move(self.ball, -10, 0)
-        if event.keycode == 111:
+        if event.keycode == ARROWS[0]:
             self.canvas.move(self.ball, 0, -10)
-        if event.keycode == 116:
+        if event.keycode == ARROWS[2]:
             self.canvas.move(self.ball, 0, 10)
         if event.keycode == 65:
             self.canvas.move(self.ball, 10, 10)
@@ -102,3 +118,16 @@ class App(object):
             self.canvas.itemconfig(room.oval, fill="black")
             self.canvas.update()
             time.sleep(0.5)
+
+    def move_ant(self):
+        step = self.graph.steps[0]
+        start = self.graph.start_room
+        dest = self.graph.rooms[step[3]]
+        delta_x = start.x - dest.x
+        delta_y = start.y - dest.y
+        move_x = delta_x / 10
+        move_y = delta_y / 10
+        for i in range(10):
+            self.canvas.move(start.oval, move_x, move_y)
+            self.canvas.update()
+            time.sleep(0.025)

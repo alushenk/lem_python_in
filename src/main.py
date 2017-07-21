@@ -6,11 +6,6 @@ import sys
 from collections import deque
 import time
 
-# up, left, down, right
-MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
-UBUNTU_ARROWS = (111, 113, 116, 114)
-
-ARROWS = MAC_ARROWS
 
 def find_shortest_path(root, graph, app):
     start = graph.start_room
@@ -44,7 +39,7 @@ def main():
     else:
         source = sys.stdin.readlines()
     source = deque(source)
-    parse_ants(graph, source.popleft().rstrip('\n'))
+    parse_ants(graph, source)
     parse_rooms(graph, source)
     parse_lines(graph, source)
 
@@ -56,13 +51,13 @@ def main():
     # path = find_shortest_path(root, graph, app)
     # print(', '.join(path))
 
-    # current = 0
-    # def update():
-    #     if current == graph.end_room:
-    #         break
-    #
-    #
-
+    steps = [
+        'L2-5',
+        'L1-2',
+        'L1-3',
+        'L1-4'
+    ]
+    graph.add_steps(steps)
 
 
     root.mainloop()

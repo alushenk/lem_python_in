@@ -1,4 +1,7 @@
-def parse_ants(graph, number_of_ants):
+def parse_ants(graph, source):
+    number_of_ants = source.popleft().rstrip('\n')
+    while number_of_ants.startswith("#"):
+        number_of_ants = source.popleft().rstrip('\n')
     if not number_of_ants.isdigit():
         print('Error! parameter not a digit')
         exit()
