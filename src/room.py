@@ -9,6 +9,7 @@ class Room(object):
         self.oval = None
         self.number = None
         self.connections = []
+        self.ants = []
 
     def add_connection(self, vertex):
         if vertex not in self.connections:

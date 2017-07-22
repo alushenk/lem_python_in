@@ -8,11 +8,12 @@ class Graph(object):
     def __init__(self):
         self.rooms = {}
         self.lines = []
-        self.ants = {}
+        self.ants = []
         self.steps = None
         self.start_room = None
         self.end_room = None
         self.path = None
+        self.paths = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -49,7 +50,56 @@ class Graph(object):
     def add_ants(self, ants):
         for name in ants:
             ant = Ant(name, self.start_room.x, self.start_room.y)
-            self.ants[name] = ant
+            self.ants.append(ant)
 
     def add_path(self, path):
         self.path = path
+
+    def get_paths(self):
+        self.paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
+
+    def find_all_paths(self, graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return [path]
+        if start not in graph or end not in graph or len(graph[end].connections) == 0:
+            return []
+        paths = []
+        for node in graph[start].connections:
+            if node not in path:
+                newpaths = self.find_all_paths(graph, node, end, path)
+                for newpath in newpaths:
+                    paths.append(newpath)
+        return paths
+
+    def get_path(self):
+        self.path = self.find_path(self.rooms, self.start_room.name, self.end_room.name)
+
+    def find_path(self, graph, start, end, path=[]):
+        path = path + [start]
+        if start == end:
+            return path
+        if start not in graph or end not in graph or len(graph[end].connections) == 0:
+            return None
+        for node in graph[start].connections:
+            if node not in path:
+                newpath = self.find_path(graph, node, end, path)
+                if newpath:
+                    return newpath
+        return None
+
+    def find_groups(self):
+        sets = [set(x) for x in self.paths]
+        suka = {self.start_room.name, self.end_room.name}
+
+        tuple_paths = [tuple(path) for path in self.paths]
+
+        paths = list(zip(sets, tuple_paths))
+        groups = {(path,) for path in tuple_paths}
+        for i, j in paths:
+            group = {j}
+            for a, b in paths:
+                if (i & a) == suka:
+                    group.add(b)
+            groups.add(tuple(group))
+        print(groups)

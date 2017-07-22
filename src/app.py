@@ -96,7 +96,7 @@ class App(object):
             time.sleep(0.5)
 
     def create_ants(self):
-        for ant in self.graph.ants.values():
+        for ant in self.graph.ants:
             ant.oval = self.canvas.create_oval(
                 ant.x - 15, ant.y - 15,
                 ant.x + 15, ant.y + 15,
@@ -114,7 +114,7 @@ class App(object):
     def move_ants(self):
         for line in self.graph.steps:
             for step in line:
-                ant = self.graph.ants[int(step[1])]
+                ant = self.graph.ants[int(step[1]) - 1]
                 dest = self.graph.rooms[step[3]]
                 delta_x = dest.x - ant.x
                 delta_y = dest.y - ant.y
