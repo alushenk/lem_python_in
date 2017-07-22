@@ -14,6 +14,7 @@ class Graph(object):
         self.end_room = None
         self.path = None
         self.paths = None
+        self.groups = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -44,19 +45,14 @@ class Graph(object):
             a, b = elem
             print('{0} {1}'.format(a, b))
 
-    def add_steps(self, steps):
-        self.steps = steps
-
     def add_ants(self, ants):
         for name in ants:
             ant = Ant(name, self.start_room.x, self.start_room.y)
             self.ants.append(ant)
 
-    def add_path(self, path):
-        self.path = path
-
     def get_paths(self):
         self.paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
+        self.path = min(self.paths, key=len)
 
     def find_all_paths(self, graph, start, end, path=[]):
         path = path + [start]
@@ -102,4 +98,22 @@ class Graph(object):
                 if (i & a) == suka:
                     group.add(b)
             groups.add(tuple(group))
-        print(groups)
+        self.groups = list(groups)
+
+    def choose_path(self):
+        self.path = self.groups[1]
+
+    def generate_steps(self):
+        steps = []
+        path = self.path[0][1:]
+
+        for i in range(len(path)):
+            for ant in range(1, len(self.ants) + 1):
+                step = set()
+                rooms = set()
+                for room in path:
+                    if room not in rooms:
+                        step.add((ant, room))
+                        rooms.add(room)
+                steps.append(["L{0}-{1}".format(*x) for x in step])
+        self.steps = steps

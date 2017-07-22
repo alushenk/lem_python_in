@@ -26,18 +26,14 @@ def main():
     app.canvas.pack()
 
     graph.get_paths()
-    #print(graph.paths)
 
     ants = [1, 2, 3]
-    shortest = min(graph.paths, key=len)
-
-    steps = []
-    for ant in ants:
-        steps.append(["L{}-{}".format(ant, room) for room in shortest[1:]])
-
-    graph.add_steps(steps)
     graph.add_ants(ants)
     graph.find_groups()
+    print(graph.groups)
+
+    graph.choose_path()
+    graph.generate_steps()
 
     root.mainloop()
 
