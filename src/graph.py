@@ -9,6 +9,7 @@ class Graph(object):
         self.rooms = {}
         self.lines = []
         self.ants = []
+        self.ants_count = None
         self.steps = None
         self.start_room = None
         self.end_room = None
@@ -46,6 +47,7 @@ class Graph(object):
             print('{0} {1}'.format(a, b))
 
     def add_ants(self, ants):
+        self.ants_count = len(ants)
         for name in ants:
             ant = Ant(name, self.start_room.x, self.start_room.y)
             self.ants.append(ant)
@@ -100,20 +102,27 @@ class Graph(object):
         groups = {(path,) for path in tuple_paths}
         for i, j in paths:
             group = {j}
+            buffer = [i]
             for a, b in paths:
                 if (i & a) == suka:
-                    group.add(b)
+                    not_exists = 1
+                    for x in buffer:
+                        if (x & a) != suka:
+                            not_exists = 0
+                    if not_exists:
+                        group.add(b)
+                        buffer.append(a)
             groups.add(tuple(group))
         self.groups = list(groups)
 
     def choose_path(self):
-        self.path = ('1', '5', '6', '3', '4')
+        self.path = self.groups[0][0]
 
-    def rec(self, steps, path, ants_count, end):
-        pass
+        for group in self.groups:
+            for path in group:
 
     def generate_steps(self):
-        ants_count = len(self.ants)
+        ants_count = self.ants_count
         ants = list(range(1, ants_count + 1))
         path = [[x, 0] for x in self.path]
 
@@ -127,7 +136,7 @@ class Graph(object):
                 if path[next_index][1] == 0:
                     path[current_index][1] = 0
                     path[next_index][1] = 1
-                    step.append((ant, path[next_index][0]))
+                    step.append("L{0}-{1}".format(ant, path[next_index][0]))
                     if current_index != 0:
                         current_index -= 1
                     if path[next_index][0] == self.end_room.name:
@@ -135,7 +144,6 @@ class Graph(object):
                         ants = ants[1:]
                         index -= 1
             path[-1][1] = 0
-            steps.append(["L{0}-{1}".format(*x) for x in step])
+            steps.append(step)
             index += 1
         self.steps = steps
-

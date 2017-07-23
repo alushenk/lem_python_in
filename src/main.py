@@ -27,7 +27,7 @@ def main():
 
     graph.get_paths()
 
-    ants = list(range(1, 11))
+    ants = list(range(1, 100))
     graph.add_ants(ants)
     graph.find_groups()
     print(graph.groups)
