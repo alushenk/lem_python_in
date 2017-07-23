@@ -51,6 +51,11 @@ class Graph(object):
             self.ants.append(ant)
 
     def get_paths(self):
+        if self.start_room.name not in self.rooms \
+                or self.end_room.name not in self.rooms \
+                or len(self.start_room.connections) == 0 \
+                or len(self.end_room.connections) == 0:
+            return
         self.paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
         self.path = min(self.paths, key=len)
 
@@ -58,8 +63,6 @@ class Graph(object):
         path = path + [start]
         if start == end:
             return [path]
-        if start not in graph or end not in graph or len(graph[end].connections) == 0:
-            return []
         paths = []
         for node in graph[start].connections:
             if node not in path:
@@ -69,14 +72,17 @@ class Graph(object):
         return paths
 
     def get_path(self):
+        if self.start_room.name not in self.rooms \
+                or self.end_room.name not in self.rooms \
+                or len(self.start_room.connections) == 0 \
+                or len(self.end_room.connections) == 0:
+            return
         self.path = self.find_path(self.rooms, self.start_room.name, self.end_room.name)
 
     def find_path(self, graph, start, end, path=[]):
         path = path + [start]
         if start == end:
             return path
-        if start not in graph or end not in graph or len(graph[end].connections) == 0:
-            return None
         for node in graph[start].connections:
             if node not in path:
                 newpath = self.find_path(graph, node, end, path)
@@ -101,19 +107,35 @@ class Graph(object):
         self.groups = list(groups)
 
     def choose_path(self):
-        self.path = self.groups[1]
+        self.path = ('1', '5', '6', '3', '4')
+
+    def rec(self, steps, path, ants_count, end):
+        pass
 
     def generate_steps(self):
-        steps = []
-        path = self.path[0][1:]
+        ants_count = len(self.ants)
+        ants = list(range(1, ants_count + 1))
+        path = [[x, 0] for x in self.path]
 
-        for i in range(len(path)):
-            for ant in range(1, len(self.ants) + 1):
-                step = set()
-                rooms = set()
-                for room in path:
-                    if room not in rooms:
-                        step.add((ant, room))
-                        rooms.add(room)
-                steps.append(["L{0}-{1}".format(*x) for x in step])
+        steps = []
+        index = 0
+        while ants_count > 0:
+            step = []
+            current_index = index
+            for ant in ants:
+                next_index = current_index + 1
+                if path[next_index][1] == 0:
+                    path[current_index][1] = 0
+                    path[next_index][1] = 1
+                    step.append((ant, path[next_index][0]))
+                    if current_index != 0:
+                        current_index -= 1
+                    if path[next_index][0] == self.end_room.name:
+                        ants_count -= 1
+                        ants = ants[1:]
+                        index -= 1
+            path[-1][1] = 0
+            steps.append(["L{0}-{1}".format(*x) for x in step])
+            index += 1
         self.steps = steps
+

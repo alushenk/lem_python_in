@@ -27,13 +27,15 @@ def main():
 
     graph.get_paths()
 
-    ants = [1, 2, 3]
+    ants = list(range(1, 11))
     graph.add_ants(ants)
     graph.find_groups()
     print(graph.groups)
 
     graph.choose_path()
     graph.generate_steps()
+    for step in graph.steps:
+        print(step)
 
     root.mainloop()
 

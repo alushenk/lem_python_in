@@ -114,8 +114,9 @@ class App(object):
     def move_ants(self):
         for line in self.graph.steps:
             for step in line:
-                ant = self.graph.ants[int(step[1]) - 1]
-                dest = self.graph.rooms[step[3]]
+                ant, dest = step.split('-', 2)
+                ant = self.graph.ants[int(ant[1:]) - 1]
+                dest = self.graph.rooms[dest]
                 delta_x = dest.x - ant.x
                 delta_y = dest.y - ant.y
                 ant.x += delta_x
