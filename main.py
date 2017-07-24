@@ -26,9 +26,9 @@ def main():
 
     graph.get_paths()
     graph.add_ants()
-    graph.find_groups()
-    print(graph.groups)
-    graph.choose_path()
+    graph.find_path_groups()
+    graph.choose_path_group()
+    graph.print_groups()
     graph.generate_steps()
     graph.print_steps()
 

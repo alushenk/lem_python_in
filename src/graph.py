@@ -1,6 +1,8 @@
 import sys
 from .room import Room
 from .ant import Ant
+from .path import Path
+from operator import itemgetter
 from collections import deque
 
 
@@ -13,9 +15,8 @@ class Graph(object):
         self.steps = None
         self.start_room = None
         self.end_room = None
-        self.path = None
-        self.paths = None
-        self.groups = None
+        self.paths = []
+        self.path_groups = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -50,6 +51,10 @@ class Graph(object):
         for step in self.steps:
             print(' '.join(step))
 
+    def print_groups(self):
+        for group in self.path_groups:
+            print(group)
+
     def add_ants(self):
         for name in range(1, self.number_of_ants + 1):
             ant = Ant(name, self.start_room.x, self.start_room.y)
@@ -61,8 +66,9 @@ class Graph(object):
                 or len(self.start_room.connections) == 0 \
                 or len(self.end_room.connections) == 0:
             return
-        self.paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
-        self.path = min(self.paths, key=len)
+        paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
+        for path in paths:
+            self.paths.append(Path(path))
 
     def find_all_paths(self, graph, start, end, path=[]):
         path = path + [start]
@@ -76,56 +82,35 @@ class Graph(object):
                     paths.append(newpath)
         return paths
 
-    def get_path(self):
-        if self.start_room.name not in self.rooms \
-                or self.end_room.name not in self.rooms \
-                or len(self.start_room.connections) == 0 \
-                or len(self.end_room.connections) == 0:
-            return
-        self.path = self.find_path(self.rooms, self.start_room.name, self.end_room.name)
+    def find_path_groups(self):
+        groups = {(path.rooms,) for path in self.paths}
+        paths = self.paths
+        for a in paths:
+            group = {a.rooms}
+            for b in paths:
+                if a.set.isdisjoint(b.set) and a.len != 2:
+                    group.add(b.rooms)
+            if len(group) != 1:
+                groups.add(tuple(sorted(group)))
+        self.path_groups = groups
 
-    def find_path(self, graph, start, end, path=[]):
-        path = path + [start]
-        if start == end:
-            return path
-        for node in graph[start].connections:
-            if node not in path:
-                newpath = self.find_path(graph, node, end, path)
-                if newpath:
-                    return newpath
-        return None
+    # пока ищет по наименьшей сумме всех весов путей
+    def choose_path_group(self):
+        result = []
 
-    def find_groups(self):
-        sets = [set(x) for x in self.paths]
-        suka = {self.start_room.name, self.end_room.name}
+        for group in self.path_groups:
+            length = 0
+            for path in group:
+                length += len(path)
+            result.append((group, length))
 
-        tuple_paths = [tuple(path) for path in self.paths]
-
-        paths = list(zip(sets, tuple_paths))
-        groups = {(path,) for path in tuple_paths}
-        for i, j in paths:
-            group = {j}
-            buffer = [i]
-            for a, b in paths:
-                if (i & a) == suka:
-                    not_exists = 1
-                    for x in buffer:
-                        if (x & a) != suka:
-                            not_exists = 0
-                    if not_exists:
-                        group.add(b)
-                        buffer.append(a)
-            groups.add(tuple(group))
-        self.groups = list(groups)
-
-    def choose_path(self):
-        pass
-        # for group in self.groups:
-        #     for path in group:
+        result = min(result, key=itemgetter(1))
+        print('suka')
+        print(result)
 
     def generate_steps(self):
         ants = self.ants
-        path = self.path
+        path = self.paths[0].rooms
 
         steps = []
         index = 0
