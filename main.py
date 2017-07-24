@@ -1,7 +1,7 @@
 from tkinter import *
-from app import App
-from graph import Graph
-from parse import *
+from src.app import App
+from src.graph import Graph
+from src.parse import *
 import sys
 from collections import deque
 import time
@@ -18,24 +18,19 @@ def main():
     else:
         source = sys.stdin.readlines()
     source = deque(source)
-    parse_ants(graph, source)
-    parse_rooms(graph, source)
-    parse_lines(graph, source)
+    parse_data(graph, source)
+
     app.create_lines(graph)
     app.create_rooms(graph)
     app.canvas.pack()
 
     graph.get_paths()
-
-    ants = list(range(1, 100))
-    graph.add_ants(ants)
+    graph.add_ants()
     graph.find_groups()
     print(graph.groups)
-
     graph.choose_path()
     graph.generate_steps()
-    for step in graph.steps:
-        print(step)
+    graph.print_steps()
 
     root.mainloop()
 

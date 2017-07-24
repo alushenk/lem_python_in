@@ -1,6 +1,6 @@
 import sys
-from room import Room
-from ant import Ant
+from .room import Room
+from .ant import Ant
 from collections import deque
 
 
@@ -9,7 +9,7 @@ class Graph(object):
         self.rooms = {}
         self.lines = []
         self.ants = []
-        self.ants_count = None
+        self.number_of_ants = 0
         self.steps = None
         self.start_room = None
         self.end_room = None
@@ -46,9 +46,12 @@ class Graph(object):
             a, b = elem
             print('{0} {1}'.format(a, b))
 
-    def add_ants(self, ants):
-        self.ants_count = len(ants)
-        for name in ants:
+    def print_steps(self):
+        for step in self.steps:
+            print(' '.join(step))
+
+    def add_ants(self):
+        for name in range(1, self.number_of_ants + 1):
             ant = Ant(name, self.start_room.x, self.start_room.y)
             self.ants.append(ant)
 
@@ -116,34 +119,33 @@ class Graph(object):
         self.groups = list(groups)
 
     def choose_path(self):
-        self.path = self.groups[0][0]
-
-        for group in self.groups:
-            for path in group:
+        pass
+        # for group in self.groups:
+        #     for path in group:
 
     def generate_steps(self):
-        ants_count = self.ants_count
-        ants = list(range(1, ants_count + 1))
-        path = [[x, 0] for x in self.path]
+        ants = self.ants
+        path = self.path
 
         steps = []
         index = 0
-        while ants_count > 0:
+        while ants:
             step = []
             current_index = index
             for ant in ants:
+                if current_index < 0:
+                    break
                 next_index = current_index + 1
-                if path[next_index][1] == 0:
-                    path[current_index][1] = 0
-                    path[next_index][1] = 1
-                    step.append("L{0}-{1}".format(ant, path[next_index][0]))
-                    if current_index != 0:
-                        current_index -= 1
-                    if path[next_index][0] == self.end_room.name:
-                        ants_count -= 1
+                current_room = self.rooms[path[current_index]]
+                next_room = self.rooms[path[next_index]]
+                if next_room.is_free():
+                    next_room.add_ant(current_room.pop_ant())
+                    step.append("L{0}-{1}".format(ant, next_room))
+                    current_index -= 1
+                    if next_room == self.end_room:
+                        self.end_room.pop_ant()
                         ants = ants[1:]
                         index -= 1
-            path[-1][1] = 0
             steps.append(step)
             index += 1
         self.steps = steps

@@ -5,7 +5,7 @@ def parse_ants(graph, source):
     if not number_of_ants.isdigit():
         print('Error! parameter not a digit')
         exit()
-    graph.number_of_ants = number_of_ants
+    graph.number_of_ants = int(number_of_ants)
 
 
 def parse_rooms(graph, source):
@@ -31,3 +31,9 @@ def parse_lines(graph, source):
             continue
         line = line.rstrip('\n')
         graph.add_line(*line.split("-", 2))
+
+
+def parse_data(graph, source):
+    parse_ants(graph, source)
+    parse_rooms(graph, source)
+    parse_lines(graph, source)

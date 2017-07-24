@@ -128,5 +128,5 @@ class App(object):
                     self.canvas.move(ant.oval, move_x, move_y)
                     self.canvas.move(ant.number, move_x, move_y)
                     self.canvas.update()
-                    # time.sleep(0.001)
+                    time.sleep(0.01)
                     # time.sleep(0.025)
