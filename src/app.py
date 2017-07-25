@@ -114,6 +114,7 @@ class App(object):
     def move_ants(self):
         divider = 10
         for line in self.graph.steps:
+            steps = []
             for step in line:
                 ant, dest = step.split('-', 2)
                 ant = self.graph.ants[int(ant[1:]) - 1]
@@ -124,9 +125,12 @@ class App(object):
                 ant.y += delta_y
                 move_x = delta_x / divider
                 move_y = delta_y / divider
-                for i in range(divider):
+                steps.append((ant, move_x, move_y))
+
+            for i in range(divider):
+                for ant, move_x, move_y in steps:
                     self.canvas.move(ant.oval, move_x, move_y)
                     self.canvas.move(ant.number, move_x, move_y)
-                    self.canvas.update()
-                    time.sleep(0.01)
-                    # time.sleep(0.025)
+                self.canvas.update()
+                time.sleep(0.05)
+                # time.sleep(0.025)
