@@ -5,6 +5,7 @@ from .path import Path
 from .path_group import Group
 from operator import itemgetter
 from collections import deque
+import math
 
 
 class Graph(object):
@@ -110,28 +111,24 @@ class Graph(object):
     def choose_path_group(self):
 
         for group in self.path_groups:
-            fraction_path = 0
-            fraction_ants = 0
-            part_ants = self.number_of_ants / group.paths_count
-            if part_ants % 1 > 0:
-                fraction_ants = 1
-                part_ants = self.number_of_ants // group.paths_count
+            part_ants = self.number_of_ants // group.paths_count
             total_weight = sum(x.length for x in group.paths)
-            average_length = total_weight / group.paths_count
-            if average_length % 1 > 0:
-                fraction_path = 1
-                average_length = total_weight // group.paths_count
+            average_length = total_weight // group.paths_count
+
             for i, path in enumerate(group.paths):
                 displacement = average_length - path.length
                 group.ants_counters[i] = part_ants + displacement
 
-            # index of group which has minimal amount of ants
-            min_index = group.ants_counters.index(min(group.ants_counters))
-            # incremented ants of the shorter path of the current group
-            group.ants_counters[min_index] += fraction_ants
+            while sum(group.ants_counters) < self.number_of_ants:
+                # index of group which has minimal amount of ants
+                min_index = group.ants_counters.index(min(group.ants_counters))
+                # incremented ants of the shorter path of the current group
+                group.ants_counters[min_index] += 1
 
-            group.average = average_length + fraction_path
-            group.efficiency_coef = max(group.ants_counters)
+            group.average = average_length
+            max_ants_index, max_ants_value = max(enumerate(group.ants_counters), key=lambda x: x[1])
+            maximum_ants_path = group.paths[max_ants_index]
+            group.efficiency_coef = max_ants_value + maximum_ants_path.length
         self.chosen_group = min(self.path_groups, key=lambda x: x.efficiency_coef)
 
     def generate_steps(self):
@@ -143,13 +140,13 @@ class Graph(object):
 
         while True:
             empty = 0
+            step = []
             for path in group.paths:
                 if path.steps:
-                    for step in path.steps:
-                        self.steps.append(step)
-                    path.steps.popleft()
+                    step += path.steps.popleft()
                 else:
                     empty += 1
+            self.steps.append(step)
             if empty == self.chosen_group.paths_count:
                 break
 

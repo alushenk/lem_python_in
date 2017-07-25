@@ -7,4 +7,4 @@ class Group(object):
         self.paths_count = len(paths)
         self.efficiency_coef = 0
         self.ants_counters = [0] * self.paths_count
-        paths = []
+        self.weight = sum(x.length for x in paths)
