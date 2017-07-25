@@ -4,7 +4,4 @@ class Path(object):
         self.rooms = tuple(rooms)
         self.set = set(rooms[1:-1])
         self.length = len(rooms)
-        self.ants = 0
-
-    def __add__(self, other):
-        return self.length + other.length
+        self.steps = 0

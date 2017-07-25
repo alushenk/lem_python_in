@@ -13,7 +13,7 @@ class Graph(object):
         self.lines = []
         self.ants = []
         self.number_of_ants = 0
-        self.steps = None
+        self.steps = []
         self.start_room = None
         self.end_room = None
         self.paths = []
@@ -51,7 +51,7 @@ class Graph(object):
 
     def print_steps(self):
         for step in self.steps:
-            print(' '.join(step))
+            print(step)
 
     def print_groups(self):
         for group in self.path_groups:
@@ -121,19 +121,39 @@ class Graph(object):
             if average_length % 1 > 0:
                 fraction_path = 1
                 average_length = total_weight // group.paths_count
-            for path in group.paths:
+            for i, path in enumerate(group.paths):
                 displacement = average_length - path.length
-                path.ants = part_ants + displacement
-            group.average = average_length + fraction_path
-            group.paths[0].ants += fraction_ants
+                group.ants_counters[i] = part_ants + displacement
 
-            group.efficiency_coef = max([x.ants for x in group.paths])
+            # index of group which has minimal amount of ants
+            min_index = group.ants_counters.index(min(group.ants_counters))
+            # incremented ants of the shorter path of the current group
+            group.ants_counters[min_index] += fraction_ants
+
+            group.average = average_length + fraction_path
+            group.efficiency_coef = max(group.ants_counters)
         self.chosen_group = min(self.path_groups, key=lambda x: x.efficiency_coef)
 
     def generate_steps(self):
-        ants = self.ants
-        path = self.chosen_group.paths[0].rooms
+        group = self.chosen_group
+        start_index = 0
+        for i, path in enumerate(group.paths):
+            self.create_steps(path, self.ants[start_index:start_index + group.ants_counters[i]])
+            start_index += group.ants_counters[i]
 
+        while True:
+            empty = 0
+            for path in group.paths:
+                if path.steps:
+                    for step in path.steps:
+                        self.steps.append(step)
+                    path.steps.popleft()
+                else:
+                    empty += 1
+            if empty == self.chosen_group.paths_count:
+                break
+
+    def create_steps(self, path, ants):
         steps = []
         index = 0
         while ants:
@@ -143,8 +163,8 @@ class Graph(object):
                 if current_index < 0:
                     break
                 next_index = current_index + 1
-                current_room = self.rooms[path[current_index]]
-                next_room = self.rooms[path[next_index]]
+                current_room = self.rooms[path.rooms[current_index]]
+                next_room = self.rooms[path.rooms[next_index]]
                 if next_room.is_free():
                     next_room.add_ant(current_room.pop_ant())
                     step.append("L{0}-{1}".format(ant, next_room))
@@ -155,4 +175,4 @@ class Graph(object):
                         index -= 1
             steps.append(step)
             index += 1
-        self.steps = steps
+        path.steps = deque(steps)
