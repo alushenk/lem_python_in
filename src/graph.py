@@ -2,6 +2,7 @@ import sys
 from .room import Room
 from .ant import Ant
 from .path import Path
+from .path_group import Group
 from operator import itemgetter
 from collections import deque
 
@@ -16,7 +17,8 @@ class Graph(object):
         self.start_room = None
         self.end_room = None
         self.paths = []
-        self.path_groups = None
+        self.path_groups = []
+        self.chosen_group = None
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
@@ -53,7 +55,11 @@ class Graph(object):
 
     def print_groups(self):
         for group in self.path_groups:
-            print(group)
+            for path in group.paths:
+                print(path.rooms)
+            print(group.efficiency_coef)
+            print()
+            # print(' | '.join([' '.join(path.rooms) for path in group]) + '\n')
 
     def add_ants(self):
         for name in range(1, self.number_of_ants + 1):
@@ -83,34 +89,50 @@ class Graph(object):
         return paths
 
     def find_path_groups(self):
-        groups = {(path.rooms,) for path in self.paths}
+        groups = [[path, ] for path in self.paths]
         paths = self.paths
         for a in paths:
-            group = {a.rooms}
+            group = [a]
             for b in paths:
-                if a.set.isdisjoint(b.set) and a.len != 2:
-                    group.add(b.rooms)
+                if a.set.isdisjoint(b.set) and a.length != 2:
+                    exist = 0
+                    for c in group:
+                        if not c.set.isdisjoint(b.set):
+                            exist = 1
+                    if not exist:
+                        group.append(b)
             if len(group) != 1:
-                groups.add(tuple(sorted(group)))
-        self.path_groups = groups
+                groups.append(group)
 
-    # пока ищет по наименьшей сумме всех весов путей
+        for group in groups:
+            self.path_groups.append(Group(group))
+
     def choose_path_group(self):
-        result = []
 
         for group in self.path_groups:
-            length = 0
-            for path in group:
-                length += len(path)
-            result.append((group, length))
+            fraction_path = 0
+            fraction_ants = 0
+            part_ants = self.number_of_ants / group.paths_count
+            if part_ants % 1 > 0:
+                fraction_ants = 1
+                part_ants = self.number_of_ants // group.paths_count
+            total_weight = sum(x.length for x in group.paths)
+            average_length = total_weight / group.paths_count
+            if average_length % 1 > 0:
+                fraction_path = 1
+                average_length = total_weight // group.paths_count
+            for path in group.paths:
+                displacement = average_length - path.length
+                path.ants = part_ants + displacement
+            group.average = average_length + fraction_path
+            group.paths[0].ants += fraction_ants
 
-        result = min(result, key=itemgetter(1))
-        print('suka')
-        print(result)
+            group.efficiency_coef = max([x.ants for x in group.paths])
+        self.chosen_group = min(self.path_groups, key=lambda x: x.efficiency_coef)
 
     def generate_steps(self):
         ants = self.ants
-        path = self.paths[0].rooms
+        path = self.chosen_group.paths[0].rooms
 
         steps = []
         index = 0
