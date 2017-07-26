@@ -16,16 +16,19 @@ class App(object):
         self.height = height
         self.init_window()
         self.bind_buttons()
+        
         self.frame = Frame(
             self.master
         )
         self.frame.pack(side=BOTTOM)
+
         self.canvas = Canvas(
             self.master,
             bg="white",
             height=height,
             width=width
         )
+
         self.exit_button = Button(
             self.frame,
             text="QUIT",
@@ -33,18 +36,14 @@ class App(object):
             command=quit
         )
         self.exit_button.pack(side=LEFT)
-        self.run_button = Button(
-            self.frame,
-            text="animate",
-            command=self.update_graph
-        )
-        self.run_button.pack(side=LEFT)
+
         self.create_button = Button(
             self.frame,
             text="add ants",
             command=self.create_ants
         )
         self.create_button.pack(side=LEFT)
+
         self.move_button = Button(
             self.frame,
             text="move ants",
@@ -61,7 +60,7 @@ class App(object):
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, x, y))
 
     def bind_buttons(self):
-        self.master.bind('<Escape>', sys.exit)
+        self.master.bind('<Escape>', quit)
         # self.master.bind('<Key>', self.press)
 
     def create_lines(self, graph):
@@ -88,12 +87,6 @@ class App(object):
                 room.y,
                 text=room.name
             )
-
-    def update_graph(self):
-        for room in self.graph.rooms.values():
-            self.canvas.itemconfig(room.oval, fill="black")
-            self.canvas.update()
-            time.sleep(0.5)
 
     def create_ants(self):
         for ant in self.graph.ants:
