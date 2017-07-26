@@ -74,8 +74,9 @@ class Graph(object):
                 or len(self.end_room.connections) == 0:
             return
         paths = self.find_all_paths(self.rooms, self.start_room.name, self.end_room.name)
-        for path in paths:
-            self.paths.append(Path(path))
+        paths = sorted(paths, key=len)
+        for i, path in enumerate(paths):
+            self.paths.append(Path(path, i))
 
     def find_all_paths(self, graph, start, end, path=[]):
         path = path + [start]
@@ -90,22 +91,27 @@ class Graph(object):
         return paths
 
     def find_path_groups(self):
-        groups = [[path, ] for path in self.paths]
+        resulting_groups = set()
         paths = self.paths
+        endings = {self.start_room.name, self.end_room.name}
         for a in paths:
             group = [a]
             for b in paths:
-                if a.set.isdisjoint(b.set) and a.length != 2:
-                    exist = 0
-                    for c in group:
-                        if not c.set.isdisjoint(b.set):
-                            exist = 1
-                    if not exist:
-                        group.append(b)
-            if len(group) != 1:
-                groups.append(group)
+                if a.index == b.index:
+                    continue
+                for c in group:
+                    if c.set & b.set != endings:
+                        break
+                else:
+                    i = 0
+                    for path in group:
+                        if b.index < path.index:
+                            break
+                        i += 1
+                    group.insert(i, b)
+            resulting_groups.add(tuple(group))
 
-        for group in groups:
+        for group in resulting_groups:
             self.path_groups.append(Group(group))
 
     def choose_path_group(self):
