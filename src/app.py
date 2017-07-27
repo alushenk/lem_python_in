@@ -19,12 +19,16 @@ class App(object):
         self.bind_buttons()
         self.t = None
 
+        self.room_color_ending = '#60d6ca'
+        self.room_outline_ending = '#666699'
         self.room_color = '#ff6666'
         self.room_outline = '#666699'
         self.ant_color = 'yellow'
         self.ant_outline = '#666699'
         self.line_color = '#666699'
         self.line_width = 4
+        self.shape_radius = 15
+        self.shape_radius_ending = 16
         self.shape_outline_width = 3
 
         self.frame = Frame(
@@ -58,7 +62,6 @@ class App(object):
             self.frame,
             from_=100,
             to=0,
-            # tickinterval=0.01,
             orient=HORIZONTAL,
             length=300
         )
@@ -95,11 +98,18 @@ class App(object):
     def create_rooms(self, graph):
         rooms = graph.rooms
         for room in rooms.values():
+            radius = self.shape_radius
+            room_color = self.room_color
+            room_outline = self.room_outline
+            if room == self.graph.start_room or room == self.graph.end_room:
+                radius = self.shape_radius_ending
+                room_color = self.room_color_ending
+                room_outline = self.room_outline_ending
             room.oval = self.canvas.create_oval(
-                room.x - 15, room.y - 15,
-                room.x + 15, room.y + 15,
-                fill=self.room_color,
-                outline=self.room_outline,
+                room.x - radius, room.y - radius,
+                room.x + radius, room.y + radius,
+                fill=room_color,
+                outline=room_outline,
                 width=self.shape_outline_width
             )
             room.number = self.canvas.create_text(
@@ -109,10 +119,11 @@ class App(object):
             )
 
     def create_ants(self):
+        radius = self.shape_radius
         for ant in self.graph.ants:
             ant.oval = self.canvas.create_oval(
-                ant.x - 15, ant.y - 15,
-                ant.x + 15, ant.y + 15,
+                ant.x - radius, ant.y - radius,
+                ant.x + radius, ant.y + radius,
                 fill=self.ant_color,
                 outline=self.ant_outline,
                 width=self.shape_outline_width
@@ -125,8 +136,9 @@ class App(object):
             self.canvas.update()
 
     def start(self):
-        self.t = Thread(target=self.move_ants)
-        self.t.start()
+        if not self.t:
+            self.t = Thread(target=self.move_ants)
+            self.t.start()
 
     def move_ants(self):
         self.graph.add_ants()
@@ -156,3 +168,5 @@ class App(object):
         for ant in self.graph.ants:
             self.canvas.delete(ant.oval)
             self.canvas.delete(ant.number)
+
+        self.t = None
