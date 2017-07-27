@@ -65,7 +65,7 @@ class App(object):
             orient=HORIZONTAL,
             length=300
         )
-        self.scale.set(20)
+        self.scale.set(50)
         self.scale.pack(side=LEFT)
 
     def init_window(self):

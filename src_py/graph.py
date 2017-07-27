@@ -3,10 +3,8 @@ from .room import Room
 from .ant import Ant
 from .path import Path
 from .path_group import Group
-from operator import itemgetter
 from operator import attrgetter
 from collections import deque
-import math
 
 
 class Graph(object):
@@ -43,17 +41,22 @@ class Graph(object):
             sys.exit()
 
     def print_rooms(self):
-        for name, room in self.rooms.items():
-            print(name + ': ' + ', '.join(room.connections) + '\n')
+        print('##start')
+        print('{0} {1} {2}'.format(self.start_room.name, self.start_room.x, self.start_room.y))
+        for room in self.rooms.values():
+            if room.name != self.start_room.name and room.name != self.end_room.name:
+                print('{0} {1} {2}'.format(room.name, room.x, room.y))
+        print('##end')
+        print('{0} {1} {2}'.format(self.end_room.name, self.end_room.x, self.end_room.y))
 
     def print_lines(self):
         for elem in self.lines:
             a, b = elem
-            print('{0} {1}'.format(a, b))
+            print('{0}-{1}'.format(a, b))
 
     def print_steps(self):
         for step in self.steps:
-            print(step)
+            print(' '.join(step))
 
     def print_groups(self):
         for group in self.path_groups:

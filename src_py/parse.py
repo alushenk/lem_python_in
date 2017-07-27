@@ -1,3 +1,9 @@
+def errors_check(line):
+    if line.startswith("L") or line == '':
+        print('Error! wrong parameters')
+        exit()
+
+
 def parse_ants(graph, source):
     number_of_ants = source.popleft().rstrip('\n')
     while number_of_ants.startswith("#"):
@@ -13,27 +19,36 @@ def parse_rooms(graph, source):
         line = source.popleft().rstrip('\n')
         if line == '##start':
             line = source.popleft().rstrip('\n') if source else None
+            errors_check(line)
             graph.add_start(*line.split(" ", 3))
             continue
         if line == '##end':
             line = source.popleft().rstrip('\n') if source else None
+            errors_check(line)
             graph.add_end(*line.split(" ", 3))
             break
         if line.startswith("#"):
             continue
+        errors_check(line)
         graph.add_room(*line.split(" ", 3))
 
 
 def parse_lines(graph, source):
     while source:
-        line = source.popleft().rstrip('\n')
+        line = source.popleft()
+        if line == '\n':
+            break
+        line = line.rstrip('\n')
         if line.startswith("#"):
             continue
-        line = line.rstrip('\n')
+        errors_check(line)
         graph.add_line(*line.split("-", 2))
 
 
-def parse_data(graph, source):
-    parse_ants(graph, source)
-    parse_rooms(graph, source)
-    parse_lines(graph, source)
+def parse_steps(graph, source):
+    while source:
+        line = source.popleft().rstrip('\n')
+        if line.startswith("#"):
+            continue
+        step = line.split(' ')
+        graph.steps.append(step)
