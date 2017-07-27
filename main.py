@@ -19,12 +19,25 @@ def main():
         print('Error! not enough data')
         exit()
     parse_lines(graph, source)
-    parse_steps(graph, source)
 
-    graph.add_ants()
     app.create_lines(graph)
     app.create_rooms(graph)
     app.canvas.pack()
+
+    graph.get_paths()
+    graph.add_ants()
+    graph.find_path_groups()
+    graph.chose_path_group()
+    graph.generate_steps()
+
+    print(graph.number_of_ants)
+    graph.print_rooms()
+    graph.print_lines()
+    print()
+    graph.print_steps()
+    print()
+    graph.print_groups()
+    graph.print_chosen_group()
 
     root.mainloop()
 

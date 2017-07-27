@@ -1,3 +1,16 @@
+import sys
+from collections import deque
+
+
+def get_source():
+    if len(sys.argv) == 3 and sys.argv[1] == '-s':
+        with open(sys.argv[2], 'r') as file:
+            source = file.readlines()
+    else:
+        source = sys.stdin.readlines()
+    return deque(source)
+
+
 def errors_check(line):
     if line.startswith("L") or line == '':
         print('Error! wrong parameters')
