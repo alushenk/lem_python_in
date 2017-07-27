@@ -29,7 +29,7 @@ def main():
     graph.find_path_groups()
     graph.chose_path_group()
     graph.print_chosen_group()
-    graph.print_groups()
+    # graph.print_groups()
     graph.generate_steps()
     graph.print_steps()
 

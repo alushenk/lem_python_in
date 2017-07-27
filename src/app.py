@@ -1,5 +1,6 @@
 from tkinter import *
 import time
+from threading import Thread
 
 # up, left, down, right
 MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
@@ -16,7 +17,16 @@ class App(object):
         self.height = height
         self.init_window()
         self.bind_buttons()
-        
+        self.t = None
+
+        self.room_color = '#ff6666'
+        self.room_outline = '#666699'
+        self.ant_color = 'yellow'
+        self.ant_outline = '#666699'
+        self.line_color = '#666699'
+        self.line_width = 4
+        self.shape_outline_width = 3
+
         self.frame = Frame(
             self.master
         )
@@ -37,19 +47,23 @@ class App(object):
         )
         self.exit_button.pack(side=LEFT)
 
-        self.create_button = Button(
-            self.frame,
-            text="add ants",
-            command=self.create_ants
-        )
-        self.create_button.pack(side=LEFT)
-
         self.move_button = Button(
             self.frame,
-            text="move ants",
-            command=self.move_ants
+            text="start",
+            command=self.start
         )
         self.move_button.pack(side=LEFT)
+
+        self.scale = Scale(
+            self.frame,
+            from_=100,
+            to=0,
+            # tickinterval=0.01,
+            orient=HORIZONTAL,
+            length=300
+        )
+        self.scale.set(20)
+        self.scale.pack(side=LEFT)
 
     def init_window(self):
         # calculate x and y coordinates for the Tk root window
@@ -63,6 +77,9 @@ class App(object):
         self.master.bind('<Escape>', quit)
         # self.master.bind('<Key>', self.press)
 
+    def safe_escape(self):
+        pass
+
     def create_lines(self, graph):
         lines = graph.lines
         rooms = graph.rooms
@@ -70,7 +87,10 @@ class App(object):
             a, b = elem
             a = rooms[a]
             b = rooms[b]
-            self.canvas.create_line(a.x, a.y, b.x, b.y, fill='#666699', width=4)
+            self.canvas.create_line(
+                a.x, a.y, b.x, b.y,
+                fill=self.line_color,
+                width=self.line_width)
 
     def create_rooms(self, graph):
         rooms = graph.rooms
@@ -78,9 +98,9 @@ class App(object):
             room.oval = self.canvas.create_oval(
                 room.x - 15, room.y - 15,
                 room.x + 15, room.y + 15,
-                fill='#ff6666',
-                outline="#666699",
-                width=3
+                fill=self.room_color,
+                outline=self.room_outline,
+                width=self.shape_outline_width
             )
             room.number = self.canvas.create_text(
                 room.x,
@@ -93,9 +113,9 @@ class App(object):
             ant.oval = self.canvas.create_oval(
                 ant.x - 15, ant.y - 15,
                 ant.x + 15, ant.y + 15,
-                fill='yellow',
-                outline="#666699",
-                width=3
+                fill=self.ant_color,
+                outline=self.ant_outline,
+                width=self.shape_outline_width
             )
             ant.number = self.canvas.create_text(
                 ant.x,
@@ -104,8 +124,14 @@ class App(object):
             )
             self.canvas.update()
 
+    def start(self):
+        self.t = Thread(target=self.move_ants)
+        self.t.start()
+
     def move_ants(self):
-        divider = 10
+        self.graph.add_ants()
+        self.create_ants()
+        divider = 30
         for line in self.graph.steps:
             steps = []
             for step in line:
@@ -124,6 +150,9 @@ class App(object):
                 for ant, move_x, move_y in steps:
                     self.canvas.move(ant.oval, move_x, move_y)
                     self.canvas.move(ant.number, move_x, move_y)
-                self.canvas.update()
-                time.sleep(0.05)
-                # time.sleep(0.025)
+                    self.canvas.update()
+                time.sleep(self.scale.get() / 5000)
+
+        for ant in self.graph.ants:
+            self.canvas.delete(ant.oval)
+            self.canvas.delete(ant.number)
