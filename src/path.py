@@ -4,5 +4,4 @@ class Path(object):
         self.index = index
         self.rooms = tuple(rooms)
         self.set = set(rooms)
-        self.length = len(rooms)
-        self.steps = 0
+        self.weight = len(rooms)

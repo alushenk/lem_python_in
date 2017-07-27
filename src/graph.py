@@ -4,6 +4,7 @@ from .ant import Ant
 from .path import Path
 from .path_group import Group
 from operator import itemgetter
+from operator import attrgetter
 from collections import deque
 import math
 
@@ -60,7 +61,15 @@ class Graph(object):
                 print(path.rooms)
             print(group.efficiency_coef)
             print()
-            # print(' | '.join([' '.join(path.rooms) for path in group]) + '\n')
+
+    def print_chosen_group(self):
+        print('-' * 50)
+        for i, path in enumerate(self.chosen_group.paths):
+            print(path.rooms)
+            print(self.chosen_group.ants_counters[i])
+        print()
+        print(self.chosen_group.efficiency_coef)
+        print('-' * 50)
 
     def add_ants(self):
         for name in range(1, self.number_of_ants + 1):
@@ -91,7 +100,7 @@ class Graph(object):
         return paths
 
     def find_path_groups(self):
-        resulting_groups = set()
+        resulting_groups = []
         paths = self.paths
         endings = {self.start_room.name, self.end_room.name}
         for a in paths:
@@ -109,33 +118,29 @@ class Graph(object):
                             break
                         i += 1
                     group.insert(i, b)
-            resulting_groups.add(tuple(group))
+            group = tuple(group)
+            if group not in resulting_groups:
+                resulting_groups.append(group)
 
         for group in resulting_groups:
             self.path_groups.append(Group(group))
 
-    def choose_path_group(self):
+    def chose_path_group(self):
+        groups = self.path_groups
+        number_of_ants = self.number_of_ants
+        for group in groups:
+            for i in range(number_of_ants):
+                # path wiht minimal traffic
+                free_way = min(group.paths, key=attrgetter('weight'))
+                # index of path which has minimal traffic
+                free_way_index = group.paths.index(free_way)
+                # incremented ants of the less loaded path
+                group.ants_counters[free_way_index] += 1
+                free_way.weight += 1
 
-        for group in self.path_groups:
-            part_ants = self.number_of_ants // group.paths_count
-            total_weight = sum(x.length for x in group.paths)
-            average_length = total_weight // group.paths_count
-
-            for i, path in enumerate(group.paths):
-                displacement = average_length - path.length
-                group.ants_counters[i] = part_ants + displacement
-
-            while sum(group.ants_counters) < self.number_of_ants:
-                # index of group which has minimal amount of ants
-                min_index = group.ants_counters.index(min(group.ants_counters))
-                # incremented ants of the shorter path of the current group
-                group.ants_counters[min_index] += 1
-
-            group.average = average_length
-            max_ants_index, max_ants_value = max(enumerate(group.ants_counters), key=lambda x: x[1])
-            maximum_ants_path = group.paths[max_ants_index]
-            group.efficiency_coef = max_ants_value + maximum_ants_path.length
-        self.chosen_group = min(self.path_groups, key=lambda x: x.efficiency_coef)
+            heaviest_path = max(group.paths, key=attrgetter('weight'))
+            group.efficiency_coef = heaviest_path.weight
+        self.chosen_group = min(groups, key=attrgetter('efficiency_coef'))
 
     def generate_steps(self):
         group = self.chosen_group
