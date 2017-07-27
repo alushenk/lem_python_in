@@ -1,9 +1,9 @@
 # lem_python_in
 project about graphs and data visualisation
 
-main.py - algorithm along with visualisation
-lem_in.py - only algorithm with stardard output into console
-visualise.py - only visualisation without algorithm. reads commands from standard input
+main.py - algorithm along with visualisation <br />
+lem_in.py - only algorithm with stardard output into console <br />
+visualise.py - only visualisation without algorithm. reads commands from standard input <br />
 
 usage examples:
 
