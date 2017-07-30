@@ -22,6 +22,9 @@ class Graph(object):
 
     def add_room(self, name, x, y):
         room = Room(name, x, y)
+        if name in self.rooms:
+            print("Error! duplicate room name found")
+            sys.exit()
         self.rooms[name] = room
         return room
 
@@ -132,6 +135,9 @@ class Graph(object):
 
     def chose_path_group(self):
         groups = self.path_groups
+        if not groups:
+            print("Error! no paths found")
+            sys.exit()
         number_of_ants = self.number_of_ants
         for group in groups:
             for i in range(number_of_ants):
