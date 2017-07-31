@@ -38,7 +38,8 @@ t_graph *create_graph()
 
 t_room	*add_room(t_graph *graph, char *str)
 {
-	t_room *room;
+	t_room	*room;
+	t_elem	*elem;
 	char	*name;
 	int 	x;
 	int 	y;
@@ -49,9 +50,10 @@ t_room	*add_room(t_graph *graph, char *str)
 	x = err_atoi(ft_strsep(&str, ' '));
 	y = err_atoi(ft_strsep(&str, ' '));
 	room = create_room(name, x, y);
+	elem = create_element(room);
 	if (graph->list != NULL)
-		room->next = graph->list;
-	graph->list = room;
+		elem->next = graph->list;
+	graph->list = elem;
 	graph->number_of_rooms += 1;
 	return (room);
 }

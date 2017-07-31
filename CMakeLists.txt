@@ -8,7 +8,7 @@ set(SOURCE_FILES
         src/err_atoi.c
         src/errors.c
         src/graph.c
-        src/links.c
+        src/list.c
         src/main.c
         src/parse.c
         src/room.c

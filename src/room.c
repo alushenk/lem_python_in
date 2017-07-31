@@ -12,46 +12,45 @@ t_room	*create_room(char *name, int x, int y)
 	room->name = name;
 	room->x = x;
 	room->y = y;
-	room->links = NULL;
-	room->next = NULL;
-	room->prev = NULL;
+	room->list = NULL;
 	return (room);
 }
 
-t_room	*find_by_name(t_room *list, char *name)
+t_room	*find_by_name(t_elem *list, char *name)
 {
 	while(list)
 	{
-		if (ft_strcmp(list->name, name) == 0)
-			return (list);
+		if (ft_strcmp(list->room->name, name) == 0)
+			return (list->room);
 		list = list->next;
 	}
 	return (NULL);
 }
 
-void	check_connection(t_link *links, t_room *room)
+void	check_connection(t_elem *list, t_room *room)
 {
-	while(links)
+	while(list)
 	{
-		if (links->room == room)
+		if (list->room == room)
 			error("Error! duplicate connection");
-		links = links->next;
+		list = list->next;
 	}
 }
 
 void	add_connection(t_room *a, t_room *b)
 {
-	t_link *link;
+	t_elem *elem;
 
-	link = create_link(b);
-	if (a->links != NULL)
-		link->next = a->links;
-	a->links = link;
+	elem = create_element(b);
+	if (a->list != NULL)
+		elem->next = a->list;
+	a->list = elem;
 }
 
 void	connect(t_room *a, t_room *b)
 {
-	check_connection(a->links, b);
-	check_connection(b->links, a);
-
+	check_connection(a->list, b);
+	check_connection(b->list, a);
+	add_connection(a, b);
+	add_connection(b, a);
 }

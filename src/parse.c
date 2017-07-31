@@ -20,6 +20,8 @@ void	parse_ants(t_graph *graph, int fd, char *line)
 		free(line);
 		get_next_line(fd, &line);
 	}
+	ft_putstr(line);
+	ft_putchar('\n');
 	graph->number_of_ants = err_atoi(line);
 	free(line);
 	if (graph->number_of_ants == 0)
@@ -39,37 +41,42 @@ int 	is_room(char *str)
 	return (0);
 }
 
-void	parse_rooms(t_graph *graph, int fd, char *line)
+void	parse_rooms(t_graph *graph, int fd, char **line)
 {
-	while(get_next_line(fd, &line) == 1 && is_room(line))
+	while(get_next_line(fd, line) == 1 && is_room(*line))
 	{
-		errors_check(line);
-		if (ft_strcmp(line, "##start") == 0)
+		ft_putstr(*line);
+		ft_putchar('\n');
+		if (ft_strcmp(*line, "##start") == 0)
 		{
-			free(line);
-			if (get_next_line(fd, &line) == 1)
+			free(*line);
+			if (get_next_line(fd, line) == 1)
 			{
-				errors_check(line);
-				add_start(graph, line);
+				ft_putstr(*line);
+				ft_putchar('\n');
+				errors_check(*line);
+				add_start(graph, *line);
 			}
 			else
 				error("Error! no start found");
 		}
-		else if (ft_strcmp(line, "##end") == 0)
+		else if (ft_strcmp(*line, "##end") == 0)
 		{
-			free(line);
-			if (get_next_line(fd, &line) == 1)
+			free(*line);
+			if (get_next_line(fd, line) == 1)
 			{
-				errors_check(line);
-				add_end(graph, line);
+				ft_putstr(*line);
+				ft_putchar('\n');
+				errors_check(*line);
+				add_end(graph, *line);
 			}
 			else
 				error("Error! no end found");
 		}
-		else if (line[0] != '#')
-			add_room(graph, line);
-		free(line);
-		line = NULL;
+		else if (*line[0] != '#')
+			add_room(graph, *line);
+		free(*line);
+		*line = NULL;
 	}
 }
 
@@ -90,6 +97,6 @@ void	parse(t_graph *graph, int fd)
 
 	line = NULL;
 	parse_ants(graph, fd, line);
-	parse_rooms(graph, fd, line);
+	parse_rooms(graph, fd, &line);
 	parse_lines(graph, fd, line);
 }

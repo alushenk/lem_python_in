@@ -4,11 +4,11 @@
 
 #include "lem-in.h"
 
-t_link	*create_link(t_room *room)
+t_elem	*create_element(t_room *room)
 {
-	t_link *result;
+	t_elem *result;
 
-	result = (t_link*)malloc(sizeof(t_link));
+	result = (t_elem*)malloc(sizeof(t_elem));
 	result->room = room;
 	result->next = NULL;
 	return (result);

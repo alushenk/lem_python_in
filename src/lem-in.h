@@ -10,21 +10,25 @@
 # include <limits.h>
 #include "../get_next_line/get_next_line.h"
 
-typedef struct		s_link
+typedef struct		s_elem
 {
-	t_room			*room;
-	struct s_link	*next;
-}					t_link;
+	struct s_room	*room;
+	struct s_elem	*next;
+}					t_elem;
 
 typedef struct		s_room
 {
 	char 			*name;
 	int 			x;
 	int 			y;
-	t_link			*links;
-	struct s_room	*next;
-	struct s_room	*prev;
+	t_elem			*list;
 }					t_room;
+
+typedef struct		s_path
+{
+	size_t 			length;
+	t_elem			*list;
+}					t_path;
 
 typedef struct		s_graph
 {
@@ -32,7 +36,7 @@ typedef struct		s_graph
 	int 			number_of_rooms;
 	t_room			*start_room;
 	t_room			*end_room;
-	t_room			*list;
+	t_elem			*list;
 
 }					t_graph;
 
@@ -60,11 +64,11 @@ int		err_atoi(const char *str);
  * room.c
  */
 t_room	*create_room(char *name, int x, int y);
-t_room	*find_by_name(t_room *list, char *name);
+t_room	*find_by_name(t_elem *list, char *name);
 void	connect(t_room *a, t_room *b);
 /*
- * links.c
+ * list.c
  */
-t_link	*create_link(t_room *room);
+t_elem	*create_element(t_room *room);
 
 #endif //LEM_IN_LEM_IN_H

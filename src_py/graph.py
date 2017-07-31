@@ -107,6 +107,8 @@ class Graph(object):
                     paths.append(newpath)
         return paths
 
+    # тупой перебор сложностью О(n^3)
+    # сделать с помощью матрицы путей(не смежности)
     def find_path_groups(self):
         resulting_groups = []
         paths = self.paths
