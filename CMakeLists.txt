@@ -10,9 +10,9 @@ set(SOURCE_FILES
         src/graph.c
         src/list.c
         src/main.c
+        src/search.c
         src/parse.c
         src/room.c
-        src/stack_operations.c
         )
 
 add_executable(lem-in ${SOURCE_FILES})

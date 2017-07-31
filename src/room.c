@@ -27,21 +27,23 @@ t_room	*find_by_name(t_elem *list, char *name)
 	return (NULL);
 }
 
-void	check_connection(t_elem *list, t_room *room)
+t_room	*find_by_id(t_elem *list, t_room *room)
 {
 	while(list)
 	{
 		if (list->room == room)
-			error("Error! duplicate connection");
+			return (list->room);
 		list = list->next;
 	}
+	return (NULL);
 }
 
 void	add_connection(t_room *a, t_room *b)
 {
 	t_elem *elem;
 
-	elem = create_element(b);
+	elem = create_element();
+	elem->room = b;
 	if (a->list != NULL)
 		elem->next = a->list;
 	a->list = elem;
@@ -49,8 +51,8 @@ void	add_connection(t_room *a, t_room *b)
 
 void	connect(t_room *a, t_room *b)
 {
-	check_connection(a->list, b);
-	check_connection(b->list, a);
+	if (find_by_id(a->list, b) || find_by_id(b->list, a))
+		error("Error! duplicate connection");
 	add_connection(a, b);
 	add_connection(b, a);
 }

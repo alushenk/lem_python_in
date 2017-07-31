@@ -31,6 +31,7 @@ t_graph *create_graph()
 	result->number_of_ants = 0;
 	result->number_of_rooms = 0;
 	result->list = NULL;
+	result->paths = NULL;
 	result->start_room = NULL;
 	result->end_room = NULL;
 	return (result);
@@ -50,7 +51,8 @@ t_room	*add_room(t_graph *graph, char *str)
 	x = err_atoi(ft_strsep(&str, ' '));
 	y = err_atoi(ft_strsep(&str, ' '));
 	room = create_room(name, x, y);
-	elem = create_element(room);
+	elem = create_element();
+	elem->room = room;
 	if (graph->list != NULL)
 		elem->next = graph->list;
 	graph->list = elem;

@@ -17,9 +17,10 @@ int main(int argc, char **argv)
 			error("Error! can't open file");
 	}
 	parse(graph, fd);
-
 	if (fd != 0)
 		close(fd);
+
+	get_all_paths(graph);
 
 
 	return (0);
