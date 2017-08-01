@@ -52,7 +52,7 @@ void	add_connection(t_room *a, t_room *b)
 void	connect(t_room *a, t_room *b)
 {
 	if (find_by_id(a->list, b) || find_by_id(b->list, a))
-		error("Error! duplicate connection");
+		error("Error! duplicate connection\n");
 	add_connection(a, b);
 	add_connection(b, a);
 }

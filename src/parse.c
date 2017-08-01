@@ -7,9 +7,9 @@
 void	errors_check(char *str)
 {
 	if (ft_strlen(str) > 0 && str[0] == 'L')
-		error("Error! wrong parameters");
+		error("Error! wrong parameters\n");
 	if (ft_strlen(str) == 0)
-		error("Error! empty line");
+		error("Error! empty line\n");
 }
 
 void	parse_ants(t_graph *graph, int fd, char *line)
@@ -25,7 +25,7 @@ void	parse_ants(t_graph *graph, int fd, char *line)
 	graph->number_of_ants = err_atoi(line);
 	free(line);
 	if (graph->number_of_ants == 0)
-		error("Error! no ants given");
+		error("Error! no ants given\n");
 }
 
 int 	is_room(char *str)
@@ -52,7 +52,7 @@ void	parse_start(t_graph *graph, int fd, char **line)
 		add_start(graph, *line);
 	}
 	else
-		error("Error! no start found");
+		error("Error! no start found\n");
 }
 
 void	parse_end(t_graph *graph, int fd, char **line)
@@ -66,7 +66,7 @@ void	parse_end(t_graph *graph, int fd, char **line)
 		add_end(graph, *line);
 	}
 	else
-		error("Error! no end found");
+		error("Error! no end found\n");
 }
 
 void	parse_rooms(t_graph *graph, int fd, char **line)

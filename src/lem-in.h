@@ -74,7 +74,9 @@ void	connect(t_room *a, t_room *b);
 t_elem	*create_element();
 t_path	*create_path();
 void	add_to_path(t_path *path, t_room *room);
-void	add_to_paths(t_elem *paths, t_path *path);
+t_path	*copy_path(t_path *path);
+void	free_path(t_path **path);
+void	free_list(t_elem *list);
 /*
  * search.c
  */

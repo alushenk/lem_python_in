@@ -4,21 +4,6 @@
 
 #include "lem-in.h"
 
-t_path	*copy_path(t_path *path)
-{
-	t_path	*result;
-	t_elem	*elem;
-
-	result = create_path();
-	elem = path->list;
-	while(elem)
-	{
-		add_to_path(result, elem->room);
-		elem = elem->next;
-	}
-	return (result);
-}
-
 t_path	*find_all_paths(t_room *start, t_room *end, t_path *path)
 {
 	t_elem	*elem;
@@ -50,16 +35,15 @@ t_path	*find_all_paths(t_room *start, t_room *end, t_path *path)
 		}
 		elem = elem->next;
 	}
+	free_path(&path);
 	return (paths);
 }
 
 void	get_all_paths(t_graph *graph)
 {
 	t_path	*paths;
-	t_path	*path;
 
-	path = create_path();
-	paths = find_all_paths(graph->start_room, graph->end_room, path);
+	paths = find_all_paths(graph->start_room, graph->end_room, NULL);
 
 	graph->paths = paths;
 }

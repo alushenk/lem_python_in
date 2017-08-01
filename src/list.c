@@ -54,4 +54,49 @@ void	add_to_path(t_path *path, t_room *room)
 	}
 	else
 		path->list = new_elem;
+	path->length += 1;
+}
+
+t_path	*copy_path(t_path *path)
+{
+	t_path	*result;
+	t_elem	*elem;
+
+	result = create_path();
+	if (path == NULL)
+		return (result);
+	elem = path->list;
+	while(elem)
+	{
+		add_to_path(result, elem->room);
+		elem = elem->next;
+	}
+	return (result);
+}
+
+void	free_path(t_path **path)
+{
+	t_elem *elem;
+	t_elem *temp;
+
+	elem = (*path)->list;
+	while(elem)
+	{
+		temp = elem;
+		elem = elem->next;
+		free(temp);
+	}
+	free(*path);
+}
+
+void	free_list(t_elem *list)
+{
+	t_elem *elem;
+
+	while(list)
+	{
+		elem = list;
+		list = list->next;
+		free(elem);
+	}
 }

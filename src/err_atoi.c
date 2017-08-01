@@ -16,15 +16,15 @@ int		err_atoi(const char *str)
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
-		error("Error! wrong_arguments");
+		error("Error! wrong_arguments\n");
 	while (ft_isdigit(*str))
 	{
 		result = result * 10 + (*str - '0');
 		if (result * sign > INT_MAX || (result * sign < INT_MIN))
-			error("Error! wrong_arguments");
+			error("Error! wrong_arguments\n");
 		str++;
 	}
 	if (*str != '\0')
-		error("Error! wrong_arguments");
+		error("Error! wrong_arguments\n");
 	return (int)result * sign;
 }
