@@ -73,30 +73,3 @@ t_path	*copy_path(t_path *path)
 	}
 	return (result);
 }
-
-void	free_path(t_path **path)
-{
-	t_elem *elem;
-	t_elem *temp;
-
-	elem = (*path)->list;
-	while(elem)
-	{
-		temp = elem;
-		elem = elem->next;
-		free(temp);
-	}
-	free(*path);
-}
-
-void	free_list(t_elem *list)
-{
-	t_elem *elem;
-
-	while(list)
-	{
-		elem = list;
-		list = list->next;
-		free(elem);
-	}
-}

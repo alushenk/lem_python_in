@@ -31,6 +31,13 @@ typedef struct		s_path
 	struct s_path	*next;
 }					t_path;
 
+typedef struct		s_group
+{
+	t_path			*paths;
+	size_t 			length;
+	struct s_group	*next;
+}					t_group;
+
 typedef struct		s_graph
 {
 	int				number_of_ants;
@@ -39,6 +46,7 @@ typedef struct		s_graph
 	t_room			*end_room;
 	t_elem			*list;
 	t_path			*paths;
+	t_group			*groups;
 }					t_graph;
 
 /*
@@ -75,11 +83,24 @@ t_elem	*create_element();
 t_path	*create_path();
 void	add_to_path(t_path *path, t_room *room);
 t_path	*copy_path(t_path *path);
-void	free_path(t_path **path);
-void	free_list(t_elem *list);
 /*
  * search.c
  */
 void	get_all_paths(t_graph *graph);
+/*
+ * free.c
+ */
+void	free_list(t_elem *list);
+void	free_graph(t_graph *graph);
+/*
+ * display.c
+ */
+void	display_path(t_path *path);
+void	display_paths(t_path *paths);
+void	display_groups(t_group *groups);
+/*
+ * find_path_groups.c
+ */
+void	find_path_groups(t_graph *graph);
 
 #endif //LEM_IN_LEM_IN_H

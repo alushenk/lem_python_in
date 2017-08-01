@@ -5,12 +5,15 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         get_next_line/get_next_line.c
+        src/display.c
         src/err_atoi.c
         src/errors.c
+        src/find_path_groups.c
+        src/free.c
+        src/get_all_paths.c
         src/graph.c
         src/list.c
         src/main.c
-        src/search.c
         src/parse.c
         src/room.c
         )

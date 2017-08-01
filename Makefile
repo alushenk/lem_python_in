@@ -4,7 +4,17 @@ GNLDIR = get_next_line
 
 SRCDIR = src
 
-SRC_LEM_IN = errors.c err_atoi.c graph.c list.c main.c search.c parse.c room.c
+SRC_LEM_IN =    display.c \
+                err_atoi.c \
+                errors.c \
+                find_path_groups.c \
+                free.c \
+                get_all_paths.c \
+                graph.c \
+                list.c \
+                main.c \
+                parse.c \
+                room.c
 
 GNL = get_next_line.c
 

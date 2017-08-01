@@ -19,32 +19,12 @@ int main(int argc, char **argv)
 	parse(graph, fd);
 	if (fd != 0)
 		close(fd);
-
 	get_all_paths(graph);
+	display_paths(graph->paths);
+	ft_putstr("--------------------------------------------------------------------------------------\n");
+	find_path_groups(graph);
+	display_groups(graph->groups);
 
-	t_path *path;
-	t_path *temp;
-	path = graph->paths;
-	while(path)
-	{
-		temp = path;
-		path = path->next;
-		free_path(&temp);
-	}
-
-	t_elem *elem;
-	t_elem *tmp;
-	elem = graph->list;
-	while(elem)
-	{
-		tmp = elem;
-		elem = elem->next;
-		free(tmp->room->name);
-		free_list(tmp->room->list);
-		free(tmp->room);
-		free(tmp);
-	}
-
-	free(graph);
+	free_graph(graph);
 	return (0);
 }

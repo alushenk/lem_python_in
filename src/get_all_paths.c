@@ -31,11 +31,11 @@ t_path	*find_all_paths(t_room *start, t_room *end, t_path *path)
 			}
 			else
 				paths = new_paths;
-
 		}
 		elem = elem->next;
 	}
-	free_path(&path);
+	free_list(path->list);
+	free(path);
 	return (paths);
 }
 
