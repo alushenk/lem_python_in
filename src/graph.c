@@ -29,11 +29,12 @@ t_graph *create_graph()
 
 	result = (t_graph*)malloc(sizeof(t_graph));
 	result->number_of_ants = 0;
-	result->number_of_rooms = 0;
-	result->list = NULL;
-	result->paths = NULL;
 	result->start_room = NULL;
 	result->end_room = NULL;
+	result->list = NULL;
+	result->paths = NULL;
+	result->groups = NULL;
+	result->chosen_group = NULL;
 	return (result);
 }
 
@@ -58,7 +59,6 @@ t_room	*add_room(t_graph *graph, char *str)
 	if (graph->list != NULL)
 		elem->next = graph->list;
 	graph->list = elem;
-	graph->number_of_rooms += 1;
 	return (room);
 }
 

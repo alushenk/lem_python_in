@@ -24,6 +24,9 @@ int main(int argc, char **argv)
 	ft_putstr("--------------------------------------------------------------------------------------\n");
 	find_path_groups(graph);
 	display_groups(graph->groups);
+	choose_path_group(graph);
+	printf("optimal group: \n");
+	display_paths(graph->chosen_group->paths);
 
 	free_graph(graph);
 	return (0);

@@ -10,7 +10,7 @@ t_group	*create_group()
 
 	group = (t_group*)malloc(sizeof(t_group));
 	group->paths = NULL;
-	group->length = 0;
+	group->efficiency = 0;
 	group->next = NULL;
 
 	return (group);
@@ -21,7 +21,7 @@ void	add_path(t_group *group, t_path *path)
 	t_path	*new_path;
 
 	new_path = create_path();
-	new_path->length = path->length;
+	new_path->weight = path->weight;
 	new_path->list = path->list;
 
 	if (group->paths != NULL)
@@ -34,7 +34,7 @@ int 	overlaps(t_path *a, t_path *b)
 	t_elem	*temp_a;
 	t_elem	*temp_b;
 
-	if (a->length == 2 || b->length == 2)
+	if (a->weight == 2 || b->weight == 2)
 		return (0);
 	temp_a = a->list->next;
 	while(temp_a->next)

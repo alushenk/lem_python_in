@@ -4,7 +4,8 @@ GNLDIR = get_next_line
 
 SRCDIR = src
 
-SRC_LEM_IN =    display.c \
+SRC_LEM_IN =    choose_path_group.c \
+                display.c \
                 err_atoi.c \
                 errors.c \
                 find_path_groups.c \

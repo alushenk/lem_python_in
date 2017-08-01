@@ -5,6 +5,7 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         get_next_line/get_next_line.c
+        src/choose_path_group.c
         src/display.c
         src/err_atoi.c
         src/errors.c

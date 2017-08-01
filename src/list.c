@@ -33,7 +33,7 @@ t_path	*create_path()
 
 	result = (t_path*)malloc(sizeof(t_path));
 	result->list = NULL;
-	result->length = 0;
+	result->weight = 0;
 	result->next = NULL;
 	return (result);
 }
@@ -54,7 +54,7 @@ void	add_to_path(t_path *path, t_room *room)
 	}
 	else
 		path->list = new_elem;
-	path->length += 1;
+	path->weight += 1;
 }
 
 t_path	*copy_path(t_path *path)

@@ -27,26 +27,26 @@ typedef struct		s_room
 typedef struct		s_path
 {
 	t_elem			*list;
-	size_t 			length;
+	size_t 			weight;
 	struct s_path	*next;
 }					t_path;
 
 typedef struct		s_group
 {
 	t_path			*paths;
-	size_t 			length;
+	size_t 			efficiency;
 	struct s_group	*next;
 }					t_group;
 
 typedef struct		s_graph
 {
 	int				number_of_ants;
-	int 			number_of_rooms;
 	t_room			*start_room;
 	t_room			*end_room;
 	t_elem			*list;
 	t_path			*paths;
 	t_group			*groups;
+	t_group			*chosen_group;
 }					t_graph;
 
 /*
@@ -102,5 +102,9 @@ void	display_groups(t_group *groups);
  * find_path_groups.c
  */
 void	find_path_groups(t_graph *graph);
+/*
+ * choose_path_group.c
+ */
+void	choose_path_group(t_graph *graph);
 
 #endif //LEM_IN_LEM_IN_H
