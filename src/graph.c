@@ -35,6 +35,7 @@ t_graph *create_graph()
 	result->paths = NULL;
 	result->groups = NULL;
 	result->chosen_group = NULL;
+	result->steps = NULL;
 	return (result);
 }
 

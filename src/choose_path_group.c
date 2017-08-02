@@ -50,6 +50,7 @@ void	calculate_efficiency(t_graph *graph)
 		{
 			path = find_shortest(group->paths);
 			path->weight += 1;
+			path->ants_count += 1;
 			i++;
 		}
 		path = find_hardest(group->paths);

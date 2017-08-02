@@ -21,19 +21,36 @@ typedef struct		s_room
 	char 			*name;
 	int 			x;
 	int 			y;
+	int 			is_free;
 	t_elem			*list;
 }					t_room;
+
+typedef struct		s_move
+{
+	int 			ant;
+	char 			*room;
+	struct s_move	*next;
+}					t_move;
+
+typedef struct		s_step
+{
+	t_move			*move;
+	struct s_step	*next;
+}					t_step;
 
 typedef struct		s_path
 {
 	t_elem			*list;
-	size_t 			weight;
+	t_step			*steps;
+	int 			weight;
+	int				ants_count;
 	struct s_path	*next;
 }					t_path;
 
 typedef struct		s_group
 {
 	t_path			*paths;
+	int 			number_of_paths;
 	size_t 			efficiency;
 	struct s_group	*next;
 }					t_group;
@@ -47,6 +64,7 @@ typedef struct		s_graph
 	t_path			*paths;
 	t_group			*groups;
 	t_group			*chosen_group;
+	t_step			*steps;
 }					t_graph;
 
 /*
@@ -75,6 +93,7 @@ int		err_atoi(const char *str);
 t_room	*create_room(char *name, int x, int y);
 t_room	*find_by_name(t_elem *list, char *name);
 t_room	*find_by_id(t_elem *list, t_room *room);
+t_room	*find_by_index(t_elem *list, int index);
 void	connect(t_room *a, t_room *b);
 /*
  * list.c
@@ -83,6 +102,13 @@ t_elem	*create_element();
 t_path	*create_path();
 void	add_to_path(t_path *path, t_room *room);
 t_path	*copy_path(t_path *path);
+t_step	*create_step();
+void	add_step(t_path *path, t_step *step);
+t_move	*create_move(int ant, char *room);
+void	add_move(t_step *step, t_move *move);
+t_group	*create_group();
+void	add_path(t_group *group, t_path *path);
+void	append_step(t_step	**list, t_step *step);
 /*
  * search.c
  */
@@ -98,6 +124,7 @@ void	free_graph(t_graph *graph);
 void	display_path(t_path *path);
 void	display_paths(t_path *paths);
 void	display_groups(t_group *groups);
+void	display_steps(t_step *step);
 /*
  * find_path_groups.c
  */
@@ -106,5 +133,9 @@ void	find_path_groups(t_graph *graph);
  * choose_path_group.c
  */
 void	choose_path_group(t_graph *graph);
+/*
+ * generate_steps.c
+ */
+void	generate_steps(t_graph *graph);
 
 #endif //LEM_IN_LEM_IN_H

@@ -61,6 +61,7 @@ def parse_lines(graph, source):
 def parse_steps(graph, source):
     while source:
         line = source.popleft().rstrip('\n')
+        line = line.rstrip(' ')
         if line.startswith("#"):
             continue
         step = line.split(' ')

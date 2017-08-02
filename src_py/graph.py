@@ -185,9 +185,8 @@ class Graph(object):
             for ant in ants:
                 if current_index < 0:
                     break
-                next_index = current_index + 1
                 current_room = rooms[path.rooms[current_index]]
-                next_room = rooms[path.rooms[next_index]]
+                next_room = rooms[path.rooms[current_index + 1]]
                 if next_room.is_free():
                     next_room.add_ant(current_room.pop_ant())
                     step.append("L{0}-{1}".format(ant, next_room))

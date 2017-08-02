@@ -12,6 +12,7 @@ t_room	*create_room(char *name, int x, int y)
 	room->name = name;
 	room->x = x;
 	room->y = y;
+	room->is_free = 1;
 	room->list = NULL;
 	return (room);
 }
@@ -25,6 +26,19 @@ t_room	*find_by_name(t_elem *list, char *name)
 		list = list->next;
 	}
 	return (NULL);
+}
+
+t_room	*find_by_index(t_elem *list, int index)
+{
+	int	i;
+
+	i = 0;
+	while(i < index)
+	{
+		list = list->next;
+		i++;
+	}
+	return (list->room);
 }
 
 t_room	*find_by_id(t_elem *list, t_room *room)

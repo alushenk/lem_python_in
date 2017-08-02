@@ -10,6 +10,7 @@ SRC_LEM_IN =    choose_path_group.c \
                 errors.c \
                 find_path_groups.c \
                 free.c \
+                generate_steps.c \
                 get_all_paths.c \
                 graph.c \
                 list.c \

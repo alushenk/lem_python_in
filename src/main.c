@@ -20,14 +20,15 @@ int main(int argc, char **argv)
 	if (fd != 0)
 		close(fd);
 	get_all_paths(graph);
-	display_paths(graph->paths);
-	ft_putstr("--------------------------------------------------------------------------------------\n");
+	//display_paths(graph->paths);
+	//ft_putstr("--------------------------------------------------------------------------------------\n");
 	find_path_groups(graph);
-	display_groups(graph->groups);
+	//display_groups(graph->groups);
 	choose_path_group(graph);
-	printf("optimal group: \n");
-	display_paths(graph->chosen_group->paths);
-
+	//printf("optimal group: \n");
+	//display_paths(graph->chosen_group->paths);
+	generate_steps(graph);
+	display_steps(graph->steps);
 	free_graph(graph);
 	return (0);
 }

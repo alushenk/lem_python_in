@@ -11,6 +11,7 @@ set(SOURCE_FILES
         src/errors.c
         src/find_path_groups.c
         src/free.c
+        src/generate_steps.c
         src/get_all_paths.c
         src/graph.c
         src/list.c

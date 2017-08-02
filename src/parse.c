@@ -90,6 +90,7 @@ void	parse_lines(t_graph *graph, int fd, char *line)
 {
 	while(line || get_next_line(fd, &line) == 1)
 	{
+		ft_putendl(line);
 		if (line[0] != '#')
 			add_line(graph, line);
 		free(line);

@@ -37,3 +37,25 @@ void	display_groups(t_group *group)
 		group = group->next;
 	}
 }
+
+void	display_steps(t_step *step)
+{
+	t_move *move;
+
+	ft_putchar('\n');
+	while(step)
+	{
+		move = step->move;
+		while(move)
+		{
+			ft_putchar('L');
+			ft_putnbr(move->ant);
+			ft_putchar('-');
+			ft_putstr(move->room);
+			ft_putchar(' ');
+			move = move->next;
+		}
+		ft_putchar('\n');
+		step = step->next;
+	}
+}

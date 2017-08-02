@@ -4,31 +4,6 @@
 
 #include "lem-in.h"
 
-t_group	*create_group()
-{
-	t_group *group;
-
-	group = (t_group*)malloc(sizeof(t_group));
-	group->paths = NULL;
-	group->efficiency = 0;
-	group->next = NULL;
-
-	return (group);
-}
-
-void	add_path(t_group *group, t_path *path)
-{
-	t_path	*new_path;
-
-	new_path = create_path();
-	new_path->weight = path->weight;
-	new_path->list = path->list;
-
-	if (group->paths != NULL)
-		new_path->next = group->paths;
-	group->paths = new_path;
-}
-
 int 	overlaps(t_path *a, t_path *b)
 {
 	t_elem	*temp_a;
