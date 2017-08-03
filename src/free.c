@@ -29,21 +29,67 @@ void	free_paths(t_path *path)
 	}
 }
 
-void	free_graph(t_graph *graph)
+void	free_groups(t_group *group)
 {
-	t_elem *elem;
-	t_elem *tmp;
+	t_group *temp;
+	t_path	*path;
+	int 	count;
 
-	free_paths(graph->paths);
-	elem = graph->list;
+	while(group)
+	{
+		temp = group;
+		group = group->next;
+		count = temp->number_of_paths;
+		while(count > 0)
+		{
+			path = temp->paths;
+			temp->paths = temp->paths->next;
+			free(path);
+			count--;
+		}
+		free(temp);
+	}
+}
+
+void	free_steps(t_step *step)
+{
+	t_step	*temp;
+	t_move	*move;
+
+	while(step)
+	{
+		temp = step;
+		step = step->next;
+		while(temp->move)
+		{
+			move = temp->move;
+			temp->move = temp->move->next;
+			free(move);
+		}
+		free(temp);
+	}
+}
+
+void	free_rooms(t_elem *elem)
+{
+	t_elem *temp;
+
 	while(elem)
 	{
-		tmp = elem;
+		temp = elem;
 		elem = elem->next;
-		free(tmp->room->name);
-		free_list(tmp->room->list);
-		free(tmp->room);
-		free(tmp);
+		free(temp->room->name);
+		free_list(temp->room->list);
+		free(temp->room);
+		free(temp);
 	}
+}
+
+void	free_graph(t_graph *graph)
+{
+	free_paths(graph->paths);
+	free_groups(graph->groups);
+	free_steps(graph->steps);
+	free_rooms(graph->list);
 	free(graph);
 }

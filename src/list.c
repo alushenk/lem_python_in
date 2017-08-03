@@ -14,19 +14,6 @@ t_elem	*create_element()
 	return (result);
 }
 
-size_t	get_length(t_elem *list)
-{
-	size_t i;
-
-	i = 0;
-	while(list)
-	{
-		i++;
-		list = list->next;
-	}
-	return (i);
-}
-
 t_path	*create_path()
 {
 	t_path *result;
