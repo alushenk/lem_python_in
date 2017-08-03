@@ -61,42 +61,50 @@ t_step	*combine_steps(t_path *list, int paths_count)
 	int		empty;
 	int 	ended;
 
+	empty = 0;
 	result = NULL;
-	while(1)
+	while(empty < paths_count)
 	{
 		empty = 0;
 		step = create_step();
 		ended = 0;
-		while(ended < paths_count)
+		while(empty < paths_count && ended < paths_count)
 		{
 			path = list;
 			while(path)
 			{
-				if (path->steps)
+				if (path->steps && path->steps->move)
 				{
 					move = path->steps->move;
 					path->steps->move = move->next;
 					if (move->next == NULL)
 					{
-						temp = path->steps;
-						path->steps = temp->next;
-						free(temp);
+						path->ended = 1;
 						ended += 1;
 					}
 					move->next = NULL;
 					add_move(step, move);
 				}
 				else
-				{
-					empty += 1;
-					ended += 1;
-				}
+					if (path->ended == 0)
+						empty += 1;
 				path = path->next;
 			}
 		}
-		if (empty == paths_count)
-			break;
 		append_step(&result, step);
+		path = list;
+		while(path)
+		{
+			temp = path->steps;
+			if (temp == NULL)
+				empty += 1;
+			else
+				path->steps = temp->next;
+			free(temp);
+			path->ended = 0;
+
+			path = path->next;
+		}
 	}
 	return (result);
 }

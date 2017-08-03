@@ -55,7 +55,8 @@ void	display_steps(t_step *step)
 			ft_putchar(' ');
 			move = move->next;
 		}
-		ft_putchar('\n');
+		if (step->move)
+			ft_putchar('\n');
 		step = step->next;
 	}
 }

@@ -44,6 +44,7 @@ typedef struct		s_path
 	t_step			*steps;
 	int 			weight;
 	int				ants_count;
+	int 			ended;
 	struct s_path	*next;
 }					t_path;
 

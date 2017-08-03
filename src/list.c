@@ -35,6 +35,7 @@ t_path	*create_path()
 	result->list = NULL;
 	result->weight = 0;
 	result->ants_count = 0;
+	result->ended = 0;
 	result->next = NULL;
 	return (result);
 }
