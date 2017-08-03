@@ -4,21 +4,36 @@
 
 #include "lem-in.h"
 
-void	create_steps(t_path *path, int start_name, t_room *end)
+t_room	*perform_step(t_elem *list, t_step *step, int *name, int *index)
 {
-	t_step	*step;
-	t_move	*move;
 	t_room	*current_room;
 	t_room	*next_room;
+	t_move	*move;
+
+	current_room = find_by_index(list, *index);
+	next_room = find_by_index(list, *index + 1);
+	if (next_room->is_free)
+	{
+		move = create_move(*name, next_room->name);
+		add_move(step, move);
+		next_room->is_free = 0;
+		current_room->is_free = 1;
+		*name += 1;
+		*index -= 1;
+	}
+	return (next_room);
+}
+
+void	create_steps(t_path *path, int start_name, t_room *end, int i)
+{
+	t_step	*step;
 	int 	number_of_ants;
-	int 	i;
 	int 	index;
 	int 	ant_name;
 	int 	name;
 
 	name = start_name;
 	number_of_ants = path->ants_count;
-	i = 0;
 	while(number_of_ants > 0)
 	{
 		step = create_step();
@@ -26,23 +41,12 @@ void	create_steps(t_path *path, int start_name, t_room *end)
 		ant_name = name;
 		while(index >= 0 && ant_name < path->ants_count + start_name)
 		{
-			current_room = find_by_index(path->list, index);
-			next_room = find_by_index(path->list, index + 1);
-			if (next_room->is_free)
+			if (perform_step(path->list, step, &ant_name, &index) == end)
 			{
-				move = create_move(ant_name, next_room->name);
-				add_move(step, move);
-				next_room->is_free = 0;
-				current_room->is_free = 1;
-				index -= 1;
-				ant_name += 1;
-				if (next_room == end)
-				{
-					end->is_free = 1;
-					number_of_ants -= 1;
-					name += 1;
-					i--;
-				}
+				end->is_free = 1;
+				number_of_ants -= 1;
+				name += 1;
+				i--;
 			}
 		}
 		add_step(path, step);
@@ -117,14 +121,14 @@ void	generate_steps(t_graph *graph)
 {
 	t_path	*path;
 	int 	num;
-	int		i;
+	int		start_name;
 
-	i = 1;
+	start_name = 1;
 	path = graph->chosen_group->paths;
 	while(1)
 	{
-		create_steps(path, i, graph->end_room);
-		i += path->ants_count;
+		create_steps(path, start_name, graph->end_room, 0);
+		start_name += path->ants_count;
 		if (path->next == NULL)
 		{
 			path->next = graph->chosen_group->paths;
