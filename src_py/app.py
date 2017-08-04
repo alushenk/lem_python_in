@@ -144,10 +144,10 @@ class App(object):
         self.graph.add_ants()
         self.create_ants()
         divider = 30
-        for line in self.graph.steps:
+        for step in self.graph.steps:
             steps = []
-            for step in line:
-                ant, dest = step.split('-', 2)
+            for move in step:
+                ant, dest = move.split('-', 2)
                 ant = self.graph.ants[int(ant[1:]) - 1]
                 dest = self.graph.rooms[dest]
                 delta_x = dest.x - ant.x
@@ -158,15 +158,22 @@ class App(object):
                 move_y = delta_y / divider
                 steps.append((ant, move_x, move_y))
 
-            for i in range(divider):
-                for ant, move_x, move_y in steps:
-                    self.canvas.move(ant.oval, move_x, move_y)
-                    self.canvas.move(ant.number, move_x, move_y)
-                    self.canvas.update()
-                time.sleep(self.scale.get() / 5000)
+            for st in steps:
+                print(st)
+            t = Thread(target=self.move(steps, divider))
+            t.start()
+            #t.join()
 
         for ant in self.graph.ants:
             self.canvas.delete(ant.oval)
             self.canvas.delete(ant.number)
 
         self.t = None
+
+    def move(self, steps, divider):
+        for i in range(divider):
+            for ant, move_x, move_y in steps:
+                self.canvas.move(ant.oval, move_x, move_y)
+                self.canvas.move(ant.number, move_x, move_y)
+                # self.canvas.update()
+                time.sleep(self.scale.get() / 5000)
