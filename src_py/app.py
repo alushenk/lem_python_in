@@ -63,7 +63,7 @@ class App(object):
             from_=100,
             to=0,
             orient=HORIZONTAL,
-            length=300
+            length=500
         )
         self.scale.set(50)
         self.scale.pack(side=LEFT)
@@ -143,9 +143,10 @@ class App(object):
     def move_ants(self):
         self.graph.add_ants()
         self.create_ants()
-        divider = 30
+
         for step in self.graph.steps:
             steps = []
+            divider = 30
             for move in step:
                 ant, dest = move.split('-', 2)
                 ant = self.graph.ants[int(ant[1:]) - 1]
@@ -158,11 +159,15 @@ class App(object):
                 move_y = delta_y / divider
                 steps.append((ant, move_x, move_y))
 
-            for st in steps:
-                print(st)
-            t = Thread(target=self.move(steps, divider))
-            t.start()
-            #t.join()
+            #for i in range(divider):
+            #t = Thread(target=self.move(steps, divider))
+            #t.start()
+            # t.join()
+            # self.move(steps)
+            #time.sleep(0.01)
+            self.divider = divider
+            self.steps = steps
+            self.move()
 
         for ant in self.graph.ants:
             self.canvas.delete(ant.oval)
@@ -170,10 +175,17 @@ class App(object):
 
         self.t = None
 
-    def move(self, steps, divider):
-        for i in range(divider):
-            for ant, move_x, move_y in steps:
-                self.canvas.move(ant.oval, move_x, move_y)
-                self.canvas.move(ant.number, move_x, move_y)
-                # self.canvas.update()
-                time.sleep(self.scale.get() / 5000)
+    def move(self):
+        for ant, move_x, move_y in self.steps:
+            self.canvas.move(ant.oval, move_x, move_y)
+            self.canvas.move(ant.number, move_x, move_y)
+        self.divider -= 1
+        if self.divider > 0:
+            self.master.after(33, self.move)
+        else:
+            print('end')
+            # self.canvas.update()
+            # self.scale.get() / 5000
+            # time.sleep(0.05)
+        # вот тут он должен сам себя поставить на паузу вместо слип
+        # и прекратиться
