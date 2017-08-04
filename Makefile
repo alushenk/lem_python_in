@@ -13,7 +13,9 @@ SRC_LEM_IN =    choose_path_group.c \
                 generate_steps.c \
                 get_all_paths.c \
                 graph.c \
-                list.c \
+                list/list.c \
+                list/create.c \
+                list/add.c \
                 main.c \
                 parse.c \
                 room.c

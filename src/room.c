@@ -60,21 +60,20 @@ t_room	*find_by_id(t_elem *list, t_room *room)
 	return (NULL);
 }
 
-void	add_connection(t_room *a, t_room *b)
+void	connect(t_room *a, t_room *b)
 {
 	t_elem *elem;
 
+	if (find_by_id(a->list, b) || find_by_id(b->list, a))
+		error("Error! duplicate connection\n");
 	elem = create_element();
 	elem->room = b;
 	if (a->list != NULL)
 		elem->next = a->list;
 	a->list = elem;
-}
-
-void	connect(t_room *a, t_room *b)
-{
-	if (find_by_id(a->list, b) || find_by_id(b->list, a))
-		error("Error! duplicate connection\n");
-	add_connection(a, b);
-	add_connection(b, a);
+	elem = create_element();
+	elem->room = a;
+	if (b->list != NULL)
+		elem->next = b->list;
+	b->list = elem;
 }

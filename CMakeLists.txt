@@ -14,11 +14,13 @@ set(SOURCE_FILES
         src/generate_steps.c
         src/get_all_paths.c
         src/graph.c
-        src/list.c
+        src/list/list.c
+        src/list/create.c
+        src/list/add.c
         src/main.c
         src/parse.c
         src/room.c
-        )
+)
 
 add_executable(lem-in ${SOURCE_FILES})
 
