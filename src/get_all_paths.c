@@ -1,8 +1,16 @@
-//
-// Created by lush on 7/31/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_all_paths.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:23 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:26 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 t_path	*find_all_paths(t_room *start, t_room *end, t_path *path)
 {
@@ -25,7 +33,7 @@ t_path	*find_all_paths(t_room *start, t_room *end, t_path *path)
 			temp = paths;
 			if (paths != NULL)
 			{
-				while(temp->next)
+				while (temp->next)
 					temp = temp->next;
 				temp->next = new_paths;
 			}
@@ -44,7 +52,5 @@ void	get_all_paths(t_graph *graph)
 	t_path	*paths;
 
 	paths = find_all_paths(graph->start_room, graph->end_room, NULL);
-
 	graph->paths = paths;
 }
-

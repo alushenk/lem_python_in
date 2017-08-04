@@ -1,8 +1,16 @@
-//
-// Created by lush on 7/30/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   room.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:24:04 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:24:05 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 t_room	*create_room(char *name, int x, int y)
 {
@@ -19,7 +27,7 @@ t_room	*create_room(char *name, int x, int y)
 
 t_room	*find_by_name(t_elem *list, char *name)
 {
-	while(list)
+	while (list)
 	{
 		if (ft_strcmp(list->room->name, name) == 0)
 			return (list->room);
@@ -33,7 +41,7 @@ t_room	*find_by_index(t_elem *list, int index)
 	int	i;
 
 	i = 0;
-	while(i < index)
+	while (i < index)
 	{
 		list = list->next;
 		i++;
@@ -43,7 +51,7 @@ t_room	*find_by_index(t_elem *list, int index)
 
 t_room	*find_by_id(t_elem *list, t_room *room)
 {
-	while(list)
+	while (list)
 	{
 		if (list->room == room)
 			return (list->room);

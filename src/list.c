@@ -1,10 +1,18 @@
-//
-// Created by lush on 7/31/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   list.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:44 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:45 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
-t_elem	*create_element()
+t_elem	*create_element(void)
 {
 	t_elem *result;
 
@@ -14,7 +22,7 @@ t_elem	*create_element()
 	return (result);
 }
 
-t_path	*create_path()
+t_path	*create_path(void)
 {
 	t_path *result;
 
@@ -55,7 +63,7 @@ t_path	*copy_path(t_path *path)
 	if (path == NULL)
 		return (result);
 	elem = path->list;
-	while(elem)
+	while (elem)
 	{
 		add_to_path(result, elem->room);
 		elem = elem->next;
@@ -63,7 +71,7 @@ t_path	*copy_path(t_path *path)
 	return (result);
 }
 
-t_group	*create_group()
+t_group	*create_group(void)
 {
 	t_group *group;
 
@@ -72,7 +80,6 @@ t_group	*create_group()
 	group->efficiency = 0;
 	group->number_of_paths = 0;
 	group->next = NULL;
-
 	return (group);
 }
 
@@ -84,13 +91,12 @@ void	add_path(t_group *group, t_path *path)
 	new_path->weight = path->weight;
 	new_path->list = path->list;
 	group->number_of_paths += 1;
-
 	if (group->paths != NULL)
 		new_path->next = group->paths;
 	group->paths = new_path;
 }
 
-t_step	*create_step()
+t_step	*create_step(void)
 {
 	t_step	*result;
 
@@ -115,7 +121,7 @@ void	add_step(t_path *path, t_step *step)
 		path->steps = step;
 }
 
-void	append_step(t_step	**list, t_step *step)
+void	append_step(t_step **list, t_step *step)
 {
 	t_step	*elem;
 
@@ -151,7 +157,7 @@ void	add_move(t_step *step, t_move *move)
 		return ;
 	}
 	elem = step->move;
-	while(elem->next)
+	while (elem->next)
 		elem = elem->next;
 	elem->next = move;
 }

@@ -1,8 +1,16 @@
-//
-// Created by lush on 7/30/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:58 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:59 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	errors_check(char *str)
 {
@@ -28,11 +36,11 @@ void	parse_ants(t_graph *graph, int fd, char *line)
 		error("Error! no ants given\n");
 }
 
-int 	is_room(char *str)
+int		is_room(char *str)
 {
 	if (*str == '#')
 		return (1);
-	while(*str)
+	while (*str)
 	{
 		if (*str == ' ')
 			return (1);
@@ -71,7 +79,7 @@ void	parse_end(t_graph *graph, int fd, char **line)
 
 void	parse_rooms(t_graph *graph, int fd, char **line)
 {
-	while(get_next_line(fd, line) == 1 && is_room(*line))
+	while (get_next_line(fd, line) == 1 && is_room(*line))
 	{
 		ft_putstr(*line);
 		ft_putchar('\n');
@@ -88,7 +96,7 @@ void	parse_rooms(t_graph *graph, int fd, char **line)
 
 void	parse_lines(t_graph *graph, int fd, char *line)
 {
-	while(line || get_next_line(fd, &line) == 1)
+	while (line || get_next_line(fd, &line) == 1)
 	{
 		ft_putendl(line);
 		if (line[0] != '#')

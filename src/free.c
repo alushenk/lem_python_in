@@ -1,14 +1,22 @@
-//
-// Created by lush on 8/1/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:09 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:10 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 void	free_list(t_elem *list)
 {
 	t_elem *temp;
 
-	while(list)
+	while (list)
 	{
 		temp = list;
 		list = list->next;
@@ -20,7 +28,7 @@ void	free_paths(t_path *path)
 {
 	t_path *temp;
 
-	while(path)
+	while (path)
 	{
 		temp = path;
 		path = path->next;
@@ -33,14 +41,14 @@ void	free_groups(t_group *group)
 {
 	t_group *temp;
 	t_path	*path;
-	int 	count;
+	int		count;
 
-	while(group)
+	while (group)
 	{
 		temp = group;
 		group = group->next;
 		count = temp->number_of_paths;
-		while(count > 0)
+		while (count > 0)
 		{
 			path = temp->paths;
 			temp->paths = temp->paths->next;
@@ -56,11 +64,11 @@ void	free_steps(t_step *step)
 	t_step	*temp;
 	t_move	*move;
 
-	while(step)
+	while (step)
 	{
 		temp = step;
 		step = step->next;
-		while(temp->move)
+		while (temp->move)
 		{
 			move = temp->move;
 			temp->move = temp->move->next;
@@ -74,7 +82,7 @@ void	free_rooms(t_elem *elem)
 {
 	t_elem *temp;
 
-	while(elem)
+	while (elem)
 	{
 		temp = elem;
 		elem = elem->next;

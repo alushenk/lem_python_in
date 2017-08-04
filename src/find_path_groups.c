@@ -1,10 +1,18 @@
-//
-// Created by lush on 8/1/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_path_groups.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:02 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:03 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
-int 	overlaps(t_path *a, t_path *b)
+int		overlaps(t_path *a, t_path *b)
 {
 	t_elem	*temp_a;
 	t_elem	*temp_b;
@@ -12,10 +20,10 @@ int 	overlaps(t_path *a, t_path *b)
 	if (a->weight == 2 || b->weight == 2)
 		return (0);
 	temp_a = a->list->next;
-	while(temp_a->next)
+	while (temp_a->next)
 	{
 		temp_b = b->list->next;
-		while(temp_b->next)
+		while (temp_b->next)
 		{
 			if (temp_a->room == temp_b->room)
 				return (1);
@@ -33,22 +41,22 @@ void	find_path_groups(t_graph *graph)
 	t_path	*a;
 	t_path	*b;
 	t_path	*c;
-	int 	not_overlaps;
+	int		not_overlaps;
 
 	resulting_groups = NULL;
 	a = graph->paths;
-	while(a)
+	while (a)
 	{
 		group = create_group();
 		add_path(group, a);
 		b = graph->paths;
-		while(b)
+		while (b)
 		{
 			if (a != b)
 			{
 				c = group->paths;
 				not_overlaps = 1;
-				while(c)
+				while (c)
 				{
 					if (overlaps(b, c))
 					{

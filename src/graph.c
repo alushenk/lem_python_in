@@ -1,8 +1,16 @@
-//
-// Created by lush on 7/30/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   graph.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:23:31 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:23:32 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include "lem-in.h"
+#include "lem_in.h"
 
 char	*ft_strsep(char **str, char sep)
 {
@@ -23,7 +31,7 @@ char	*ft_strsep(char **str, char sep)
 	return (result);
 }
 
-t_graph *create_graph()
+t_graph	*create_graph(void)
 {
 	t_graph *result;
 
@@ -45,7 +53,7 @@ t_room	*add_room(t_graph *graph, char *str)
 	t_elem	*elem;
 	char	*name;
 	char	*x;
-	char 	*y;
+	char	*y;
 
 	name = ft_strsep(&str, ' ');
 	if (find_by_name(graph->list, name))

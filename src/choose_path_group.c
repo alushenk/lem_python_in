@@ -1,6 +1,14 @@
-//
-// Created by lush on 8/1/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   choose_path_group.c                                :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/04 10:22:34 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/04 10:22:36 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "lem-in.h"
 
@@ -10,7 +18,7 @@ t_path	*find_shortest(t_path *path)
 
 	result = path;
 	path = path->next;
-	while(path)
+	while (path)
 	{
 		if (path->weight < result->weight)
 			result = path;
@@ -25,7 +33,7 @@ t_path	*find_hardest(t_path *path)
 
 	result = path;
 	path = path->next;
-	while(path)
+	while (path)
 	{
 		if (path->weight > result->weight)
 			result = path;
@@ -38,15 +46,15 @@ void	calculate_efficiency(t_graph *graph)
 {
 	t_group	*group;
 	t_path	*path;
-	int 	i;
+	int		i;
 
 	group = graph->groups;
 	if (group == NULL)
 		error("Error! no paths found");
-	while(group)
+	while (group)
 	{
 		i = 0;
-		while(i < graph->number_of_ants)
+		while (i < graph->number_of_ants)
 		{
 			path = find_shortest(group->paths);
 			path->weight += 1;
@@ -59,13 +67,13 @@ void	calculate_efficiency(t_graph *graph)
 	}
 }
 
-t_group	*find_optimal_group(t_group	*group)
+t_group	*find_optimal_group(t_group *group)
 {
 	t_group	*result;
 
 	result = group;
 	group = group->next;
-	while(group)
+	while (group)
 	{
 		if (group->efficiency < result->efficiency)
 			result = group;
