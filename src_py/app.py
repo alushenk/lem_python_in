@@ -1,6 +1,7 @@
 from tkinter import *
 import time
 from threading import Thread
+from collections import deque
 
 # up, left, down, right
 MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
@@ -60,13 +61,21 @@ class App(object):
 
         self.scale = Scale(
             self.frame,
-            from_=100,
-            to=0,
+            from_=200,
+            to=1,
             orient=HORIZONTAL,
             length=300
         )
-        self.scale.set(50)
         self.scale.pack(side=LEFT)
+
+        self.smooth = Scale(
+            self.frame,
+            from_=100,
+            to=1,
+            orient=HORIZONTAL,
+            length=100
+        )
+        self.smooth.pack(side=LEFT)
 
     def init_window(self):
         # calculate x and y coordinates for the Tk root window
@@ -118,23 +127,6 @@ class App(object):
                 text=room.name
             )
 
-    def create_ants(self):
-        radius = self.shape_radius
-        for ant in self.graph.ants:
-            ant.oval = self.canvas.create_oval(
-                ant.x - radius, ant.y - radius,
-                ant.x + radius, ant.y + radius,
-                fill=self.ant_color,
-                outline=self.ant_outline,
-                width=self.shape_outline_width
-            )
-            ant.number = self.canvas.create_text(
-                ant.x,
-                ant.y,
-                text=ant.name
-            )
-            self.canvas.update()
-
     def start(self):
         if not self.t:
             self.t = Thread(target=self.move_ants)
@@ -142,31 +134,57 @@ class App(object):
 
     def move_ants(self):
         self.graph.add_ants()
-        self.create_ants()
-        divider = 30
-        for line in self.graph.steps:
-            steps = []
-            for step in line:
-                ant, dest = step.split('-', 2)
+        self.divider = self.smooth.get()
+        steps = []
+        for step in self.graph.steps:
+            moves = []
+            for move in step:
+                ant, dest = move.split('-', 2)
                 ant = self.graph.ants[int(ant[1:]) - 1]
                 dest = self.graph.rooms[dest]
                 delta_x = dest.x - ant.x
                 delta_y = dest.y - ant.y
                 ant.x += delta_x
                 ant.y += delta_y
-                move_x = delta_x / divider
-                move_y = delta_y / divider
-                steps.append((ant, move_x, move_y))
+                move_x = delta_x / self.divider
+                move_y = delta_y / self.divider
+                if dest == self.graph.end_room:
+                    delete = 1
+                else:
+                    delete = 0
+                moves.append((ant, move_x, move_y, delete))
+            steps.append(moves)
 
-            for i in range(divider):
-                for ant, move_x, move_y in steps:
-                    self.canvas.move(ant.oval, move_x, move_y)
-                    self.canvas.move(ant.number, move_x, move_y)
-                    self.canvas.update()
-                time.sleep(self.scale.get() / 5000)
+        self.steps = deque(steps)
+        self.step = self.steps.popleft()
+        self.move()
 
-        for ant in self.graph.ants:
-            self.canvas.delete(ant.oval)
-            self.canvas.delete(ant.number)
-
-        self.t = None
+    def move(self):
+        self.divider -= 1
+        for ant, move_x, move_y, delete in self.step:
+            if not ant.oval:
+                radius = self.shape_radius
+                x = self.graph.start_room.x
+                y = self.graph.start_room.y
+                ant.oval = self.canvas.create_oval(
+                    x - radius, y - radius,
+                    x + radius, y + radius,
+                    fill=self.ant_color,
+                    outline=self.ant_outline,
+                    width=self.shape_outline_width
+                )
+                ant.number = self.canvas.create_text(x, y, text=ant.name)
+            self.canvas.move(ant.oval, move_x, move_y)
+            self.canvas.move(ant.number, move_x, move_y)
+            if delete and self.divider == 0:
+                self.canvas.delete(ant.oval)
+                self.canvas.delete(ant.number)
+        if self.divider > 0:
+            self.master.after(self.scale.get(), self.move)
+        else:
+            if self.steps:
+                self.step = self.steps.popleft()
+                self.divider = self.smooth.get()
+                self.master.after(self.scale.get(), self.move)
+            else:
+                self.t = None
