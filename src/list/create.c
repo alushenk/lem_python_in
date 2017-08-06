@@ -28,6 +28,7 @@ t_path	*create_path(void)
 
 	result = (t_path*)malloc(sizeof(t_path));
 	result->list = NULL;
+	result->steps = NULL;
 	result->weight = 0;
 	result->ants_count = 0;
 	result->ended = 0;

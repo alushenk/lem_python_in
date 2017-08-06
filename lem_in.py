@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python
 
 from src_py.graph import Graph
 from src_py.parse import *

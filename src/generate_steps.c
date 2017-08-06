@@ -32,6 +32,13 @@ t_room	*perform_step(t_elem *list, t_step *step, int *name, int *index)
 	return (next_room);
 }
 
+void	change_data(t_room *end, int *number_of_ants, int *name, int *i)
+{
+	end->is_free = 1;
+	*number_of_ants -= 1;
+	*name += 1;
+	*i -= 1;
+}
 void	create_steps(t_path *path, int start_name, t_room *end, int i)
 {
 	t_step	*step;
@@ -50,12 +57,7 @@ void	create_steps(t_path *path, int start_name, t_room *end, int i)
 		while (index >= 0 && ant_name < path->ants_count + start_name)
 		{
 			if (perform_step(path->list, step, &ant_name, &index) == end)
-			{
-				end->is_free = 1;
-				number_of_ants -= 1;
-				name += 1;
-				i--;
-			}
+				change_data(end, &number_of_ants, &name, &i);
 		}
 		add_step(path, step);
 		i++;
