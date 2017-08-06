@@ -101,6 +101,7 @@ void				parse(t_graph *graph, int fd);
 ** parse/parse_rooms.c
 */
 void				parse_rooms(t_graph *graph, int fd, char **line);
+void				errors_check(char *str, t_graph *graph);
 /*
 ** err_atoi.c
 */

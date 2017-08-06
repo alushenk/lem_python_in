@@ -15,5 +15,6 @@
 void	error(char *str, t_graph *graph)
 {
 	free_graph(graph);
-	exit(write(2, str, ft_strlen(str)));
+	write(2, str, ft_strlen(str));
+	exit(0);
 }

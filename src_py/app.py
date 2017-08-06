@@ -95,8 +95,11 @@ class App(object):
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, x, y))
 
     def bind_buttons(self):
-        self.master.bind('<Escape>', quit)
+        self.master.bind('<Escape>', self.safe_exit)
         # self.master.bind('<Key>', self.press)
+
+    def safe_exit(self, code):
+        quit()
 
     def create_lines(self, graph):
         lines = graph.lines
