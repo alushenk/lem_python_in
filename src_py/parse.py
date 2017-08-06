@@ -8,6 +8,8 @@ def get_source():
             source = file.readlines()
     else:
         source = sys.stdin.readlines()
+    if not source:
+        exit()
     return deque(source)
 
 
