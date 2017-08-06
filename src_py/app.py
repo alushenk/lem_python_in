@@ -1,5 +1,4 @@
 from tkinter import *
-import time
 from threading import Thread
 from collections import deque
 
@@ -19,6 +18,11 @@ class App(object):
         self.init_window()
         self.bind_buttons()
         self.t = None
+        self.steps = None
+        self.step = None
+        self.smothnes = None
+        self.divider = 1
+        self.paused = 1
 
         self.room_color_ending = '#60d6ca'
         self.room_outline_ending = '#666699'
@@ -52,9 +56,12 @@ class App(object):
         )
         self.exit_button.pack(side=LEFT)
 
+        self.start_text = StringVar()
+        self.start_text.set("start")
+
         self.move_button = Button(
             self.frame,
-            text="start",
+            textvariable=self.start_text,
             command=self.start
         )
         self.move_button.pack(side=LEFT)
@@ -66,6 +73,7 @@ class App(object):
             orient=HORIZONTAL,
             length=300
         )
+        self.scale.set(20)
         self.scale.pack(side=LEFT)
 
         self.smooth = Scale(
@@ -75,6 +83,7 @@ class App(object):
             orient=HORIZONTAL,
             length=100
         )
+        self.smooth.set(20)
         self.smooth.pack(side=LEFT)
 
     def init_window(self):
@@ -88,9 +97,6 @@ class App(object):
     def bind_buttons(self):
         self.master.bind('<Escape>', quit)
         # self.master.bind('<Key>', self.press)
-
-    def safe_escape(self):
-        pass
 
     def create_lines(self, graph):
         lines = graph.lines
@@ -129,8 +135,18 @@ class App(object):
 
     def start(self):
         if not self.t:
+            self.smooth.config(state=DISABLED, takefocus=0)
             self.t = Thread(target=self.move_ants)
             self.t.start()
+        if self.paused:
+            self.start_text.set("pause")
+            self.scale.config(state=DISABLED, takefocus=0)
+
+            self.paused = 0
+        else:
+            self.start_text.set(" play  ")
+            self.scale.config(state=ACTIVE, takefocus=1)
+            self.paused = 1
 
     def move_ants(self):
         self.graph.add_ants()
@@ -157,9 +173,13 @@ class App(object):
 
         self.steps = deque(steps)
         self.step = self.steps.popleft()
+        self.smothnes = self.smooth.get()
         self.move()
 
     def move(self):
+        if self.paused:
+            self.master.after(self.smothnes, self.move)
+            return
         self.divider -= 1
         for ant, move_x, move_y, delete in self.step:
             if not ant.oval:
@@ -184,7 +204,11 @@ class App(object):
         else:
             if self.steps:
                 self.step = self.steps.popleft()
-                self.divider = self.smooth.get()
+                self.divider = self.smothnes
                 self.master.after(self.scale.get(), self.move)
             else:
+                self.start_text.set(" start ")
+                self.scale.config(state=ACTIVE, takefocus=1)
+                self.smooth.config(state=ACTIVE, takefocus=1)
+                self.paused = 1
                 self.t = None
