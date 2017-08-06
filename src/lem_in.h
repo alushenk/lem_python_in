@@ -64,12 +64,19 @@ typedef struct		s_group
 	struct s_group	*next;
 }					t_group;
 
+typedef struct		s_line
+{
+	char			*name;
+	struct s_line	*next;
+}					t_line;
+
 typedef struct		s_graph
 {
 	int				number_of_ants;
 	t_room			*start_room;
 	t_room			*end_room;
 	t_elem			*list;
+	t_line			*lines;
 	t_path			*paths;
 	t_group			*groups;
 	t_group			*chosen_group;
@@ -80,10 +87,8 @@ typedef struct		s_graph
 ** graph.c
 */
 t_graph				*create_graph();
-t_room				*add_room(t_graph *graph, char *str);
-void				add_start(t_graph *graph, char *str);
-void				add_end(t_graph *graph, char *str);
 void				add_line(t_graph *graph, char *str);
+char				*ft_strsep(char **str, char sep);
 /*
 ** errors.c
 */
@@ -122,6 +127,7 @@ void				add_move(t_step *step, t_move *move);
 t_group				*create_group();
 void				add_path(t_group *group, t_path *path);
 void				append_step(t_step	**list, t_step *step);
+t_room				*add_room(t_graph *graph, char *str);
 /*
 ** search.c
 */
@@ -130,8 +136,10 @@ t_path				*find_paths(t_room *start, t_room *end, t_path *path);
 /*
 ** free.c
 */
-void				free_list(t_elem *list);
 void				free_graph(t_graph *graph);
+void				free_list(t_elem *list);
+void				free_lines(t_line *line);
+void				free_rooms(t_elem *list);
 /*
 ** display.c
 */
@@ -139,6 +147,7 @@ void				display_path(t_path *path);
 void				display_paths(t_path *paths);
 void				display_groups(t_group *groups);
 void				display_steps(t_step *step);
+void				display_data(t_graph *graph);
 /*
 ** find_path_groups.c
 */
@@ -151,5 +160,9 @@ void				choose_path_group(t_graph *graph);
 ** generate_steps.c
 */
 void				generate_steps(t_graph *graph);
+/*
+** create_steps.c
+*/
+void				create_steps(t_path *path, int start, t_room *end, int i);
 
 #endif

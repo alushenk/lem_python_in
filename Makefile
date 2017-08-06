@@ -9,17 +9,21 @@ SRC_LEM_IN =    choose_path_group.c \
                 err_atoi.c \
                 errors.c \
                 find_path_groups.c \
-                free.c \
                 generate_steps.c \
+                create_steps.c \
                 get_all_paths.c \
                 graph.c \
                 list/list.c \
                 list/create.c \
                 list/add.c \
+                list/add_room.c \
                 main.c \
                 parse/parse.c \
                 parse/parse_rooms.c \
-                room.c
+                room.c \
+                debug_display.c \
+                free/free_1.c \
+                free/free_2.c
 
 GNL = get_next_line.c
 

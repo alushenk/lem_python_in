@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../lem_in.h"
 
 void	free_list(t_elem *list)
 {
@@ -80,8 +80,6 @@ void	free_steps(t_step *step)
 
 void	free_graph(t_graph *graph)
 {
-	t_elem *temp;
-
 	if (graph)
 	{
 		if (graph->paths)
@@ -91,17 +89,9 @@ void	free_graph(t_graph *graph)
 		if (graph->steps)
 			free_steps(graph->steps);
 		if (graph->list)
-		{
-			while (graph->list)
-			{
-				temp = graph->list;
-				graph->list = graph->list->next;
-				free(temp->room->name);
-				free_list(temp->room->list);
-				free(temp->room);
-				free(temp);
-			}
-		}
+			free_rooms(graph->list);
+		if (graph->lines)
+			free_lines(graph->lines);
 		free(graph);
 	}
 }

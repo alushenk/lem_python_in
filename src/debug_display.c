@@ -1,37 +1,47 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   debug_display.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/08/04 10:23:51 by alushenk          #+#    #+#             */
-/*   Updated: 2017/08/04 10:23:52 by alushenk         ###   ########.fr       */
+/*   Created: 2017/08/06 14:52:05 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/06 14:52:06 by alushenk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lem_in.h"
 
-int	main(int argc, char **argv)
+void	display_path(t_path *path)
 {
-	t_graph	*graph;
-	int		fd;
+	t_elem *elem;
 
-	graph = create_graph();
-	fd = 0;
-	if (argc == 3 && ft_strcmp(argv[1], "-s") == 0)
+	elem = path->list;
+	ft_putstr("( ");
+	while (elem)
 	{
-		if ((fd = open(argv[2], O_RDONLY)) == -1)
-			error("Error! can't open file\n", graph);
+		ft_putstr(elem->room->name);
+		ft_putstr(", ");
+		elem = elem->next;
 	}
-	parse(graph, fd);
-	if (fd != 0)
-		close(fd);
-	get_all_paths(graph);
-	find_path_groups(graph);
-	choose_path_group(graph);
-	generate_steps(graph);
-	display_data(graph);
-	free_graph(graph);
-	return (0);
+	ft_putstr(")\n");
+}
+
+void	display_paths(t_path *path)
+{
+	while (path)
+	{
+		display_path(path);
+		path = path->next;
+	}
+}
+
+void	display_groups(t_group *group)
+{
+	while (group)
+	{
+		display_paths(group->paths);
+		ft_putchar('\n');
+		group = group->next;
+	}
 }

@@ -12,40 +12,6 @@
 
 #include "lem_in.h"
 
-void	display_path(t_path *path)
-{
-	t_elem *elem;
-
-	elem = path->list;
-	ft_putstr("( ");
-	while (elem)
-	{
-		ft_putstr(elem->room->name);
-		ft_putstr(", ");
-		elem = elem->next;
-	}
-	ft_putstr(")\n");
-}
-
-void	display_paths(t_path *path)
-{
-	while (path)
-	{
-		display_path(path);
-		path = path->next;
-	}
-}
-
-void	display_groups(t_group *group)
-{
-	while (group)
-	{
-		display_paths(group->paths);
-		ft_putchar('\n');
-		group = group->next;
-	}
-}
-
 void	display_steps(t_step *step)
 {
 	t_move *move;
@@ -67,4 +33,46 @@ void	display_steps(t_step *step)
 			ft_putchar('\n');
 		step = step->next;
 	}
+}
+
+void	display_room(t_room *room)
+{
+	ft_putstr(room->name);
+	ft_putchar(' ');
+	ft_putnbr(room->x);
+	ft_putchar(' ');
+	ft_putnbr(room->y);
+	ft_putchar('\n');
+}
+
+void	display_rooms(t_elem *room, t_room *start, t_room *end)
+{
+	while (room)
+	{
+		if (room->room != start && room->room != end)
+			display_room(room->room);
+		room = room->next;
+	}
+}
+
+void	display_lines(t_line *list)
+{
+	while (list)
+	{
+		ft_putendl(list->name);
+		list = list->next;
+	}
+}
+
+void	display_data(t_graph *graph)
+{
+	ft_putnbr(graph->number_of_ants);
+	ft_putchar('\n');
+	ft_putendl("##start");
+	display_room(graph->start_room);
+	display_rooms(graph->list, graph->start_room, graph->end_room);
+	ft_putendl("##end");
+	display_room(graph->end_room);
+	display_lines(graph->lines);
+	display_steps(graph->steps);
 }

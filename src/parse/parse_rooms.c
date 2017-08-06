@@ -26,7 +26,7 @@ int		is_room(char *str)
 		return (1);
 	while (*str)
 	{
-		if (*str == ' ')
+		if (*str == ' ' && isdigit(*(str + 1)))
 			return (1);
 		str++;
 	}
@@ -36,12 +36,12 @@ int		is_room(char *str)
 void	parse_start(t_graph *graph, int fd, char **line)
 {
 	free(*line);
+	if (graph->start_room)
+		error("Error! start room already exists\n", graph);
 	if (get_next_line(fd, line) == 1)
 	{
-		ft_putstr(*line);
-		ft_putchar('\n');
 		errors_check(*line, graph);
-		add_start(graph, *line);
+		graph->start_room = add_room(graph, *line);
 	}
 	else
 		error("Error! no start found\n", graph);
@@ -50,12 +50,12 @@ void	parse_start(t_graph *graph, int fd, char **line)
 void	parse_end(t_graph *graph, int fd, char **line)
 {
 	free(*line);
+	if (graph->end_room)
+		error("Error! end room already exists\n", graph);
 	if (get_next_line(fd, line) == 1)
 	{
-		ft_putstr(*line);
-		ft_putchar('\n');
 		errors_check(*line, graph);
-		add_end(graph, *line);
+		graph->end_room = add_room(graph, *line);
 	}
 	else
 		error("Error! no end found\n", graph);
@@ -65,14 +65,15 @@ void	parse_rooms(t_graph *graph, int fd, char **line)
 {
 	while (get_next_line(fd, line) == 1 && is_room(*line))
 	{
-		ft_putstr(*line);
-		ft_putchar('\n');
 		if (ft_strcmp(*line, "##start") == 0)
 			parse_start(graph, fd, line);
 		else if (ft_strcmp(*line, "##end") == 0)
 			parse_end(graph, fd, line);
 		else if (*line[0] != '#')
+		{
+			errors_check(*line, graph);
 			add_room(graph, *line);
+		}
 		free(*line);
 		*line = NULL;
 	}

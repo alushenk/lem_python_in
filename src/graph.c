@@ -40,6 +40,7 @@ t_graph	*create_graph(void)
 	result->start_room = NULL;
 	result->end_room = NULL;
 	result->list = NULL;
+	result->lines = NULL;
 	result->paths = NULL;
 	result->groups = NULL;
 	result->chosen_group = NULL;
@@ -47,38 +48,14 @@ t_graph	*create_graph(void)
 	return (result);
 }
 
-t_room	*add_room(t_graph *graph, char *str)
+t_line	*create_line(char *str)
 {
-	t_room	*room;
-	t_elem	*elem;
-	char	*name;
-	char	*x;
-	char	*y;
+	t_line *result;
 
-	name = ft_strsep(&str, ' ');
-	if (find_by_name(graph->list, name))
-		error("Error! duplicate room name found\n", graph);
-	x = ft_strsep(&str, ' ');
-	y = ft_strsep(&str, ' ');
-	room = create_room(name, err_atoi(x, graph), err_atoi(y, graph));
-	free(x);
-	free(y);
-	elem = create_element();
-	elem->room = room;
-	if (graph->list != NULL)
-		elem->next = graph->list;
-	graph->list = elem;
-	return (room);
-}
-
-void	add_start(t_graph *graph, char *str)
-{
-	graph->start_room = add_room(graph, str);
-}
-
-void	add_end(t_graph *graph, char *str)
-{
-	graph->end_room = add_room(graph, str);
+	result = (t_line*)malloc(sizeof(t_line));
+	result->name = ft_strdup(str);
+	result->next = NULL;
+	return (result);
 }
 
 void	add_line(t_graph *graph, char *str)
@@ -87,7 +64,12 @@ void	add_line(t_graph *graph, char *str)
 	char	*name_b;
 	t_room	*room_a;
 	t_room	*room_b;
+	t_line	*line;
 
+	line = create_line(str);
+	if (graph->lines != NULL)
+		line->next = graph->lines;
+	graph->lines = line;
 	name_a = ft_strsep(&str, '-');
 	name_b = ft_strsep(&str, '-');
 	room_a = find_by_name(graph->list, name_a);

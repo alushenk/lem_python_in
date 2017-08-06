@@ -10,7 +10,6 @@ set(SOURCE_FILES
         src/err_atoi.c
         src/errors.c
         src/find_path_groups.c
-        src/free.c
         src/generate_steps.c
         src/get_all_paths.c
         src/graph.c
@@ -20,7 +19,13 @@ set(SOURCE_FILES
         src/main.c
         src/parse/parse.c
         src/parse/parse_rooms.c
-        src/room.c)
+        src/room.c
+        src/create_steps.c
+        src/debug_display.c
+        src/free/free_1.c
+        src/free/free_2.c
+        src/list/add_room.c
+        )
 
 add_executable(lem-in ${SOURCE_FILES})
 
