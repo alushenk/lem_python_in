@@ -12,12 +12,12 @@
 
 #include "lem_in.h"
 
-void	errors_check(char *str)
+void	errors_check(char *str, t_graph *graph)
 {
 	if (ft_strlen(str) > 0 && str[0] == 'L')
-		error("Error! wrong parameters\n");
+		error("Error! wrong parameters\n", graph);
 	if (ft_strlen(str) == 0)
-		error("Error! empty line\n");
+		error("Error! empty line\n", graph);
 }
 
 void	parse_ants(t_graph *graph, int fd, char *line)
@@ -30,10 +30,10 @@ void	parse_ants(t_graph *graph, int fd, char *line)
 	}
 	ft_putstr(line);
 	ft_putchar('\n');
-	graph->number_of_ants = err_atoi(line);
+	graph->number_of_ants = err_atoi(line, graph);
 	free(line);
 	if (graph->number_of_ants == 0)
-		error("Error! no ants given\n");
+		error("Error! no ants given\n", graph);
 }
 
 int		is_room(char *str)
@@ -56,11 +56,11 @@ void	parse_start(t_graph *graph, int fd, char **line)
 	{
 		ft_putstr(*line);
 		ft_putchar('\n');
-		errors_check(*line);
+		errors_check(*line, graph);
 		add_start(graph, *line);
 	}
 	else
-		error("Error! no start found\n");
+		error("Error! no start found\n", graph);
 }
 
 void	parse_end(t_graph *graph, int fd, char **line)
@@ -70,11 +70,11 @@ void	parse_end(t_graph *graph, int fd, char **line)
 	{
 		ft_putstr(*line);
 		ft_putchar('\n');
-		errors_check(*line);
+		errors_check(*line, graph);
 		add_end(graph, *line);
 	}
 	else
-		error("Error! no end found\n");
+		error("Error! no end found\n", graph);
 }
 
 void	parse_rooms(t_graph *graph, int fd, char **line)

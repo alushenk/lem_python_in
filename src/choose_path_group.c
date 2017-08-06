@@ -50,7 +50,7 @@ void	calculate_efficiency(t_graph *graph)
 
 	group = graph->groups;
 	if (group == NULL)
-		error("Error! no paths found");
+		error("Error! no paths found", graph);
 	while (group)
 	{
 		i = 0;

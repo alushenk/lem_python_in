@@ -34,14 +34,32 @@ int		overlaps(t_path *a, t_path *b)
 	return (0);
 }
 
+void	check(t_path *b, t_group *group)
+{
+	int		not_overlaps;
+	t_path	*c;
+
+	c = group->paths;
+	not_overlaps = 1;
+	while (c)
+	{
+		if (overlaps(b, c))
+		{
+			not_overlaps = 0;
+			break ;
+		}
+		c = c->next;
+	}
+	if (not_overlaps)
+		add_path(group, b);
+}
+
 void	find_path_groups(t_graph *graph)
 {
 	t_group	*resulting_groups;
 	t_group	*group;
 	t_path	*a;
 	t_path	*b;
-	t_path	*c;
-	int		not_overlaps;
 
 	resulting_groups = NULL;
 	a = graph->paths;
@@ -53,21 +71,7 @@ void	find_path_groups(t_graph *graph)
 		while (b)
 		{
 			if (a != b)
-			{
-				c = group->paths;
-				not_overlaps = 1;
-				while (c)
-				{
-					if (overlaps(b, c))
-					{
-						not_overlaps = 0;
-						break ;
-					}
-					c = c->next;
-				}
-				if (not_overlaps)
-					add_path(group, b);
-			}
+				check(b, group);
 			b = b->next;
 		}
 		if (resulting_groups != NULL)

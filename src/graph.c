@@ -57,10 +57,10 @@ t_room	*add_room(t_graph *graph, char *str)
 
 	name = ft_strsep(&str, ' ');
 	if (find_by_name(graph->list, name))
-		error("Error! duplicate room name found\n");
+		error("Error! duplicate room name found\n", graph);
 	x = ft_strsep(&str, ' ');
 	y = ft_strsep(&str, ' ');
-	room = create_room(name, err_atoi(x), err_atoi(y));
+	room = create_room(name, err_atoi(x, graph), err_atoi(y, graph));
 	free(x);
 	free(y);
 	elem = create_element();
@@ -93,8 +93,8 @@ void	add_line(t_graph *graph, char *str)
 	room_a = find_by_name(graph->list, name_a);
 	room_b = find_by_name(graph->list, name_b);
 	if (room_a == NULL || room_b == NULL)
-		error("Error! linking non-existent rooms\n");
-	connect(room_a, room_b);
+		error("Error! linking non-existent rooms\n", graph);
+	connect(room_a, room_b, graph);
 	if (name_a)
 		free(name_a);
 	if (name_b)

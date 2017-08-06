@@ -12,7 +12,8 @@
 
 #include "lem_in.h"
 
-void	error(char *str)
+void	error(char *str, t_graph *graph)
 {
+	free_graph(graph);
 	exit(write(2, str, ft_strlen(str)));
 }

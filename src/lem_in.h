@@ -87,7 +87,7 @@ void				add_line(t_graph *graph, char *str);
 /*
 ** errors.c
 */
-void				error(char *str);
+void				error(char *str, t_graph *graph);
 /*
 ** parsing.c
 */
@@ -95,7 +95,7 @@ void				parse(t_graph *graph, int fd);
 /*
 ** err_atoi.c
 */
-int					err_atoi(const char *str);
+int					err_atoi(const char *str, t_graph *graph);
 /*
 ** room.c
 */
@@ -103,7 +103,7 @@ t_room				*create_room(char *name, int x, int y);
 t_room				*find_by_name(t_elem *list, char *name);
 t_room				*find_by_id(t_elem *list, t_room *room);
 t_room				*find_by_index(t_elem *list, int index);
-void				connect(t_room *a, t_room *b);
+void				connect(t_room *a, t_room *b, t_graph *graph);
 /*
 ** list.c
 */
@@ -122,6 +122,7 @@ void				append_step(t_step	**list, t_step *step);
 ** search.c
 */
 void				get_all_paths(t_graph *graph);
+t_path				*find_paths(t_room *start, t_room *end, t_path *path);
 /*
 ** free.c
 */

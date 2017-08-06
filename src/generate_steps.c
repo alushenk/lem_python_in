@@ -39,6 +39,7 @@ void	change_data(t_room *end, int *number_of_ants, int *name, int *i)
 	*name += 1;
 	*i -= 1;
 }
+
 void	create_steps(t_path *path, int start_name, t_room *end, int i)
 {
 	t_step	*step;

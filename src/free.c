@@ -95,9 +95,16 @@ void	free_rooms(t_elem *elem)
 
 void	free_graph(t_graph *graph)
 {
-	free_paths(graph->paths);
-	free_groups(graph->groups);
-	free_steps(graph->steps);
-	free_rooms(graph->list);
-	free(graph);
+	if (graph)
+	{
+		if (graph->paths)
+			free_paths(graph->paths);
+		if (graph->groups)
+			free_groups(graph->groups);
+		if (graph->steps)
+			free_steps(graph->steps);
+		if (graph->list)
+			free_rooms(graph->list);
+		free(graph);
+	}
 }

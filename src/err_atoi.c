@@ -12,7 +12,7 @@
 
 #include "lem_in.h"
 
-int		err_atoi(const char *str)
+int		err_atoi(const char *str, t_graph *graph)
 {
 	ssize_t	result;
 	int		sign;
@@ -24,15 +24,15 @@ int		err_atoi(const char *str)
 	if (*str == '-' || *str == '+')
 		str++;
 	if (!ft_isdigit(*str))
-		error("Error! wrong_arguments\n");
+		error("Error! wrong_arguments\n", graph);
 	while (ft_isdigit(*str))
 	{
 		result = result * 10 + (*str - '0');
 		if (result * sign > INT_MAX || (result * sign < INT_MIN))
-			error("Error! wrong_arguments\n");
+			error("Error! wrong_arguments\n", graph);
 		str++;
 	}
 	if (*str != '\0')
-		error("Error! wrong_arguments\n");
+		error("Error! wrong_arguments\n", graph);
 	return (int)result * sign;
 }

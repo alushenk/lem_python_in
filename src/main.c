@@ -22,7 +22,7 @@ int	main(int argc, char **argv)
 	if (argc == 3 && ft_strcmp(argv[1], "-s") == 0)
 	{
 		if ((fd = open(argv[2], O_RDONLY)) == -1)
-			error("Error! can't open file\n");
+			error("Error! can't open file\n", graph);
 	}
 	parse(graph, fd);
 	if (fd != 0)
