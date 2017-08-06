@@ -17,7 +17,8 @@ SRC_LEM_IN =    choose_path_group.c \
                 list/create.c \
                 list/add.c \
                 main.c \
-                parse.c \
+                parse/parse.c \
+                parse/parse_rooms.c \
                 room.c
 
 GNL = get_next_line.c

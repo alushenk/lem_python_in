@@ -78,8 +78,8 @@ class App(object):
 
         self.smooth = Scale(
             self.frame,
-            from_=100,
-            to=1,
+            from_=1,
+            to=100,
             orient=HORIZONTAL,
             length=100
         )

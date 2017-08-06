@@ -18,9 +18,9 @@ set(SOURCE_FILES
         src/list/create.c
         src/list/add.c
         src/main.c
-        src/parse.c
-        src/room.c
-)
+        src/parse/parse.c
+        src/parse/parse_rooms.c
+        src/room.c)
 
 add_executable(lem-in ${SOURCE_FILES})
 

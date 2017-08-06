@@ -78,23 +78,10 @@ void	free_steps(t_step *step)
 	}
 }
 
-void	free_rooms(t_elem *elem)
+void	free_graph(t_graph *graph)
 {
 	t_elem *temp;
 
-	while (elem)
-	{
-		temp = elem;
-		elem = elem->next;
-		free(temp->room->name);
-		free_list(temp->room->list);
-		free(temp->room);
-		free(temp);
-	}
-}
-
-void	free_graph(t_graph *graph)
-{
 	if (graph)
 	{
 		if (graph->paths)
@@ -104,7 +91,17 @@ void	free_graph(t_graph *graph)
 		if (graph->steps)
 			free_steps(graph->steps);
 		if (graph->list)
-			free_rooms(graph->list);
+		{
+			while (graph->list)
+			{
+				temp = graph->list;
+				graph->list = graph->list->next;
+				free(temp->room->name);
+				free_list(temp->room->list);
+				free(temp->room);
+				free(temp);
+			}
+		}
 		free(graph);
 	}
 }

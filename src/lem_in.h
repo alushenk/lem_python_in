@@ -89,9 +89,13 @@ void				add_line(t_graph *graph, char *str);
 */
 void				error(char *str, t_graph *graph);
 /*
-** parsing.c
+** parse/parse.c
 */
 void				parse(t_graph *graph, int fd);
+/*
+** parse/parse_rooms.c
+*/
+void				parse_rooms(t_graph *graph, int fd, char **line);
 /*
 ** err_atoi.c
 */
