@@ -7,10 +7,7 @@ from src_py.parse import *
 
 
 def main():
-    root = Tk()
     graph = Graph()
-    app = App(root, graph, 800, 650)
-
     source = get_source()
 
     parse_ants(graph, source)
@@ -19,10 +16,6 @@ def main():
         print('Error! not enough data')
         exit()
     parse_lines(graph, source)
-
-    app.create_lines(graph)
-    app.create_rooms(graph)
-    app.canvas.pack()
 
     graph.get_paths()
     graph.add_ants()
@@ -39,6 +32,12 @@ def main():
     graph.print_groups()
     graph.print_chosen_group()
 
+    root = Tk()
+    app = App(root, graph, 800, 650)
+    app.configure_scale()
+    app.create_lines()
+    app.create_rooms()
+    app.canvas.pack()
     root.mainloop()
 
 

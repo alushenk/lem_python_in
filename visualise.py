@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 from tkinter import *
 from src_py.app import App
@@ -7,10 +7,7 @@ from src_py.parse import *
 
 
 def main():
-    root = Tk()
     graph = Graph()
-    app = App(root, graph, 800, 650)
-
     source = get_source()
 
     parse_ants(graph, source)
@@ -22,10 +19,13 @@ def main():
     parse_steps(graph, source)
 
     graph.add_ants()
-    app.create_lines(graph)
-    app.create_rooms(graph)
-    app.canvas.pack()
 
+    root = Tk()
+    app = App(root, graph, 800, 650)
+    app.configure_scale()
+    app.create_lines()
+    app.create_rooms()
+    app.canvas.pack()
     root.mainloop()
 
 

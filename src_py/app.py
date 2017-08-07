@@ -1,6 +1,7 @@
 from tkinter import *
 from threading import Thread
 from collections import deque
+from operator import attrgetter
 
 # up, left, down, right
 MAC_ARROWS = (8320768, 8124162, 8255233, 8189699)
@@ -23,6 +24,7 @@ class App(object):
         self.smothnes = None
         self.divider = 1
         self.paused = 1
+        self.stopped = 0
 
         self.room_color_ending = '#60d6ca'
         self.room_outline_ending = '#666699'
@@ -50,11 +52,18 @@ class App(object):
 
         self.exit_button = Button(
             self.frame,
-            text="QUIT",
+            text="quit",
             fg="red",
             command=quit
         )
         self.exit_button.pack(side=LEFT)
+
+        self.reset_button = Button(
+            self.frame,
+            text="reset",
+            command=self.reset
+        )
+        self.reset_button.pack(side=LEFT)
 
         self.start_text = StringVar()
         self.start_text.set("start")
@@ -94,6 +103,43 @@ class App(object):
         # and where it is placed
         self.master.geometry('%dx%d+%d+%d' % (self.width, self.height, x, y))
 
+    def configure_scale(self):
+        rooms = list(self.graph.rooms.values())
+        min_x = min(rooms, key=attrgetter('x')).x
+        min_y = min(rooms, key=attrgetter('y')).y
+        max_x = max(rooms, key=attrgetter('x')).x
+        max_y = max(rooms, key=attrgetter('y')).y
+
+        plot_min_x = self.shape_radius * 2
+        plot_max_x = self.width - plot_min_x
+        plot_min_y = self.shape_radius
+        plot_max_y = self.height - plot_min_y - 100
+
+        delta_x = (plot_max_x - plot_min_x) / (max_x - min_x)
+        delta_y = (plot_max_y - plot_min_y) / (max_y - min_y)
+
+        for room in rooms:
+            room.x *= delta_x
+            room.y *= delta_y
+
+        min_x = min(rooms, key=attrgetter('x')).x
+        min_y = min(rooms, key=attrgetter('y')).y
+        max_x = max(rooms, key=attrgetter('x')).x
+        max_y = max(rooms, key=attrgetter('y')).y
+
+        plot_cent_x = self.width / 2
+        plot_cent_y = (self.height - 50) / 2
+
+        graph_cent_x = min_x + (max_x - min_x) / 2
+        graph_cent_y = min_y + (max_y - min_y) / 2
+
+        cent_x = graph_cent_x - plot_cent_x
+        cent_y = graph_cent_y - plot_cent_y
+
+        for room in rooms:
+            room.x -= cent_x
+            room.y -= cent_y
+
     def bind_buttons(self):
         self.master.bind('<Escape>', self.safe_exit)
         # self.master.bind('<Key>', self.press)
@@ -101,9 +147,9 @@ class App(object):
     def safe_exit(self, code):
         quit()
 
-    def create_lines(self, graph):
-        lines = graph.lines
-        rooms = graph.rooms
+    def create_lines(self):
+        lines = self.graph.lines
+        rooms = self.graph.rooms
         for elem in lines:
             a, b = elem
             a = rooms[a]
@@ -113,8 +159,8 @@ class App(object):
                 fill=self.line_color,
                 width=self.line_width)
 
-    def create_rooms(self, graph):
-        rooms = graph.rooms
+    def create_rooms(self):
+        rooms = self.graph.rooms
         for room in rooms.values():
             radius = self.shape_radius
             room_color = self.room_color
@@ -138,18 +184,29 @@ class App(object):
 
     def start(self):
         if not self.t:
+            self.stopped = 0
             self.smooth.config(state=DISABLED, takefocus=0)
             self.t = Thread(target=self.move_ants)
             self.t.start()
         if self.paused:
             self.start_text.set("pause")
-            self.scale.config(state=DISABLED, takefocus=0)
-
             self.paused = 0
         else:
             self.start_text.set(" play  ")
-            self.scale.config(state=ACTIVE, takefocus=1)
             self.paused = 1
+
+    def reset(self):
+        if self.t:
+            self.stopped = 1
+            self.t = None
+            self.start_text.set(" play  ")
+            self.scale.config(state=ACTIVE, takefocus=1)
+            self.smooth.config(state=ACTIVE, takefocus=1)
+            self.paused = 1
+            for elem in self.step:
+                if elem[0].oval:
+                    self.canvas.delete(elem[0].oval)
+                    self.canvas.delete(elem[0].number)
 
     def move_ants(self):
         self.graph.add_ants()
@@ -180,8 +237,10 @@ class App(object):
         self.move()
 
     def move(self):
+        if self.stopped:
+            return
         if self.paused:
-            self.master.after(self.smothnes, self.move)
+            self.master.after(1, self.move)
             return
         self.divider -= 1
         for ant, move_x, move_y, delete in self.step:

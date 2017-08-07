@@ -26,7 +26,7 @@ int		is_room(char *str)
 		return (1);
 	while (*str)
 	{
-		if (*str == ' ' && isdigit(*(str + 1)))
+		if (*str == ' ' && ft_isdigit(*(str + 1)))
 			return (1);
 		str++;
 	}
