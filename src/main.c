@@ -31,7 +31,8 @@ int	main(int argc, char **argv)
 	find_path_groups(graph);
 	choose_path_group(graph);
 	generate_steps(graph);
-	display_data(graph);
+	display_lines(graph->lines);
+	display_steps(graph->steps);
 	free_graph(graph);
 	return (0);
 }

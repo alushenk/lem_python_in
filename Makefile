@@ -23,7 +23,8 @@ SRC_LEM_IN =    choose_path_group.c \
                 room.c \
                 debug_display.c \
                 free/free_1.c \
-                free/free_2.c
+                free/free_2.c \
+                get_next_write.c
 
 GNL = get_next_line.c
 

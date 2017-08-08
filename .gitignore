@@ -9,3 +9,10 @@ __pycache__/
 
 # CMake
 cmake-build-debug/
+
+
+.DS_Store
+._.DS_Store
+._files
+files/.DS_Store
+files/._.DS_Store

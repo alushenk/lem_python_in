@@ -149,6 +149,7 @@ void				display_paths(t_path *paths);
 void				display_groups(t_group *groups);
 void				display_steps(t_step *step);
 void				display_data(t_graph *graph);
+void				display_lines(t_line *list);
 /*
 ** find_path_groups.c
 */
@@ -165,5 +166,9 @@ void				generate_steps(t_graph *graph);
 ** create_steps.c
 */
 void				create_steps(t_path *path, int start, t_room *end, int i);
+/*
+** get_next_write.c
+*/
+int					get_next_write(const int fd, char **str, t_graph *graph);
 
 #endif

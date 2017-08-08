@@ -16,7 +16,6 @@ void	display_steps(t_step *step)
 {
 	t_move *move;
 
-	ft_putchar('\n');
 	while (step)
 	{
 		move = step->move;

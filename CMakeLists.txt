@@ -25,6 +25,7 @@ set(SOURCE_FILES
         src/free/free_1.c
         src/free/free_2.c
         src/list/add_room.c
+        src/get_next_write.c
         )
 
 add_executable(lem-in ${SOURCE_FILES})

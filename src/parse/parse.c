@@ -14,14 +14,14 @@
 
 void	parse_ants(t_graph *graph, int fd, char *line)
 {
-	get_next_line(fd, &line);
+	get_next_write(fd, &line, graph);
 	errors_check(line, graph);
 	while (ft_strlen(line) > 0 && line[0] == '#')
 	{
 		if (ft_strlen(line) > 1 && line[1] == '#')
 			error("Error! no commands here\n", graph);
 		free(line);
-		get_next_line(fd, &line);
+		get_next_write(fd, &line, graph);
 	}
 	errors_check(line, graph);
 	graph->number_of_ants = err_atoi(line, graph);
@@ -39,8 +39,9 @@ void	parse_lines(t_graph *graph, int fd, char *line)
 		error("Error! no start room\n", graph);
 	if (graph->end_room == NULL)
 		error("Error! no end room\n", graph);
-	while (line || get_next_line(fd, &line) == 1)
+	while (line || get_next_write(fd, &line, graph) == 1)
 	{
+		errors_check(line, graph);
 		if (line[0] != '#')
 			add_line(graph, line);
 		free(line);

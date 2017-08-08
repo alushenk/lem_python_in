@@ -48,30 +48,17 @@ t_graph	*create_graph(void)
 	return (result);
 }
 
-t_line	*create_line(char *str)
-{
-	t_line *result;
-
-	result = (t_line*)malloc(sizeof(t_line));
-	result->name = ft_strdup(str);
-	result->next = NULL;
-	return (result);
-}
-
 void	add_line(t_graph *graph, char *str)
 {
 	char	*name_a;
 	char	*name_b;
 	t_room	*room_a;
 	t_room	*room_b;
-	t_line	*line;
 
-	line = create_line(str);
-	if (graph->lines != NULL)
-		line->next = graph->lines;
-	graph->lines = line;
 	name_a = ft_strsep(&str, '-');
 	name_b = ft_strsep(&str, '-');
+	if (name_a == NULL || name_b == NULL)
+		error("Error! wrong linking parameters\n", graph);
 	room_a = find_by_name(graph->list, name_a);
 	room_b = find_by_name(graph->list, name_b);
 	if (room_a == NULL || room_b == NULL)
