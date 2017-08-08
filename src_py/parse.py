@@ -35,23 +35,31 @@ def is_room(line):
     return 0
 
 
+def get_room(line, n):
+    params = line.split(" ")
+    if len(params) != n:
+        print('Error! wrong room')
+        exit()
+    return params
+
+
 def parse_rooms(graph, source):
     while source and is_room(source[0]):
         line = source.popleft().rstrip('\n')
         if line == '##start':
             line = source.popleft().rstrip('\n') if source else None
             errors_check(line)
-            graph.add_start(*line.split(" ", 3))
+            graph.add_start(*get_room(line, 3))
             continue
         if line == '##end':
             line = source.popleft().rstrip('\n') if source else None
             errors_check(line)
-            graph.add_end(*line.split(" ", 3))
+            graph.add_end(*get_room(line, 3))
             continue
         if line.startswith("#"):
             continue
         errors_check(line)
-        graph.add_room(*line.split(" ", 3))
+        graph.add_room(*get_room(line, 3))
 
 
 def parse_lines(graph, source):
@@ -63,7 +71,11 @@ def parse_lines(graph, source):
         if line.startswith("#"):
             continue
         errors_check(line)
-        graph.add_line(*line.split("-", 2))
+        params = line.split("-")
+        if len(params) != 2:
+            print("Error! wrong connection")
+            exit()
+        graph.add_line(*params)
 
 
 def parse_steps(graph, source):
