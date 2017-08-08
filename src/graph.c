@@ -18,15 +18,13 @@ char	*ft_strsep(char **str, char sep)
 	char	*result;
 
 	i = 0;
-	while (**str == sep && **str != '\0')
-		(*str)++;
 	while ((*str)[i] != sep && (*str)[i] != '\0')
 		i++;
 	if (i == 0)
 		return (NULL);
 	result = ft_strnew(i);
 	ft_strncpy(result, *str, i);
-	while ((i-- > 0 || **str == sep) && **str != '\0')
+	while (i-- > 0)
 		(*str)++;
 	return (result);
 }
@@ -56,7 +54,11 @@ void	add_line(t_graph *graph, char *str)
 	t_room	*room_b;
 
 	name_a = ft_strsep(&str, '-');
-	name_b = ft_strsep(&str, '-');
+	if (*str == '-')
+		str++;
+	else
+		error("Error! no separator after link name", graph);
+	name_b = ft_strdup(str);
 	if (name_a == NULL || name_b == NULL)
 		error("Error! wrong linking parameters\n", graph);
 	room_a = find_by_name(graph->list, name_a);
