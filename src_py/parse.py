@@ -29,8 +29,14 @@ def parse_ants(graph, source):
     graph.number_of_ants = int(number_of_ants)
 
 
+def is_room(line):
+    if ' ' in line or line[0] == '#':
+        return 1
+    return 0
+
+
 def parse_rooms(graph, source):
-    while source:
+    while source and is_room(source[0]):
         line = source.popleft().rstrip('\n')
         if line == '##start':
             line = source.popleft().rstrip('\n') if source else None
@@ -41,7 +47,7 @@ def parse_rooms(graph, source):
             line = source.popleft().rstrip('\n') if source else None
             errors_check(line)
             graph.add_end(*line.split(" ", 3))
-            break
+            continue
         if line.startswith("#"):
             continue
         errors_check(line)
