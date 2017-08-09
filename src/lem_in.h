@@ -113,7 +113,7 @@ t_room				*create_room(char *name, int x, int y);
 t_room				*find_by_name(t_elem *list, char *name);
 t_room				*find_by_id(t_elem *list, t_room *room);
 t_room				*find_by_index(t_elem *list, int index);
-void				connect(t_room *a, t_room *b, t_graph *graph);
+void				connect(t_room *a, t_room *b);
 /*
 ** list.c
 */

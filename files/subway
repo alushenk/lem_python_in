@@ -1,0 +1,121 @@
+10
+#BLUE LINE
+HeroivDnipra 80 0
+Minska 80 10
+Obolon 80 20
+Petrivka 80 30
+TS 80 40
+KontraktovaPloshcha 80 50
+Poshtova 80 60
+MaidanNezalezhnosti 80 70
+PloshchaLvaTolstoho 80 90
+Olimpiiska 80 110
+PalatsUkrayina 80 120
+lybidska 80 130
+Demiivska 80 140
+Holosiivska 70 150
+Vasylkivska 60 150
+VystavkovyiTsentr 50 150
+Ipodrom 40 150
+##end
+Teremky 30 150
+#GREEN LINE
+Syrets 30 30
+##start
+Dorohozhychi 40 40
+lukianivska 50 50
+ZolotiVorota 60 60
+PalatsSportu 90 80
+Klovska 95 90
+Pecherska 100 100
+DruzhbyNarodiv 105 110
+Vydubychi 110 120
+Slavutych 115 130
+Osokorky 120 140
+Pozniaky 125 150
+Kharkivska 135 150
+Vyrlytsia 145 150
+Boryspilska 155 150
+ChervonyKhutir 165 150
+#RED LINE
+Akademmistechko 0 60
+Zhytomyrska 0 70
+Sviatoshyn 0 80
+Nyvky 0 90
+Beresteiska 10 90
+Shuliavska 20 90
+PolitekhnichnyiInstytut 30 90
+Vokzalna 40 90
+Universytet 50 90
+Teatralna 60 80
+Khreshchatyk 75 75
+Arsenalna 105 70
+Dnipro 115 70
+Hidropark 125 60
+livoberezhna 135 50
+Darnytsia 145 40
+Chernihivska 155 30
+lisova 165 20
+#LINKS RED
+#
+Akademmistechko-Zhytomyrska
+Zhytomyrska-Sviatoshyn
+Sviatoshyn-Nyvky
+Nyvky-Beresteiska
+Beresteiska-Shuliavska
+Shuliavska-PolitekhnichnyiInstytut
+PolitekhnichnyiInstytut-Vokzalna
+Vokzalna-Universytet
+Universytet-Teatralna
+Teatralna-Khreshchatyk
+Khreshchatyk-Arsenalna
+Arsenalna-Dnipro
+Dnipro-Hidropark
+Hidropark-livoberezhna
+livoberezhna-Darnytsia
+#tyt
+Darnytsia-Chernihivska
+Chernihivska-lisova
+#
+Teatralna-ZolotiVorota
+Khreshchatyk-MaidanNezalezhnosti
+#BLUE LINKS
+HeroivDnipra-Minska
+Minska-Obolon
+Obolon-Petrivka
+Petrivka-TS
+TS-KontraktovaPloshcha
+KontraktovaPloshcha-Poshtova
+Poshtova-MaidanNezalezhnosti
+MaidanNezalezhnosti-PloshchaLvaTolstoho
+PloshchaLvaTolstoho-Olimpiiska
+Olimpiiska-PalatsUkrayina
+PalatsUkrayina-lybidska
+lybidska-Demiivska
+Demiivska-Holosiivska
+Holosiivska-Vasylkivska
+Vasylkivska-VystavkovyiTsentr
+VystavkovyiTsentr-Ipodrom
+Ipodrom-Teremky
+#
+MaidanNezalezhnosti-Khreshchatyk
+PloshchaLvaTolstoho-PalatsSportu
+#GREEN LINKS
+Syrets-Dorohozhychi
+Dorohozhychi-lukianivska
+lukianivska-ZolotiVorota
+ZolotiVorota-PalatsSportu
+PalatsSportu-Klovska
+Klovska-Pecherska
+Pecherska-DruzhbyNarodiv
+DruzhbyNarodiv-Vydubychi
+Vydubychi-Slavutych
+Slavutych-Osokorky
+Osokorky-Pozniaky
+Pozniaky-Kharkivska
+Kharkivska-Vyrlytsia
+Vyrlytsia-Boryspilska
+Boryspilska-ChervonyKhutir
+#
+ZolotiVorota-Teatralna
+PalatsSportu-PloshchaLvaTolstoho

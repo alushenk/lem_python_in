@@ -60,12 +60,12 @@ t_room	*find_by_id(t_elem *list, t_room *room)
 	return (NULL);
 }
 
-void	connect(t_room *a, t_room *b, t_graph *graph)
+void	connect(t_room *a, t_room *b)
 {
 	t_elem *elem;
 
 	if (find_by_id(a->list, b) || find_by_id(b->list, a))
-		error("Error! duplicate connection\n", graph);
+		return ;
 	elem = create_element();
 	elem->room = b;
 	if (a->list != NULL)

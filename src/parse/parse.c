@@ -15,7 +15,6 @@
 void	parse_ants(t_graph *graph, int fd, char *line)
 {
 	get_next_write(fd, &line, graph);
-	errors_check(line, graph);
 	while (ft_strlen(line) > 0 && line[0] == '#')
 	{
 		if (ft_strlen(line) > 1 && line[1] == '#')

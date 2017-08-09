@@ -17,9 +17,6 @@ class Room(object):
     def add_connection(self, vertex):
         if vertex not in self.connections:
             self.connections.append(vertex)
-        else:
-            print('Error! connection already exists')
-            exit()
 
     def add_ant(self, ant):
         self.ant = ant
