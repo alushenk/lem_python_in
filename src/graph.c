@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   graph.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: lush <lush@student.42.fr>                  +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/08/04 10:23:31 by alushenk          #+#    #+#             */
-/*   Updated: 2017/08/04 10:23:32 by alushenk         ###   ########.fr       */
+/*   Updated: 2017/08/13 10:51:15 by lush             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	add_line(t_graph *graph, char *str)
 	room_b = find_by_name(graph->list, name_b);
 	if (room_a == NULL || room_b == NULL)
 		error("Error! linking non-existent rooms\n", graph);
-	connect(room_a, room_b, graph);
+	connect(room_a, room_b);
 	if (name_a)
 		free(name_a);
 	if (name_b)
