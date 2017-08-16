@@ -5,13 +5,13 @@ set(CMAKE_CXX_STANDARD 11)
 
 set(SOURCE_FILES
         get_next_line/get_next_line.c
-        src/choose_path_group.c
+        src/depth_algorithm/choose_path_group.c
         src/display.c
         src/err_atoi.c
         src/errors.c
-        src/find_path_groups.c
+        src/depth_algorithm/find_path_groups.c
         src/generate_steps.c
-        src/get_all_paths.c
+        src/depth_algorithm/get_all_paths.c
         src/graph.c
         src/list/list.c
         src/list/create.c

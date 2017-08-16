@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lem_in.h"
+#include "../lem_in.h"
 
 void	find(t_path *path, t_path **paths, t_elem *elem, t_room *end)
 {
