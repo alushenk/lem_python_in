@@ -27,7 +27,7 @@ int	main(int argc, char **argv)
 	parse(graph, fd);
 	if (fd != 0)
 		close(fd);
-	get_all_paths(graph);
+	//get_all_paths(graph);
 	find_path_groups(graph);
 	choose_path_group(graph);
 	generate_steps(graph);

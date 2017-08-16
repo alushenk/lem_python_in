@@ -21,6 +21,7 @@ t_room	*create_room(char *name, int x, int y)
 	room->x = x;
 	room->y = y;
 	room->is_free = 1;
+	room->dist = INT_MAX;
 	room->list = NULL;
 	return (room);
 }

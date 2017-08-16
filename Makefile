@@ -5,7 +5,7 @@ GNLDIR = get_next_line
 SRCDIR = src
 
 SRC_LEM_IN =    depth_algorithm/choose_path_group.c \
-                depth_algorithm/find_path_groups.c \
+                breadth_algorithm/find_path_groups.c \
                 depth_algorithm/get_all_paths.c \
                 list/list.c \
                 list/create.c \

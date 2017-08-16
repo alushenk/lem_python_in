@@ -9,7 +9,7 @@ set(SOURCE_FILES
         src/display.c
         src/err_atoi.c
         src/errors.c
-        src/depth_algorithm/find_path_groups.c
+        #src/depth_algorithm/find_path_groups.c
         src/generate_steps.c
         src/depth_algorithm/get_all_paths.c
         src/graph.c
@@ -26,6 +26,7 @@ set(SOURCE_FILES
         src/free/free_2.c
         src/list/add_room.c
         src/get_next_write.c
+        src/breadth_algorithm/find_path_groups.c
         )
 
 add_executable(lem-in ${SOURCE_FILES})

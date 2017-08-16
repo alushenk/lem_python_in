@@ -28,3 +28,27 @@ t_path	*copy_path(t_path *path)
 	}
 	return (result);
 }
+
+void	pop_room(t_room *a, t_room *b)
+{
+	t_elem	*list;
+	t_elem	*elem;
+	t_elem	*temp;
+
+	if (a->list->room == b)
+	{
+		elem = a->list;
+		a->list = a->list->next;
+		free(elem);
+		return ;
+	}
+	list = a->list;
+	while (list->room != b)
+	{
+		temp = list;
+		list = list->next;
+	}
+	elem = list;
+	temp->next = list->next;
+	free(elem);
+}

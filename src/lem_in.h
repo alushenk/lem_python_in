@@ -30,6 +30,7 @@ typedef struct		s_room
 	int				x;
 	int				y;
 	int				is_free;
+	int 			dist;
 	t_elem			*list;
 }					t_room;
 
@@ -129,6 +130,7 @@ t_group				*create_group();
 void				add_path(t_group *group, t_path *path);
 void				append_step(t_step	**list, t_step *step);
 t_room				*add_room(t_graph *graph, char *str);
+void				pop_room(t_room *a, t_room *b);
 /*
 ** search.c
 */
@@ -141,6 +143,8 @@ void				free_graph(t_graph *graph);
 void				free_list(t_elem *list);
 void				free_lines(t_line *line);
 void				free_rooms(t_elem *list);
+void				free_paths(t_path *path);
+void				free_groups(t_group *group);
 /*
 ** display.c
 */
