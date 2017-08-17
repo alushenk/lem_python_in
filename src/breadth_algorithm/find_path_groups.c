@@ -4,13 +4,10 @@
 
 #include "../lem_in.h"
 
-void	calculate_graph(t_room *room)
+void	calculate_step(t_room *room, t_path *queue)
 {
 	t_elem	*list;
-	t_path	*queue;
 
-	queue = create_path();
-	room->dist = 0;
 	list = room->list;
 	while(list)
 	{
@@ -21,6 +18,15 @@ void	calculate_graph(t_room *room)
 		}
 		list = list->next;
 	}
+}
+
+void	calculate_graph(t_room *room)
+{
+	t_path	*queue;
+
+	queue = create_path();
+	room->dist = 0;
+	calculate_step(room, queue);
 
 	t_elem	*step;
 	t_path	*new_queue;
@@ -30,16 +36,7 @@ void	calculate_graph(t_room *room)
 		new_queue = create_path();
 		while (step)
 		{
-			list = step->room->list;
-			while(list)
-			{
-				if (list->room->dist > step->room->dist + 1)
-				{
-					list->room->dist = step->room->dist + 1;
-					add_to_path(new_queue, list->room);
-				}
-				list = list->next;
-			}
+			calculate_step(step->room, new_queue);
 			step = step->next;
 		}
 		free_paths(queue);
