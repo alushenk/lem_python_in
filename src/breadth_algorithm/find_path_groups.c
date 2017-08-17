@@ -170,22 +170,24 @@ void	find_path_groups(t_graph *graph)
 {
 	t_group	*groups;
 	t_group *group;
+	t_group	*current;
 	t_path	*path;
 	t_path	*direct;
 	t_elem	*elem;
 	t_room	*a;
 	t_room	*b;
+	int 	i;
 
 	direct = get_one_step_path(graph->start_room, graph->end_room);
 
 	groups = NULL;
-	while(1)
+	group = find_group(graph);
+	append_to_group(&groups, group);
+	i = 6;
+	current = groups;
+	while(i > 0)
 	{
-		group = find_group(graph);
-		append_to_group(&groups, group);
-		path = group->paths;
-		if (direct)
-			add_path(group, direct);
+		path = current->paths;
 		while(path)
 		{
 			elem = path->list;
@@ -197,11 +199,7 @@ void	find_path_groups(t_graph *graph)
 
 				group = find_group(graph);
 				if (group->paths)
-				{
-					if (direct)
-						add_path(group, direct);
 					append_to_group(&groups, group);
-				}
 				else
 					free_groups(group);
 				connect(a, b);
@@ -209,9 +207,19 @@ void	find_path_groups(t_graph *graph)
 			}
 			path = path->next;
 		}
-		break;
+		i--;
+		current = current->next;
 	}
 	if (direct)
 		connect(graph->start_room, graph->end_room);
+	if (direct)
+	{
+		group = groups;
+		while (group)
+		{
+			add_path(group, direct);
+			group = group->next;
+		}
+	}
 	graph->groups = groups;
 }
