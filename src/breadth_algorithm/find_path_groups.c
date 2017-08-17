@@ -181,8 +181,13 @@ void	step(t_graph *graph, int i)
 		//display_paths(group->paths);
 		//ft_putstr("\n\n");
 		calculate_group_efficiency(group, graph->number_of_ants);
-		if (graph->groups == NULL || group->efficiency < graph->groups->efficiency)
+		if (graph->groups == NULL || group->efficiency < find_optimal_group(graph->groups)->efficiency)
 			append_to_group(&graph->groups, group);
+		else
+		{
+			free_groups(group);
+			return;
+		}
 	}
 	else
 	{

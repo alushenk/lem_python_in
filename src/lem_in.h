@@ -163,6 +163,7 @@ void				find_path_groups(t_graph *graph);
 */
 void				choose_path_group(t_graph *graph);
 void				calculate_group_efficiency(t_group *group, int number_of_ants);
+t_group				*find_optimal_group(t_group *group);
 /*
 ** generate_steps.c
 */
