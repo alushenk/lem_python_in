@@ -151,16 +151,32 @@ void	append_to_group(t_group **list, t_group *group)
 	elem->next = group;
 }
 
+t_path	*get_one_step_path(t_room *start, t_room *end)
+{
+	t_path	*result;
+
+	result = NULL;
+	if (find_by_id(start->list, end))
+	{
+		result = create_path();
+		add_to_path(result, start);
+		add_to_path(result, end);
+		disconnect(start, end);
+	}
+	return (result);
+}
+
 void	find_path_groups(t_graph *graph)
 {
-	// сделать иф на путь start->end если такой есть
-	// сохранить его и добавлять в конце к каждой группе
 	t_group	*groups;
 	t_group *group;
 	t_path	*path;
+	t_path	*direct;
 	t_elem	*elem;
 	t_room	*a;
 	t_room	*b;
+
+	direct = get_one_step_path(graph->start_room, graph->end_room);
 
 	groups = NULL;
 	while(1)
@@ -168,6 +184,8 @@ void	find_path_groups(t_graph *graph)
 		group = find_group(graph);
 		append_to_group(&groups, group);
 		path = group->paths;
+		if (direct)
+			add_path(group, direct);
 		while(path)
 		{
 			elem = path->list;
@@ -179,7 +197,11 @@ void	find_path_groups(t_graph *graph)
 
 				group = find_group(graph);
 				if (group->paths)
+				{
+					if (direct)
+						add_path(group, direct);
 					append_to_group(&groups, group);
+				}
 				else
 					free_groups(group);
 				connect(a, b);
@@ -189,5 +211,7 @@ void	find_path_groups(t_graph *graph)
 		}
 		break;
 	}
+	if (direct)
+		connect(graph->start_room, graph->end_room);
 	graph->groups = groups;
 }
