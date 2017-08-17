@@ -166,28 +166,34 @@ t_path	*get_one_step_path(t_room *start, t_room *end)
 	return (result);
 }
 
-void	find_path_groups(t_graph *graph)
+int 	get_connections_count(t_room *room)
 {
-	t_group	*groups;
+	t_elem	*elem;
+	int 	i;
+
+	elem = room->list;
+	i = 0;
+	while(elem)
+	{
+		i++;
+		elem = elem->next;
+	}
+	return (i);
+}
+
+void	find_part_groups(t_graph *graph)
+{
 	t_group *group;
-	t_group	*current;
 	t_path	*path;
-	t_path	*direct;
 	t_elem	*elem;
 	t_room	*a;
 	t_room	*b;
-	int 	i;
 
-	direct = get_one_step_path(graph->start_room, graph->end_room);
 
-	groups = NULL;
-	group = find_group(graph);
-	append_to_group(&groups, group);
-	i = 6;
-	current = groups;
-	while(i > 0)
-	{
+
 		path = current->paths;
+		display_paths(path);
+		ft_putstr("\n\n");
 		while(path)
 		{
 			elem = path->list;
@@ -207,19 +213,47 @@ void	find_path_groups(t_graph *graph)
 			}
 			path = path->next;
 		}
+
+	graph->groups = groups;
+}
+
+void	find_path_groups(t_graph *graph)
+{
+	t_path	*direct;
+	t_group *group;
+	t_group	*groups;
+	t_group	*current;
+	t_path	*path;
+	int 	i;
+
+	i = get_connections_count(graph->start_room);
+	direct = get_one_step_path(graph->start_room, graph->end_room);
+
+	groups = NULL;
+	group = find_group(graph);
+	append_to_group(&groups, group);
+	current = groups;
+	while(i > 0)
+	{
+		path = current->paths;
+		while (path)
+		{
+			find_part_groups(graph);
+			current = current->next;
+			path = path->next;
+		}
 		i--;
-		current = current->next;
 	}
+
 	if (direct)
 		connect(graph->start_room, graph->end_room);
 	if (direct)
 	{
-		group = groups;
+		group = graph->groups;
 		while (group)
 		{
 			add_path(group, direct);
 			group = group->next;
 		}
 	}
-	graph->groups = groups;
 }
