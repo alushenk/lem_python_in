@@ -42,27 +42,48 @@ t_path	*find_hardest(t_path *path)
 	return (result);
 }
 
+void	reset_group(t_group *group)
+{
+	t_path *path;
+
+	group->efficiency = 0;
+	path = group->paths;
+	while (path)
+	{
+		path->ants_count = 0;
+		path->weight = 0;
+		path = path->next;
+	}
+}
+
+void	calculate_group_efficiency(t_group *group, int number_of_ants)
+{
+	t_path	*path;
+	int		i;
+
+	reset_group(group);
+	i = 0;
+	while (i < number_of_ants)
+	{
+		path = find_shortest(group->paths);
+		path->weight += 1;
+		path->ants_count += 1;
+		i++;
+	}
+	path = find_hardest(group->paths);
+	group->efficiency = path->weight;
+}
+
 void	calculate_efficiency(t_graph *graph)
 {
 	t_group	*group;
-	t_path	*path;
-	int		i;
 
 	group = graph->groups;
 	if (group == NULL)
 		error("Error! no paths found\n", graph);
 	while (group)
 	{
-		i = 0;
-		while (i < graph->number_of_ants)
-		{
-			path = find_shortest(group->paths);
-			path->weight += 1;
-			path->ants_count += 1;
-			i++;
-		}
-		path = find_hardest(group->paths);
-		group->efficiency = path->weight;
+		calculate_group_efficiency(group, graph->number_of_ants);
 		group = group->next;
 	}
 }

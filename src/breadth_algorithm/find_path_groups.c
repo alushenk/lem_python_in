@@ -163,60 +163,86 @@ t_path	*get_one_step_path(t_room *start, t_room *end)
 	return (result);
 }
 
-void	find_path_groups(t_graph *graph)
+void	step(t_graph *graph, int i)
 {
-	t_group	*groups;
 	t_group *group;
-	t_group	*current;
 	t_path	*path;
-	t_path	*direct;
 	t_elem	*elem;
 	t_room	*a;
 	t_room	*b;
+
+	if (i == 0)
+		return ;
+	i--;
+
+	group = find_group(graph);
+	if (group->paths)
+	{
+		//display_paths(group->paths);
+		//ft_putstr("\n\n");
+		calculate_group_efficiency(group, graph->number_of_ants);
+		if (graph->groups == NULL || group->efficiency < graph->groups->efficiency)
+			append_to_group(&graph->groups, group);
+	}
+	else
+	{
+		free_groups(group);
+		return ;
+	}
+	path = group->paths;
+	while(path)
+	{
+		elem = path->list;
+		while(elem->next)
+		{
+			a = elem->room;
+			b = elem->next->room;
+			disconnect(a, b);
+
+			step(graph, i);
+
+			connect(a, b);
+			elem = elem->next;
+		}
+		path = path->next;
+	}
+}
+
+int 	get_connections_count(t_room *room)
+{
+	t_elem	*elem;
+	int 	i;
+
+	elem = room->list;
+	i = 0;
+	while(elem)
+	{
+		i++;
+		elem = elem->next;
+	}
+	return (i);
+}
+
+void	find_path_groups(t_graph *graph)
+{
+	t_group *group;
+	t_path	*direct;
 	int 	i;
 
 	direct = get_one_step_path(graph->start_room, graph->end_room);
 
-	groups = NULL;
-	group = find_group(graph);
-	append_to_group(&groups, group);
-	i = 6;
-	current = groups;
-	while(i > 0)
-	{
-		path = current->paths;
-		while(path)
-		{
-			elem = path->list;
-			while(elem->next)
-			{
-				a = elem->room;
-				b = elem->next->room;
-				disconnect(a, b);
+	i = get_connections_count(graph->start_room);
+	step(graph, i);
 
-				group = find_group(graph);
-				if (group->paths)
-					append_to_group(&groups, group);
-				else
-					free_groups(group);
-				connect(a, b);
-				elem = elem->next;
-			}
-			path = path->next;
-		}
-		i--;
-		current = current->next;
-	}
 	if (direct)
 		connect(graph->start_room, graph->end_room);
 	if (direct)
 	{
-		group = groups;
+		group = graph->groups;
 		while (group)
 		{
 			add_path(group, direct);
 			group = group->next;
 		}
 	}
-	graph->groups = groups;
 }
