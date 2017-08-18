@@ -20,8 +20,9 @@ void	errors_check(char *str, t_graph *graph)
 		error("Error! empty line\n", graph);
 }
 
-int		is_room(char *str)
+int		is_room(char *str, t_graph *graph)
 {
+	errors_check(str, graph);
 	if (*str == '#')
 		return (1);
 	while (*str)
@@ -64,7 +65,7 @@ void	parse_end(t_graph *graph, int fd, char **line)
 
 void	parse_rooms(t_graph *graph, int fd, char **line)
 {
-	while (get_next_write(fd, line, graph) == 1 && is_room(*line))
+	while (get_next_write(fd, line, graph) == 1 && is_room(*line, graph))
 	{
 		if (ft_strcmp(*line, "##start") == 0)
 			parse_start(graph, fd, line);

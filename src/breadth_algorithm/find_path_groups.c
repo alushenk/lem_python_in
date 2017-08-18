@@ -244,10 +244,16 @@ void	find_path_groups(t_graph *graph)
 	if (direct)
 	{
 		group = graph->groups;
-		while (group)
+		if (group == NULL)
 		{
-			add_path(group, direct);
-			group = group->next;
+			graph->groups = create_group();
+			add_path(graph->groups, direct);
 		}
+		else
+			while (group)
+			{
+				add_path(group, direct);
+				group = group->next;
+			}
 	}
 }

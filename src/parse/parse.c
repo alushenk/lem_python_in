@@ -31,7 +31,6 @@ void	parse_ants(t_graph *graph, int fd, char *line)
 
 void	parse_lines(t_graph *graph, int fd, char *line)
 {
-	errors_check(line, graph);
 	if (graph->list == NULL)
 		error("Error! no rooms\n", graph);
 	if (graph->start_room == NULL)
