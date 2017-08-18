@@ -61,7 +61,7 @@ typedef struct		s_group
 {
 	t_path			*paths;
 	int				number_of_paths;
-	size_t			efficiency;
+	int				efficiency;
 	struct s_group	*next;
 }					t_group;
 

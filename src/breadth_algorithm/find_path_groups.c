@@ -171,7 +171,7 @@ void	step(t_graph *graph, int i)
 	t_room	*a;
 	t_room	*b;
 
-	if (i == 0)
+	if (i < 0)
 		return ;
 	i--;
 
