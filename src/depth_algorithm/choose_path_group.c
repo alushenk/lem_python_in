@@ -42,7 +42,7 @@ t_path	*find_hardest(t_path *path)
 	return (result);
 }
 
-int 	find_path_weigth(t_path *path)
+int		find_path_weigth(t_path *path)
 {
 	int		result;
 	t_elem	*elem;
@@ -71,7 +71,7 @@ void	reset_group(t_group *group)
 	}
 }
 
-void	calculate_group_efficiency(t_group *group, int number_of_ants)
+void	calc_group_efficiency(t_group *group, int number_of_ants)
 {
 	t_path	*path;
 	int		i;
@@ -98,7 +98,7 @@ void	calculate_efficiency(t_graph *graph)
 		error("Error! no paths found\n", graph);
 	while (group)
 	{
-		calculate_group_efficiency(group, graph->number_of_ants);
+		calc_group_efficiency(group, graph->number_of_ants);
 		group = group->next;
 	}
 }

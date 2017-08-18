@@ -22,7 +22,7 @@ t_line	*create_line(char *str)
 	return (result);
 }
 
-int get_next_write(const int fd, char **str, t_graph *graph)
+int		get_next_write(const int fd, char **str, t_graph *graph)
 {
 	int		result;
 	t_line	*line;

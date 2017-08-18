@@ -30,7 +30,7 @@ typedef struct		s_room
 	int				x;
 	int				y;
 	int				is_free;
-	int 			dist;
+	int				dist;
 	t_elem			*list;
 }					t_room;
 
@@ -162,7 +162,7 @@ void				find_path_groups(t_graph *graph);
 ** choose_path_group.c
 */
 void				choose_path_group(t_graph *graph);
-void				calculate_group_efficiency(t_group *group, int number_of_ants);
+void				calc_group_efficiency(t_group *group, int number_of_ants);
 t_group				*find_optimal_group(t_group *group);
 /*
 ** generate_steps.c

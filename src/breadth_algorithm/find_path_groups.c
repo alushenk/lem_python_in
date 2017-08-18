@@ -1,6 +1,14 @@
-//
-// Created by lush on 8/16/17.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   find_path_groups.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: alushenk <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/08/18 19:08:38 by alushenk          #+#    #+#             */
+/*   Updated: 2017/08/18 19:08:39 by alushenk         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../lem_in.h"
 
@@ -9,7 +17,7 @@ void	calculate_step(t_room *room, t_path *queue)
 	t_elem	*list;
 
 	list = room->list;
-	while(list)
+	while (list)
 	{
 		if (list->room->dist > room->dist + 1)
 		{
@@ -23,13 +31,12 @@ void	calculate_step(t_room *room, t_path *queue)
 void	calculate_graph(t_room *room)
 {
 	t_path	*queue;
+	t_elem	*step;
+	t_path	*new_queue;
 
 	queue = create_path();
 	room->dist = 0;
 	calculate_step(room, queue);
-
-	t_elem	*step;
-	t_path	*new_queue;
 	while (queue->list)
 	{
 		step = queue->list;
@@ -66,19 +73,18 @@ t_path	*pop_path(t_room *start, t_room *end)
 	result = create_path();
 	room = end;
 	add_to_front(result, end);
-	while(room != start)
+	while (room != start)
 	{
 		list = room->list;
-		while(list && list->room->dist != room->dist - 1)
+		while (list && list->room->dist != room->dist - 1)
 			list = list->next;
 		if (list == NULL)
 			return (result);
 		add_to_front(result, list->room);
 		room = list->room;
 	}
-
 	list = result->list->next;
-	while(list->next)
+	while (list->next)
 	{
 		list->room->dist = -1;
 		list = list->next;
@@ -88,7 +94,7 @@ t_path	*pop_path(t_room *start, t_room *end)
 
 void	reset_rooms(t_elem *list)
 {
-	while(list)
+	while (list)
 	{
 		if (list->room->dist > 0)
 			list->room->dist = INT_MAX;
@@ -98,7 +104,7 @@ void	reset_rooms(t_elem *list)
 
 void	hard_reset_rooms(t_elem *list)
 {
-	while(list)
+	while (list)
 	{
 		list->room->dist = INT_MAX;
 		list = list->next;
@@ -111,7 +117,7 @@ t_group	*find_group(t_graph *graph)
 	t_path	*path;
 
 	group = create_group();
-	while(1)
+	while (1)
 	{
 		calculate_graph(graph->start_room);
 		path = pop_path(graph->start_room, graph->end_room);
@@ -119,7 +125,7 @@ t_group	*find_group(t_graph *graph)
 		if (path->list->room != graph->start_room)
 		{
 			free_paths(path);
-			break;
+			break ;
 		}
 		add_path(group, path);
 	}
@@ -137,10 +143,10 @@ void	append_to_group(t_group **list, t_group *group)
 {
 	t_group *elem;
 
-	if(*list == NULL)
+	if (*list == NULL)
 	{
 		*list = group;
-		return;
+		return ;
 	}
 	elem = *list;
 	while (elem->next)
@@ -171,22 +177,20 @@ void	step(t_graph *graph, int i)
 	t_room	*a;
 	t_room	*b;
 
-	if (i < 0)
+	if (i == 0)
 		return ;
 	i--;
-
 	group = find_group(graph);
 	if (group->paths)
 	{
-		//display_paths(group->paths);
-		//ft_putstr("\n\n");
-		calculate_group_efficiency(group, graph->number_of_ants);
-		if (graph->groups == NULL || group->efficiency < find_optimal_group(graph->groups)->efficiency)
+		calc_group_efficiency(group, graph->number_of_ants);
+		if (graph->groups == NULL ||
+			group->efficiency < find_optimal_group(graph->groups)->efficiency)
 			append_to_group(&graph->groups, group);
 		else
 		{
 			free_groups(group);
-			return;
+			return ;
 		}
 	}
 	else
@@ -195,17 +199,15 @@ void	step(t_graph *graph, int i)
 		return ;
 	}
 	path = group->paths;
-	while(path)
+	while (path)
 	{
 		elem = path->list;
-		while(elem->next)
+		while (elem->next)
 		{
 			a = elem->room;
 			b = elem->next->room;
 			disconnect(a, b);
-
 			step(graph, i);
-
 			connect(a, b);
 			elem = elem->next;
 		}
@@ -213,14 +215,14 @@ void	step(t_graph *graph, int i)
 	}
 }
 
-int 	get_connections_count(t_room *room)
+int		get_connections_count(t_room *room)
 {
 	t_elem	*elem;
-	int 	i;
+	int		i;
 
 	elem = room->list;
 	i = 0;
-	while(elem)
+	while (elem)
 	{
 		i++;
 		elem = elem->next;
@@ -230,15 +232,13 @@ int 	get_connections_count(t_room *room)
 
 void	find_path_groups(t_graph *graph)
 {
-	t_group *group;
+	t_group	*group;
 	t_path	*direct;
-	int 	i;
+	int		i;
 
 	direct = get_one_step_path(graph->start_room, graph->end_room);
-
 	i = get_connections_count(graph->start_room);
 	step(graph, i);
-
 	if (direct)
 		connect(graph->start_room, graph->end_room);
 	if (direct)
