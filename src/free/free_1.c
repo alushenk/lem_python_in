@@ -52,6 +52,7 @@ void	free_groups(t_group *group)
 		{
 			path = temp->paths;
 			temp->paths = temp->paths->next;
+			free_list(path->list);
 			free(path);
 			count--;
 		}
@@ -82,14 +83,14 @@ void	free_graph(t_graph *graph)
 {
 	if (graph)
 	{
+		if (graph->list)
+			free_rooms(graph->list);
 		if (graph->paths)
 			free_paths(graph->paths);
 		if (graph->groups)
 			free_groups(graph->groups);
 		if (graph->steps)
 			free_steps(graph->steps);
-		if (graph->list)
-			free_rooms(graph->list);
 		if (graph->lines)
 			free_lines(graph->lines);
 		free(graph);

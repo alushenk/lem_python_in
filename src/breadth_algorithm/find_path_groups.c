@@ -128,6 +128,7 @@ t_group	*find_group(t_graph *graph)
 			break ;
 		}
 		add_path(group, path);
+		free(path);
 	}
 	hard_reset_rooms(graph->list);
 	return (group);
@@ -255,5 +256,6 @@ void	find_path_groups(t_graph *graph)
 				add_path(group, direct);
 				group = group->next;
 			}
+		free(direct);
 	}
 }
