@@ -27,7 +27,7 @@ set(SOURCE_FILES
         src/list/add_room.c
         src/get_next_write.c
         src/breadth_algorithm/find_path_groups.c
-        )
+        src/breadth_algorithm/reset.c src/breadth_algorithm/calculate.c src/breadth_algorithm/find_path_groups_helpers.c src/depth_algorithm/find.c)
 
 add_executable(lem-in ${SOURCE_FILES})
 

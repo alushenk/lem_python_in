@@ -12,51 +12,6 @@
 
 #include "../lem_in.h"
 
-t_path	*find_shortest(t_path *path)
-{
-	t_path	*result;
-
-	result = path;
-	path = path->next;
-	while (path)
-	{
-		if (path->weight < result->weight)
-			result = path;
-		path = path->next;
-	}
-	return (result);
-}
-
-t_path	*find_hardest(t_path *path)
-{
-	t_path	*result;
-
-	result = path;
-	path = path->next;
-	while (path)
-	{
-		if (path->weight > result->weight)
-			result = path;
-		path = path->next;
-	}
-	return (result);
-}
-
-int		find_path_weigth(t_path *path)
-{
-	int		result;
-	t_elem	*elem;
-
-	result = 0;
-	elem = path->list;
-	while (elem)
-	{
-		result++;
-		elem = elem->next;
-	}
-	return (result);
-}
-
 void	reset_group(t_group *group)
 {
 	t_path *path;

@@ -6,7 +6,11 @@ SRCDIR = src
 
 SRC_LEM_IN =    depth_algorithm/choose_path_group.c \
                 breadth_algorithm/find_path_groups.c \
+                breadth_algorithm/calculate.c \
+                breadth_algorithm/find_path_groups_helpers.c \
+                breadth_algorithm/reset.c \
                 depth_algorithm/get_all_paths.c \
+                depth_algorithm/find.c \
                 list/list.c \
                 list/create.c \
                 list/add.c \

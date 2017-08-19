@@ -158,6 +158,7 @@ void				display_lines(t_line *list);
 ** find_path_groups.c
 */
 void				find_path_groups(t_graph *graph);
+void				find_groups(t_graph *graph, int i);
 /*
 ** choose_path_group.c
 */
@@ -176,5 +177,26 @@ void				create_steps(t_path *path, int start, t_room *end, int i);
 ** get_next_write.c
 */
 int					get_next_write(const int fd, char **str, t_graph *graph);
+/*
+** reset.c
+*/
+void				reset_rooms(t_elem *list);
+void				hard_reset_rooms(t_elem *list);
+/*
+** calculate.c
+*/
+void				calculate_graph(t_room *room);
+/*
+** find_path_groups_helpers.c
+*/
+void				append_to_group(t_group **list, t_group *group);
+void				disconnect(t_room *a, t_room *b);
+t_group				*find_group(t_graph *graph);
+/*
+** find.c
+*/
+t_path				*find_shortest(t_path *path);
+t_path				*find_hardest(t_path *path);
+int					find_path_weigth(t_path *path);
 
 #endif
