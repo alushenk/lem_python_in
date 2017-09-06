@@ -56,23 +56,27 @@ void	find_groups(t_graph *graph, int i)
 	t_group *group;
 
 	if (i == 0)
-		return ;
+		return;
 	group = find_group(graph);
 	if (group->paths == NULL)
 	{
 		free_groups(group);
-		return ;
+		return;
 	}
 	calc_group_efficiency(group, graph->number_of_ants);
-	if (graph->groups == NULL ||
-		group->efficiency < find_optimal_group(graph->groups)->efficiency)
-		append_to_group(&graph->groups, group);
+	if (graph->groups == NULL)
+		graph->groups = group;
 	else
 	{
-		free_groups(group);
-		return ;
+		if (group->efficiency < graph->groups->efficiency)
+			append_to_group(&graph->groups, group);
+		else
+		{
+			free_groups(group);
+			return;
+		}
 	}
-	step(graph, group, i);
+	step(graph, group, i - 1);
 }
 
 int		get_connections_count(t_room *room)
